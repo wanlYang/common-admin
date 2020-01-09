@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xieke.admin.mapper.FirstmoneyMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="Firstmoney">
+        <id column="id" property="id" />
+        <result column="remark" property="remark" />
+        <result column="first_money" property="firstMoney" />
+        <result column="pay_time" property="payTime" />
+
+
+        <result column="number" property="number" />
+        <result column="end_time" property="endTime" />
+        <result column="insert_time" property="insertTime" />
+        <result column="status" property="status" />
+        <result column="store" property="store" />
+        <association column="mt_id" property="mt" select="com.xieke.admin.mapper.UserMapper.getUserById"/>
+        <association column="pay_type" property="payType" select="com.xieke.admin.mapper.PaytypeMapper.findById"/>
+        <association column="cust_id" property="customer" select="com.xieke.admin.mapper.CustomerMapper.findById"/>
+    </resultMap>
+
+    <select id="selectAllFirstmoney" resultMap="BaseResultMap">
+        select * from jy_firstmoney
+    </select>
+
+    <select id="findAllListByPage" resultMap="BaseResultMap">
+        SELECT cust.name,jy_firstmoney.* FROM jy_customer cust RIGHT JOIN jy_firstmoney  on cust.id =jy_firstmoney.cust_id
+        <where>
+            <if test="name != null">
+                AND cust.name like CONCAT('%','${name}','%')
+            </if>
+            <if test="phone != null">
+                AND cust.phone like CONCAT('%','${phone}','%')
+            </if>
+        </where>
+        LIMIT #{start},#{limit}
+    </select>
+    <select id="findAllListByPageByCustomerId" resultMap="BaseResultMap">
+        SELECT cust.name,jy_firstmoney.* FROM jy_customer cust RIGHT JOIN jy_firstmoney  on cust.id =jy_firstmoney.cust_id
+        <where>
+            <if test="name != null">
+                AND cust.name like CONCAT('%','${name}','%')
+            </if>
+            <if test="phone != null">
+                AND cust.phone like CONCAT('%','${phone}','%')
+            </if>
+            <if test="customerId != null">
+                AND cust.id like CONCAT('%','${customerId}','%')
+            </if>
+                AND DATE(CURDATE()) BETWEEN jy_firstmoney.insert_time AND jy_firstmoney.end_time
+        </where>
+        LIMIT #{start},#{limit}
+    </select>
+    <select id="findByNumber" resultMap="BaseResultMap">
+        SELECT * from jy_firstmoney WHERE number = #{number}
+    </select>
+
+    <insert id="insertFirstmoney" parameterType="Firstmoney">
+        insert into jy_firstmoney value (null,#{remark},#{firstMoney},#{payType.id},#{payTime},#{mt.id},#{number},
+        #{endTime},#{insertTime},#{status},#{store},#{customer.id})
+    </insert>
+    
+    <update id="updateFirstmoney" parameterType="Firstmoney">
+        update jy_firstmoney set
+            <if test="remark != null">`remark`=#{remark},</if>
+            <if test="firstMoney != null">first_money=#{firstMoney},</if>
+            <if test="payTime != null">pay_time=#{payTime},</if>
+            <if test="payType != null">pay_type=#{payType.id},</if>
+            <if test="mt != null">mt_id=#{mt.id},</if>
+            <if test="number != null">number=#{number},</if>
+            <if test="endTime != null">end_time=#{endTime},</if>
+            <if test="insertTime != null">insert_time=#{insertTime},</if>
+            <if test="status != null">status=#{status},</if>
+            <if test="store != null">store=#{store},</if>
+            <if test="customer != null">cust_id=#{customer.id}</if>
+        where id=#{id}
+    </update>
+  
+    <delete id="deleteFirstmoney">
+        delete from jy_firstmoney where id=#{id}
+    </delete>
+
+    <select id="countByParam" resultType="java.lang.Integer">
+        SELECT COUNT(jy_firstmoney.cust_id) FROM jy_customer cust RIGHT JOIN jy_firstmoney  on cust.id =jy_firstmoney.cust_id
+        <where>
+            <if test="name != null">
+                AND cust.name like CONCAT('%','${name}','%')
+            </if>
+            <if test="phone != null">
+                AND cust.phone like CONCAT('%','${phone}','%')
+            </if>
+        </where>
+    </select>
+
+    <select id="countByParamByCustomerId" resultType="java.lang.Integer">
+        SELECT COUNT(jy_firstmoney.cust_id) FROM jy_customer cust RIGHT JOIN jy_firstmoney  on cust.id =jy_firstmoney.cust_id
+        <where>
+            <if test="name != null">
+                AND cust.name like CONCAT('%','${name}','%')
+            </if>
+            <if test="phone != null">
+                AND cust.phone like CONCAT('%','${phone}','%')
+            </if>
+            <if test="customerId != null">
+                AND cust.id like CONCAT('%','${customerId}','%')
+            </if>
+            AND DATE(CURDATE()) BETWEEN jy_firstmoney.insert_time AND jy_firstmoney.end_time
+        </where>
+    </select>
+    <select id="findById" resultMap="BaseResultMap">
+         SELECT * from jy_firstmoney WHERE id = #{firstmoneyId}
+    </select>
+
+
+</mapper>

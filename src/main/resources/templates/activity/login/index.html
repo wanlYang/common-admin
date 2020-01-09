@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>注册领取入场券</title>
+
+  <link rel="stylesheet" href="/static/layui/css/layui.css" media="all" />
+  <script type="text/javascript" src="/static/layui/layui.js"></script>
+  <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+  <link rel="stylesheet" href="/static/css/style_login.css">
+</head>
+
+<body>
+  <header>
+    <h2 style="margin: 90px auto 50px; font-size: 30px;">注册领取入场券</h2>
+  </header>
+  <nav>
+    <div class="xy-header">
+      <form class="layui-form linksAdd">
+        <label for="userName" class="xy-label">
+          <input class="name" name='name' type="text" id="userName" placeholder="请输入您的姓名">
+        </label>
+        <label for="userPhone" class="xy-label">
+          <input class="name" name='phone' type="text" id="userPhone" placeholder="请输入您的手机号码">
+        </label>
+        <label for="userCode" class="label-num">
+          <input class="name-num" name='code' type="text" id="userCode" placeholder="请输入您的验证码">
+          <button type="button" class="getnum" style="background-color: #3d6490;">获取验证码</button>
+        </label>
+        <div class="login">
+          <button class="layui-btn layui-block go" type="button"  lay-filter="login" lay-submit>登录</button>
+        </div>
+      </form>
+    </div>
+  </nav>
+
+  <script src="/static/js/jquery.min.js"></script>
+
+<!--
+  <script src="/static/js/supersized.3.2.7.min.js"></script>
+  <script src="/static/js/supersized-init.js"></script>
+-->
+
+  <script src="/static/js/index5.js"></script>
+  <script>
+    layui.use(['form','layer','laydate'],function(){
+      var form = layui.form
+      layer = parent.layer === undefined ? layui.layer : top.layer,
+              $ = layui.jquery;
+      var laydate = layui.laydate;
+      form.on("submit(login)",function(data){
+
+        if ($("#userName").val()==""||$("#userPhone").val()==""||$("#userCode").val()==""){
+          layer.msg("请正确填写信息!");
+          return ;
+        }
+        var index = top.layer.msg('数据提交中,请稍候', {
+          icon: 16,
+          time: false,
+          shade: 0.8
+        });
+        console.log(data)
+        $.ajax({
+          type: "POST",
+          url: "/activity/management/login/submit",
+          data: data.field,
+          success: function(result) {
+            if (result.status == 200){
+              layer.msg("登陆成功!")
+              location.href = "/activity/management/index";
+            } else {
+              layer.msg(result.message);
+            }
+          }
+        });
+        return false;
+      });
+
+    })
+    // 倒计时
+    var btn = document.querySelector('.getnum');
+    btn.onclick = function () {
+      if ($("#userPhone").val() == ""){
+        layer.msg("请填写手机号!");
+        return;
+      }
+      var $this = this;
+      num = 60;
+      getcode();
+      getlastTime()
+      flag = setInterval(function () {
+        getlastTime()
+      }, 1000);
+    }
+    function getlastTime() {
+      var content = btn.innerHTML
+      if (content == '1(s)') {
+        btn.innerHTML = '获取验证码'
+        btn.style.backgroundColor = '#ff0058d4'
+        btn.style.width = 300 + 'px'
+        btn.removeAttribute('disabled')
+        // 清除定时器
+        clearInterval(flag)
+        return false
+      } else {
+        num--
+        btn.innerHTML = num + '(s)'
+        btn.style.backgroundColor = '#ccc'
+        btn.style.width = 77 + 'px'
+        btn.setAttribute('disabled', 'disabled')
+      }
+    }
+    // var sendnum = document.querySelector('#sendCode');
+    function getcode(){
+      var phone = document.querySelector('#userPhone').value
+      $.ajax({
+        url: '/activity/management/code',
+        data: {
+          phone:phone
+        },
+        success: function(res){
+        },
+        error:function(res){
+        }
+      })
+    }
+  </script>
+</body>
+
+</html>

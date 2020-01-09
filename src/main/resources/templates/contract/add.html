@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>新增私教合同</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="/static/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="/static/css/public.css" media="all" />
+	<style>
+		.layui-treeSelect .ztree li span.button.switch {
+			position: relative !important;
+			top: 2px !important;
+		}
+		.pointer{
+			cursor:pointer;
+		}
+		.default{
+			cursor:default;
+		}
+        .linksAdd .layui-form-label{ width:110px;padding: 8px 15px;}
+
+	</style>
+</head>
+<body class="childrenBody">
+<form class="layui-form layui-form-pane linksAdd">
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<div class="layui-inline">
+			<label class="layui-form-label">客户姓名</label>
+			<div class="layui-input-inline">
+				<input type="hidden" name="customer.id" class="customer_id">
+				<input type="text" class="layui-input customer_name pointer" name="customer.name" readonly id="customer_name" lay-verify="required" placeholder="点击选择">
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">合同编号</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input contractNumber default" disabled readonly name="contractNumber" placeholder="自动生成,请忽略">
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<div class="layui-inline">
+			<label class="layui-form-label">手机号</label>
+			<div class="layui-input-inline" >
+				<input type="text" class="layui-input phone default" disabled readonly name="phone" >
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">会员卡号</label>
+			<div class="layui-input-inline" >
+				<input type="text" class="layui-input clubNumber default" disabled readonly name="clubNumber" >
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">是否自由课</label>
+			<div class="layui-input-inline" >
+				<input type="hidden" name="isFreeClass" id="isFreeClass" value="0"><!--默认不是自由课-->
+				<input type="checkbox" lay-filter="isFreeClass" lay-skin="switch" lay-text="开启|关闭">
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">分店范围</label>
+			<div class="layui-input-inline">
+				<select name="store" id="store" lay-verify="required" >
+					<option value="金彦舞蹈(经开店)">金彦舞蹈(经开店)</option>
+				</select>
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">合同来源</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input fromsource" id="fromsource_tree" lay-verify="required" lay-filter="fromsource_tree" name="fromsource.id" placeholder="请选择">
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">私教编号</label>
+			<div class="layui-input-inline">
+				<input type="hidden" name="coach.id" class="coach_id">
+				<input type="text" class="layui-input coach_number pointer" disabled name="coach.coachNumber" readonly id="coach_number" lay-verify="required">
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">上课教练</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input coach_name pointer" name="coach.name" readonly id="coach_name" lay-verify="required" placeholder="点击选择">
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">私教课程</label>
+			<div class="layui-input-inline">
+				<select name="course.id" id="course" lay-search="" lay-verify="required" >
+					<option value="">请先选择上课教练</option>
+				</select>
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">课时</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input classHour" lay-verify="required" name="classHour" >
+			</div>
+			<div class="layui-form-mid layui-word-aux">课时(分钟/节)</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">销售顾问</label>
+			<div class="layui-input-inline">
+				<select name="mt.id"  class="mt user_id" lay-search="" lay-verify="required">
+					<option value="">直接选择或搜索选择</option>
+				</select>
+			</div>
+		</div>
+	</div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">课程单价</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input unitPrice" lay-verify="required|number" id="unitPrice" name="unitPrice" placeholder="">
+            </div>
+			<div class="layui-form-mid layui-word-aux">￥</div>
+        </div>
+    </div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">购买次数</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input purchaseTimes" lay-verify="required|number" id="purchaseTimes" name="purchaseTimes" placeholder="">
+			</div>
+			<div class="layui-form-mid layui-word-aux">次</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">赠送次数</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input freqPresent" value="0" id="freqPresent" lay-verify="number" name="freqPresent" placeholder="">
+			</div>
+			<div class="layui-form-mid layui-word-aux">次</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">总次数</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input totalNumber default" value="0" lay-verify="number" id="totalNumber" disabled readonly name="totalNumber" placeholder="">
+			</div>
+			<div class="layui-form-mid layui-word-aux">次</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">购买总金额</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input totalPurchaseAmount default" value="0" disabled lay-verify="number" id="totalPurchaseAmount" readonly name="totalPurchaseAmount" placeholder="">
+			</div>
+			<div class="layui-form-mid layui-word-aux">￥</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">赠送总金额</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input totalAmountOfGifts default" value="0" disabled lay-verify="number" id="totalAmountOfGifts" readonly name="totalAmountOfGifts" placeholder="">
+			</div>
+			<div class="layui-form-mid layui-word-aux">￥</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">总金额</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input totalSum default" value="0" disabled lay-verify="number" readonly id="totalSum" name="totalSum" placeholder="">
+			</div>
+			<div class="layui-form-mid layui-word-aux">￥</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">生效日期</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input effectiveDate" id="effectiveDate" lay-verify="required" name="effectiveDate" placeholder="">
+			</div>
+			<div class="layui-form-mid layui-word-aux" style="width: 14px;"> </div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">截止日期</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input closingDate" id="closingDate" lay-verify="required" name="closingDate" placeholder="">
+			</div>
+			<div class="layui-form-mid layui-word-aux" style="width: 14px;"> </div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">签署日期</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input signingDate default" id="signingDate" lay-verify="required" readonly name="signingDate" placeholder="">
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">备注</label>
+		<div class="layui-input-inline">
+			<textarea name="remark" placeholder="请输入备注" class="layui-textarea"></textarea>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">赠送积分</label>
+		<div class="layui-input-inline">
+			<input type="text" class="layui-input presentationPoints" id="presentationPoints" name="presentationPoints">
+		</div>
+	</div>
+
+    <div id="paymentBox" class="paymentBox" >
+        <div class="layui-form-item" >
+            <div class="layui-inline">
+                <label class="layui-form-label">付款方式1</label>
+				<input type="hidden" class="layui-input firstmoneyId" name="firstmoneyId" >
+                <div class="layui-input-inline">
+                    <select name="paytypeId" lay-verify="required" lay-filter="paytypeFirstMoney" class="paytype paytype_id" id="paytype" lay-search="">
+                        <option value="">直接选择或搜索选择</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">付款金额1</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input money firstMoney_i" lay-filter="money" name="paytypeMoney" lay-verify="required" placeholder="">
+                </div>
+                <div class="layui-btn" id="addPayType">添加</div>
+                <div class="layui-btn delPayType layui-btn-danger" style="display: none;" onclick="delPayment();">删除</div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">付款单据</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input paymentDocu" name="paymentDocu" placeholder="">
+                </div>
+            </div>
+        </div>
+    </div>
+	<div class="layui-form-item">
+		<button class="layui-btn layui-block" type="button" lay-filter="addContract" lay-submit>保存</button>
+	</div>
+</form>
+<script type="text/javascript" src="/static/layui/layui.js"></script>
+<script type="text/javascript" src="/static/js/utils.js"></script>
+<script type="text/javascript" src="/static/js/contract/add.js"></script>
+</body>
+</html>

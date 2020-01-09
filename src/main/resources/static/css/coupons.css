@@ -1,0 +1,57 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: url("/static/images/index_bx.jpg");
+  background-size: cover;
+}
+
+header {
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+header h2 {
+  width: 100%;
+  font-size: 26px;
+  margin-top: 20%;
+  padding-bottom: 20px;
+  color: #fff;
+  text-align: center;
+}
+
+header img {
+  width: 100%;
+  display: block;
+}
+
+.xy-first {
+  position: relative;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #ff2d19;
+  font-size: 30px;
+  margin-top: 20px;
+  font-weight: 900;
+  line-height: 40px;
+}
+.user {
+  width: 22px;
+  height: 53px;
+  position: absolute;
+  bottom: 40%;
+  right: 16%;
+  font-size: 12px;
+  color: #999;
+  font-weight: 700;
+  text-align: center;
+}
+
+.xy-first h3 {
+  text-align: center;
+  margin-top: 10px;
+  color: #fff;
+}

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xieke.admin.mapper.pe.ContractMapper">
+
+    <!-- 通用查询映射结果 -->
+    <!--
+    <insert id="insert" parameterType="Clubcard" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `jy_clubcard`
+        (cust_id,membercard_number,member_status,cardsetting_id,fromsource_id,mt_id,store_scope,remark,paytype_id,pay_receipts,create_user,create_time,update_user,update_time,check_user,check_time,start_time,end_time,payfor,examine)
+        VALUES (#{customer.id},#{menmbercardNumber},#{memberStatus},#{cardsetting.id},#{fromsource.id},#{mt.id},#{storeScope},#{remark},#{paytype.id},#{payReceipts},#{createUser.id},#{careteTime},#{updateUser.id},#{updateTime},#{checkUser.id},#{checkTime},#{startTime},#{endTime},#{payfor},#{examine})
+    </insert>
+    <delete id="deleteById">
+        delete from `jy_clubcard` WHERE id = #{id}
+    </delete>
+    &lt;!&ndash; <insert id="insert" parameterType="Customer">
+         INSERT INTO `jy_customer`
+         (name,cus_type,sour_id,ic_card_in,ic_card_num,store,birthday,sex,phone,id_card,reception_id,mt_id,email,intro_id,remark)
+         VALUES (#{name},#{cusType},#{fromsource.id},#{icCardId},#{icCardNum},#{store},#{birthday},#{sex},#{phone},#{idCard},#{reception.id},#{mt.id},#{email},#{intro.id},#{remark})
+     </insert>
+     <update id="update" parameterType="Customer">
+         UPDATE `jy_customer`
+         <set>
+             <if test="name != null">name = #{name},</if>
+             <if test="cusType != null">cus_type = #{cusType},</if>
+             <if test="fromsource != null">sour_id = #{fromsource.id},</if>
+             <if test="icCardId != null">ic_card_in = #{icCardId},</if>
+             <if test="icCardNum != null">ic_card_num = #{icCardNum},</if>
+             <if test="store != null">store = #{store},</if>
+             <if test="birthday != null">birthday = #{birthday},</if>
+             <if test="sex != null">sex = #{sex},</if>
+             <if test="phone != null">phone = #{phone},</if>
+             <if test="idCard != null">id_card = #{idCard},</if>
+             <if test="reception != null">reception_id = #{reception.id},</if>
+             <if test="mt != null">mt_id = #{mt.id},</if>
+             <if test="email != null">email = #{email},</if>
+             <if test="intro != null">intro_id = #{intro.id},</if>
+             <if test="remark != null">remark = #{remark}</if>
+         </set>
+         WHERE id = #{id}
+     </update>
+     <delete id="del">
+         DELETE FROM `jy_customer` WHERE id = #{id}
+     </delete>
+     <select id="findById" resultMap="CustomerResultMap">
+         SELECT * FROM `jy_customer` WHERE id = #{id}
+     </select>
+     <select id="getAll" resultMap="CustomerResultMap">
+         SELECT * FROM `jy_customer`
+     </select>&ndash;&gt;
+    <select id="findAllListByPage" resultMap="ClubCardResultMap">
+        SELECT cust.name,club.* FROM jy_customer cust RIGHT JOIN jy_clubcard club on cust.id = club.cust_id
+        <where>
+            <if test="name != null">
+                AND cust.name like CONCAT('%','${name}','%')
+            </if>
+            <if test="phone != null">
+                AND cust.phone like CONCAT('%','${phone}','%')
+            </if>
+        </where>
+        LIMIT #{start},#{limit}
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM `jy_clubcard`
+    </select>
+    <select id="countByParam" resultType="java.lang.Integer">
+        SELECT COUNT(club.cust_id) FROM jy_customer cust RIGHT JOIN jy_clubcard club on cust.id = club.cust_id
+        <where>
+            <if test="name != null">
+                AND cust.name like CONCAT('%','${name}','%')
+            </if>
+            <if test="phone != null">
+                AND cust.phone like CONCAT('%','${phone}','%')
+            </if>
+        </where>
+    </select>
+    <select id="findById" resultMap="ClubCardResultMap">
+            SELECT * FROM `jy_clubcard` WHERE id = #{id}
+    </select>
+    <select id="findByClubcardNum" resultMap="ClubCardResultMap">
+        SELECT * FROM `jy_clubcard` WHERE membercard_number=#{clubcardNum}
+    </select>
+    <update id="examine">
+        UPDATE jy_clubcard SET examine = 1,check_user = #{user.id},check_time = #{checkTime} WHERE id = #{id};
+    </update>
+    <update id="update" parameterType="Clubcard">
+        UPDATE `jy_clubcard`
+        <set>
+            <if test="customer != null">cust_id = #{customer.id},</if>
+            <if test="cardsetting != null">cardsetting_id = #{cardsetting.id},</if>
+            <if test="fromsource != null">fromsource_id = #{fromsource.id},</if>
+            <if test="mt != null">mt_id = #{mt.id},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="payReceipts != null">pay_receipts = #{payReceipts},</if>
+            <if test="updateUser != null">update_user = #{updateUser.id},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime}</if>
+        </set>
+        WHERE id = #{id}
+    </update>-->
+    <resultMap id="PrivateContractResultMap" type="PrivateContract">
+        <id column="id" property="id" />
+        <result column="contract_number" property="contractNumber" />
+        <result column="is_free_class" property="isFreeClass" />
+        <result column="class_hour" property="classHour" />
+        <result column="unit_price" property="unitPrice" />
+        <result column="purchase_times" property="purchaseTimes" />
+        <result column="freq_present" property="freqPresent" />
+        <result column="total_number" property="totalNumber" />
+        <result column="total_purchase_amount" property="totalPurchaseAmount" />
+        <result column="total_amount_of_gifts" property="totalAmountOfGifts" />
+        <result column="total_sum" property="totalSum" />
+        <result column="effective_date" property="effectiveDate" />
+        <result column="closing_date" property="closingDate" />
+        <result column="signing_date" property="signingDate"/>
+        <result column="remark" property="remark" />
+        <result column="payment_docu" property="paymentDocu" />
+        <result column="presentation_points" property="presentationPoints" />
+        <result column="store" property="store" />
+        <result column="audit_status" property="auditStatus" />
+        <result column="status" property="status" />
+        <result column="postponement" property="postponement" />
+        <result column="residual_times" property="residualTimes" />
+        <result column="create_time" property="createTime" />
+        <result column="check_time" property="checkTime" />
+        <result column="payfor" property="payfor"/>
+        <association column="cust_id" javaType="Customer" select="com.xieke.admin.mapper.CustomerMapper.findById" property="customer" />
+        <association column="fromsource" select="com.xieke.admin.mapper.FromsourceMapper.findById" javaType="Fromsource" property="fromsource"/>
+        <association column="coach_in_class" select="com.xieke.admin.mapper.pe.CoachMapper.findById" javaType="Coach" property="coach"/>
+        <association column="pe_course" select="com.xieke.admin.mapper.pe.CourseMapper.findById" javaType="Course" property="course"/>
+        <association column="mt_id" javaType="User" select="com.xieke.admin.mapper.UserMapper.getUserById" property="mt" />
+        <association column="operator" javaType="User" select="com.xieke.admin.mapper.UserMapper.getUserById" property="operator" />
+        <association column="check_user" javaType="User" select="com.xieke.admin.mapper.UserMapper.getUserById" property="checkUser" />
+
+    </resultMap>
+    <insert id="insert" parameterType="PrivateContract" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pe_contract (
+        contract_number,
+        cust_id,
+        is_free_class,
+        fromsource,
+        coach_in_class,
+        pe_course,
+        class_hour,
+        mt_id,
+        unit_price,
+        purchase_times,
+        freq_present,
+        total_number,
+        total_purchase_amount,
+        total_amount_of_gifts,
+        total_sum,
+        effective_date,
+        closing_date,
+        signing_date,
+        remark,
+        payment_docu,
+        presentation_points,
+        store,
+        audit_status,
+        STATUS,
+        postponement,
+        residual_times,
+        operator,
+        create_time,
+        check_user,
+        check_time,
+        payfor
+        )
+        VALUES
+            (#{contractNumber},
+            #{customer.id},
+            #{isFreeClass},
+            #{fromsource.id},
+            #{coach.id},
+            #{course.id},
+            #{classHour},
+            #{mt.id},
+            #{unitPrice},
+            #{purchaseTimes},
+            #{freqPresent},
+            #{totalNumber},
+            #{totalPurchaseAmount},
+            #{totalAmountOfGifts},
+            #{totalSum},
+            #{effectiveDate},
+            #{closingDate},
+            #{signingDate},
+            #{remark},
+            #{paymentDocu},
+            #{presentationPoints},
+            #{store},
+            #{auditStatus},
+            #{status},
+            #{postponement},
+            #{residualTimes},
+            #{operator.id},
+            #{createTime},
+            #{checkUser.id},
+            #{checkTime},
+            #{payfor}
+            )
+    </insert>
+    <select id="findAllByPageNameAndPhone" resultMap="PrivateContractResultMap">
+        SELECT cust.name,cont.* FROM jy_customer cust RIGHT JOIN pe_contract cont on cust.id = cont.cust_id
+        <where>
+            <if test="name != null">
+                AND cust.name like CONCAT('%','${name}','%')
+            </if>
+            <if test="phone != null">
+                AND cust.phone like CONCAT('%','${phone}','%')
+            </if>
+        </where>
+        LIMIT #{start},#{limit}
+    </select>
+    <select id="countByPageNameAndPhone" resultType="java.lang.Integer">
+        SELECT count(cont.cust_id) FROM jy_customer cust RIGHT JOIN pe_contract cont on cust.id = cont.cust_id
+        <where>
+            <if test="name != null">
+                AND cust.name like CONCAT('%','${name}','%')
+            </if>
+            <if test="phone != null">
+                AND cust.phone like CONCAT('%','${phone}','%')
+            </if>
+        </where>
+    </select>
+    <select id="findById" resultMap="PrivateContractResultMap">
+        SELECT * FROM pe_contract WHERE id = #{id}
+
+    </select>
+</mapper>

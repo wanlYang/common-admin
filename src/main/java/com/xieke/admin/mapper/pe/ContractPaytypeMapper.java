@@ -10,7 +10,7 @@ import java.util.List;
 public interface ContractPaytypeMapper {
     Integer insert(ContractPaytype contractPaytype);
 
-    List<ClubCardPaytype> findByContractId(int id);
+    List<ContractPaytype> findByContractId(int id);
 
     Integer delByContractId(int id);
 

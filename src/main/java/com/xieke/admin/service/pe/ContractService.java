@@ -36,4 +36,22 @@ public interface ContractService {
      * @return
      */
     Result createClubCard(PrivateContract privateContract, Integer[] paytypeIds, Double[] paytypeMonies, String firstmoneyId);
+
+    /**
+     * 根据私教合同编号获取合同信息
+     * @param contractNumber
+     * @return
+     */
+    PrivateContract getContractInfo(String contractNumber);
+
+    /**
+     * 审核私教合同信息
+     * @param id
+     * @return
+     */
+    Integer examine(String id);
+
+    List<PrivateContract> getContractByCustomerId(String id);
+
+    PrivateContract findById(String id);
 }

@@ -16,6 +16,7 @@
         <result column="status" property="status" />
         <result column="brief_introduction" property="briefIntroduction" />
         <result column="remark" property="remark" />
+        <result column="grade" property="grade" />
         <association column="staff_id" property="user" select="com.xieke.admin.mapper.UserMapper.getUserById"/>
      </resultMap>
     <select id="selectAllCoach" resultMap="BaseResultMap">
@@ -50,6 +51,24 @@
     </insert>
     <select id="findById" resultMap="BaseResultMap">
     select * from pe_coach where id = #{id}
-</select>
-
+    </select>
+    <select id="allCoach" resultMap="BaseResultMap">
+        SELECT * FROM pe_coach
+    </select>
+    <select id="countAll" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM pe_coach
+    </select>
+    <select id="findByName" resultMap="BaseResultMap">
+        select * from pe_coach
+        <where>
+            <if test="name!=null">
+                and name like concat('%','${name}','%')
+            </if>
+        </where>
+    </select>
+    <update id="updateCoach" parameterType="Coach">
+    update pe_coach set
+        isManager=#{isManager},name=#{name},sex=#{sex},free_coach=#{freeCoach},status=#{status},
+        brief_introduction=#{briefIntroduction},remark=#{remark} where id=#{id}
+</update>
 </mapper>

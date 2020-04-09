@@ -20,6 +20,17 @@ public class Customer {
      * 客户姓名
      */
     private String name;
+
+    private String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     /**
      * 客户类型
      */
@@ -217,10 +228,11 @@ public class Customer {
         return "Customer{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
                 ", cusType=" + cusType +
                 ", fromsource=" + fromsource +
-                ", icCardId=" + icCardId +
-                ", icCardNum=" + icCardNum +
+                ", icCardId='" + icCardId + '\'' +
+                ", icCardNum='" + icCardNum + '\'' +
                 ", store='" + store + '\'' +
                 ", birthday=" + birthday +
                 ", sex=" + sex +

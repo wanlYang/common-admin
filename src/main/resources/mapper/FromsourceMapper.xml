@@ -15,9 +15,12 @@
     <select id="findById" resultMap="BaseResultMap">
         select * from jy_fromsource WHERE id = #{id}
     </select>
+    <select id="findByParentId" resultMap="BaseResultMap">
+        select * from jy_fromsource WHERE parent_id = #{id}
+    </select>
 
     <insert id="insertFromsource" parameterType="Fromsource">
-        insert into jy_fromsource value (null,#{name},#{parentId})
+        insert into jy_fromsource(name,parent_id) value (#{name},#{parentId})
     </insert>
     
     <update id="updateFromsorce" parameterType="Fromsource">

@@ -11,7 +11,7 @@ public interface FromsourceService {
 
     int updateFromsorce(Fromsource fromsource);
 
-    int deleteFromsorce(Fromsource fromsource);
+    int deleteFromsorce(Integer id);
 
     List<Fromsource> getFromSourceTree();
 }

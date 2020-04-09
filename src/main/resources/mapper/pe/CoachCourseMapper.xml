@@ -12,6 +12,8 @@
     </select>
     <insert id="insertCoachCourse" parameterType="CoachCourse">
     insert into pe_coach_dance(dance_id,coach_id) value(#{course.id},#{coach.id})
-</insert>
-
+    </insert>
+    <delete id="delCoachCourseByCoachId" parameterType="CoachCourse">
+    delete from pe_coach_dance where coach_id=#{id}
+</delete>
 </mapper>

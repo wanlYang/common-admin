@@ -30,8 +30,13 @@ public class FromsourceServiceImpl implements FromsourceService {
     }
 
     @Override
-    public int deleteFromsorce(Fromsource fromsource) {
-        return fromsourceMapper.deleteFromsorce(fromsource);
+    public int deleteFromsorce(Integer id) {
+        List<Fromsource> fromsources = fromsourceMapper.findByParentId(id);
+        if (fromsources.size()>0){
+            return 0;
+        }
+
+        return fromsourceMapper.deleteFromsorce(id);
     }
 
 

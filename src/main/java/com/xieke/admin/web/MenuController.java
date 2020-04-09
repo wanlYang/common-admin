@@ -40,6 +40,7 @@ public class MenuController extends BaseController{
         }
         //获取权限菜单信息
         List<MenuInfo>  allMenuInfoList = iPermissionService.getMenuPermissions(code);
+        System.out.println(allMenuInfoList);
         if (allMenuInfoList == null || allMenuInfoList.isEmpty()){
             return new ResultInfo<>(menuInfoList);
         }

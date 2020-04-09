@@ -13,6 +13,16 @@ public class MenuInfo implements Serializable {
 
     private String href; //菜单链接
 
+    private String code;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     private boolean spread = false; //是否展开
 
     private List<MenuInfo> children; //子菜单列表
@@ -59,5 +69,17 @@ public class MenuInfo implements Serializable {
 
     public void setOnlyId(Integer onlyId) {
         this.onlyId = onlyId;
+    }
+
+    @Override
+    public String toString() {
+        return "MenuInfo{" +
+                "onlyId=" + onlyId +
+                ", title='" + title + '\'' +
+                ", href='" + href + '\'' +
+                ", code='" + code + '\'' +
+                ", spread=" + spread +
+                ", children=" + children +
+                '}';
     }
 }

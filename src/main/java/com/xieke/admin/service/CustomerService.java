@@ -1,10 +1,11 @@
 package com.xieke.admin.service;
 
 import com.xieke.admin.entity.Customer;
+import com.xieke.admin.entity.Result;
 import com.xieke.admin.entity.UserQueryParam;
+import org.apache.ibatis.type.Alias;
 
 import java.util.List;
-
 public interface CustomerService {
 
 
@@ -28,4 +29,10 @@ public interface CustomerService {
      * @param state
      */
     Integer updateState(int id, int state);
+
+    Result login(String phone, String password);
+
+    Customer getCustomerByPhone(String phone);
+
+    Integer updatePassword(Customer customer);
 }

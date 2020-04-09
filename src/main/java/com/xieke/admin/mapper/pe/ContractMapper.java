@@ -1,9 +1,11 @@
 package com.xieke.admin.mapper.pe;
 
+import com.xieke.admin.dto.UserInfo;
 import com.xieke.admin.entity.pe.PrivateContract;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -41,4 +43,22 @@ public interface ContractMapper {
      * @return
      */
     PrivateContract findById(int id);
+
+    /**
+     * 根据私教合同编号获取合同信息
+     * @param contractNumber
+     * @return
+     */
+    PrivateContract findByContractNumber(String contractNumber);
+
+    /**
+     * 审核信息
+     * @param id
+     * @param checkDate
+     * @param user
+     * @return
+     */
+    Integer examine(@Param("id") String id, @Param("checkTime") Date checkDate, @Param("user") UserInfo user);
+
+    List<PrivateContract> getContractByCustomerId(String id);
 }

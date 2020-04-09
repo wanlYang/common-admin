@@ -5,6 +5,7 @@ import com.xieke.admin.annotation.SysLog;
 import com.xieke.admin.dto.ResultInfo;
 import com.xieke.admin.entity.Customer;
 import com.xieke.admin.entity.Fromsource;
+import com.xieke.admin.entity.Result;
 import com.xieke.admin.service.FromsourceService;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -30,6 +31,10 @@ public class FromsourceController {
     public String add() {
         return "/fromsource/add";
     }
+    @RequestMapping("/edit")
+    public String edit() {
+        return "/fromsource/edit";
+    }
     @RequestMapping("/list")
     public String list() {
         return "/fromsource/list";
@@ -37,44 +42,63 @@ public class FromsourceController {
 
 
     @RequestMapping("/select")
-    public Map<String, Object> selectAllFromsource() {
-        List<Fromsource> fromsources = fromsourceService.selectAllFromsource();
-        if (fromsources != null) {
-            map.put("查询成功", fromsources);
-        } else {
-            map.put("查询失败", "未查询待任何信息");
-        }
-        return map;
+    @ResponseBody
+    public ResultInfo<List<Fromsource>> selectAllFromsource() {
+        return new ResultInfo<>(fromsourceService.selectAllFromsource());
     }
-    @RequestMapping("/insert")
-    public Map<String, Object> insertFromsource(Fromsource fromsource) {
+
+    @RequestMapping("/select/all")
+    @ResponseBody
+    public Result selectAllFromsourceAll() {
+        Result result = new Result();
+        result.setStatus(200);
+        result.setData(fromsourceService.selectAllFromsource());
+        result.setMessage("获取成功");
+        result.setCount(fromsourceService.selectAllFromsource().size());
+        return result;
+    }
+    @RequestMapping("/add/submit")
+    @ResponseBody
+    public Result insertFromsource(Fromsource fromsource) {
         int x = fromsourceService.insertFromsource(fromsource);
-        if (x > 0) {
-            map.put("查询成功", x);
-        } else {
-            map.put("查询失败", x);
-        }
-        return map;
+        Result result = new Result();
+        result.setStatus(200);
+        result.setData(x);
+        result.setMessage("添加成功");
+        result.setCount(x);
+        return result;
     }
-    @RequestMapping("/update")
-    public Map<String, Object> updateFromsorce(Fromsource fromsource) {
+
+    @RequestMapping("/edit/submit")
+    @ResponseBody
+    public Result edit(Fromsource fromsource) {
         int x = fromsourceService.updateFromsorce(fromsource);
-        if (x > 0) {
-            map.put("修改成功", x);
-        } else {
-            map.put("查询失败", x);
-        }
-        return map;
+        Result result = new Result();
+        result.setStatus(200);
+        result.setData(x);
+        result.setMessage("添加成功");
+        result.setCount(x);
+        return result;
     }
-    @RequestMapping("/delete")
-    public Map<String, Object> deleteFromsorce(Fromsource fromsource) {
-        int x = fromsourceService.deleteFromsorce(fromsource);
-        if (x > 0) {
-            map.put("修改成功", x);
-        } else {
-            map.put("查询失败", x);
+
+    @RequestMapping("/del")
+    @ResponseBody
+    public Result deleteFromsorce(Integer id) {
+        int x = fromsourceService.deleteFromsorce(id);
+        if (x == 0){
+            Result result = new Result();
+            result.setStatus(-1);
+            result.setData(x);
+            result.setMessage("删除失败！包含子项！");
+            result.setCount(x);
+            return result;
         }
-        return map;
+        Result result = new Result();
+        result.setStatus(200);
+        result.setData(x);
+        result.setMessage("删除成功");
+        result.setCount(x);
+        return result;
     }
     @RequestMapping("/get/tree")
     public @ResponseBody

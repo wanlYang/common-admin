@@ -47,9 +47,9 @@ layui.define(["element","jquery"],function(exports){
                 ulHtml += '<dl class="layui-nav-child">';
                 for(var j=0;j<data[i].children.length;j++){
                     if(data[i].children[j].target == "_blank"){
-                        ulHtml += '<dd><a data-url="'+data[i].children[j].href+'" target="'+data[i].children[j].target+'">';
+                        ulHtml += '<dd><a data-url="'+data[i].children[j].href + '?code='+data[i].children[j].code+'" target="'+data[i].children[j].target+'">';
                     }else{
-                        ulHtml += '<dd><a data-url="'+data[i].children[j].href+'">';
+                        ulHtml += '<dd><a data-url="'+data[i].children[j].href+ '?code='+data[i].children[j].code+'">';
                     }
                     if(data[i].children[j].icon != undefined && data[i].children[j].icon != ''){
                         if(data[i].children[j].icon.indexOf("icon-") != -1){
@@ -63,9 +63,9 @@ layui.define(["element","jquery"],function(exports){
                 ulHtml += "</dl>";
             }else{
                 if(data[i].target == "_blank"){
-                    ulHtml += '<a data-url="'+data[i].href+'" target="'+data[i].target+'">';
+                    ulHtml += '<a data-url="'+data[i].href+ '?code='+data[i].code+'" target="'+data[i].target+'">';
                 }else{
-                    ulHtml += '<a data-url="'+data[i].href+'">';
+                    ulHtml += '<a data-url="'+data[i].href+ '?code='+data[i].code+'">';
                 }
                 if(data[i].icon != undefined && data[i].icon != ''){
                     if(data[i].icon.indexOf("icon-") != -1){

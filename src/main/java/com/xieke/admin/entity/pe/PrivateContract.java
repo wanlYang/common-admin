@@ -1,5 +1,6 @@
 package com.xieke.admin.entity.pe;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.xieke.admin.entity.Customer;
 import com.xieke.admin.entity.Fromsource;
 import com.xieke.admin.entity.User;
@@ -79,7 +80,7 @@ public class PrivateContract {
     /**
      * 购买总金额
      */
-    private Integer totalPurchaseAmount;
+    private String totalPurchaseAmount;
 
     /**
      * 赠送总金额
@@ -106,16 +107,19 @@ public class PrivateContract {
     /**
      * 生效日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
     private Date effectiveDate;
 
     /**
      * 截止日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
     private Date closingDate;
 
     /**
      * 签署日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd",timezone="GMT+8")
     private Date signingDate;
 
     /**
@@ -308,11 +312,11 @@ public class PrivateContract {
         this.totalNumber = totalNumber;
     }
 
-    public Integer getTotalPurchaseAmount() {
+    public String getTotalPurchaseAmount() {
         return totalPurchaseAmount;
     }
 
-    public void setTotalPurchaseAmount(Integer totalPurchaseAmount) {
+    public void setTotalPurchaseAmount(String totalPurchaseAmount) {
         this.totalPurchaseAmount = totalPurchaseAmount;
     }
 

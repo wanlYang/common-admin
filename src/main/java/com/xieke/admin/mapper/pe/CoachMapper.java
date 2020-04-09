@@ -17,4 +17,12 @@ public interface CoachMapper {
     Integer insertCoach(Coach coach);
 
     Coach findById(Integer id);
+
+    int updateCoach(Coach coach);
+
+    List<Coach> allCoach();
+
+    Integer countAll();
+
+    List<Coach> findByName(String name);
 }

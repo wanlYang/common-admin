@@ -18,7 +18,7 @@ public class Fromsource {
     /**
      * 名称
      */
-    private String Name;
+    private String name;
 
     private List<Fromsource> children;
 
@@ -36,11 +36,11 @@ public class Fromsource {
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public List<Fromsource> getChildren() {
@@ -63,7 +63,7 @@ public class Fromsource {
     public String toString() {
         return "Fromsource{" +
                 "id=" + id +
-                ", Name='" + Name + '\'' +
+                ", name='" + name + '\'' +
                 ", children=" + children +
                 ", parentId=" + parentId +
                 '}';

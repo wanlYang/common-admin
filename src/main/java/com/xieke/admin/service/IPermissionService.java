@@ -17,7 +17,12 @@ import java.util.List;
  */
 public interface IPermissionService extends IService<Permission> {
 
-     List<Permission> getAllPermissions();
+    Permission getParentPermissionByCode(String pessCode);
+    List<MenuInfo> getPermissionMenuInfoByCode(String pessCode);
+    Permission getPermissionByCode(String pessCode);
+
+
+    List<Permission> getAllPermissions();
 
      Boolean savePermission(Permission permission);
 
@@ -30,4 +35,12 @@ public interface IPermissionService extends IService<Permission> {
      List<Permission> getTopDirectoryPermissions();
 
      Boolean delPermission(Integer id);
+
+    List<MenuInfo> getButtononPermissions(String code);
+
+    List<MenuInfo> getStroePermissions(String code);
+
+    List<MenuInfo> getImagesPermissions(String code);
+
+    Integer updateByCode(Permission permission_);
 }

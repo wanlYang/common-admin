@@ -37,10 +37,14 @@
 				</div>
                 <a class="layui-btn search_btn layui-btn-sm" data-type="reload">搜索</a>
 				<shiro:hasPermission name="contractset:add">
+					<div class="layui-input-inline">
 						<a class="layui-btn layui-btn-sm add_btn" lay-event="add_btn">新增</a>
+					</div>
 				</shiro:hasPermission>
 				<shiro:hasPermission name="contractset:edit">
+					<div class="layui-input-inline">
 						<a class="layui-btn layui-btn-sm layui-btn-warm edit_btn" lay-event="edit_btn">编辑</a>
+					</div>
 				</shiro:hasPermission>
 				<shiro:hasPermission name="contractset:del">
 						<a class="layui-btn layui-btn-danger layui-btn-sm delAll_btn" lay-event="delAll_btn">删除</a>
@@ -49,7 +53,9 @@
 						<a class="layui-btn layui-btn-danger layui-btn-sm examine" lay-event="examine">审核</a>
 				</shiro:hasPermission>
 				<shiro:hasPermission name="contractset:printview">
+					<div class="layui-input-inline">
 						<a class="layui-btn layui-btn-danger layui-btn-sm printview" lay-event="printview">打印预览</a>
+					</div>
 				</shiro:hasPermission>
 			</div>
 		</form>

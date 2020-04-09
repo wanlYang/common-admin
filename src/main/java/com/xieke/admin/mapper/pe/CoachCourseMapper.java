@@ -15,4 +15,6 @@ public interface CoachCourseMapper {
     List<CoachCourse> findCourseByCoachId(Integer id);
 
     int insertCoachCourse(CoachCourse coachCourse);
+
+    int delCoachCourseByCoachId(int id);
 }

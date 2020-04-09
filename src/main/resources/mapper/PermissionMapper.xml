@@ -36,6 +36,9 @@
             </collection>
         </collection>
     </resultMap>
+    <update id="updateByCode" parameterType="com.xieke.admin.entity.Permission">
+        UPDATE sys_permission SET permission_name = #{permissionName} WHERE permission_code = #{permissionCode}
+    </update>
 
     <select id="allPermissionInfo" resultMap="permissionInfoResultMap">
         SELECT

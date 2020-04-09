@@ -238,53 +238,57 @@ layui.use(['form', 'layer', 'table', 'laydate', 'treeSelect'], function () {
     //console.log()
     //打印预览
     function printview(data) {
-
-        window.open(getRealPath() + "/clubcard/printview/page?clubcardNum=" + data.menmbercardNumber);
+        window.open(getRealPath() + "/pe/contract/printview/page?contractNumber=" + data.contractNumber);
     }
 
     //打印预览
     $(".printview").click(function () {
-        var checkStatus = table.checkStatus('clubcardListTable'),
+        var checkStatus = table.checkStatus('contractListTable'),
             data = checkStatus.data;
         if (data.length > 1) {
-            layer.msg("请选择一个需要打印的会员卡");
+            layer.msg("请选择一个需要打印的合同");
         } else if (data.length == 0) {
-            layer.msg("请选择需要打印的会员卡");
+            layer.msg("请选择需要打印的合同");
         } else {
+            if (data[0].auditStatus != 1) {
+                layer.msg("未审核的卡项无法打印!")
+                return;
+            }
             printview(data[0]);
         }
     })
 
     //审核
     $(".examine").click(function () {
-        var checkStatus = table.checkStatus('clubcardListTable'),
+        var checkStatus = table.checkStatus('contractListTable'),
             data = checkStatus.data;
         if (data.length > 1) {
-            layer.msg("请选择一个需要审核的会员卡");
+            layer.msg("请选择一个需要审核的合同");
         } else if (data.length == 0) {
-            layer.msg("请选择需要审核的会员卡");
+            layer.msg("请选择需要审核的合同");
         } else {
             examine(data[0]);
         }
     })
 
     function examine(data) {
-        if (data.examine == 1) {
-            layer.msg("不得重复审核!")
-            return;
-        }
+
         var index = layui.layer.open({
-            title: "审核会员卡",
+            title: "审核私教合同",
             type: 2,
             btn: ['审核', '取消'],
             area: ['60%', '80%'],
             btnAlign: 'c',
-            content: "/clubcard/examine/page?clubcardNum=" + data.menmbercardNumber,
+            content: "/pe/contract/examine/page?contractNumber=" + data.contractNumber,
             yes: function (index, layero) {
+                if (data.auditStatus == 1) {
+                    layer.msg("不得重复审核!")
+                    return;
+                }
                 $.ajax({
                     type: "POST",
                     async: false,
-                    url: "/clubcard/examine",
+                    url: "/pe/contract/examine",
                     data: {"id": data.id},
                     success: function (result) {
                         if (result.status == 200) {

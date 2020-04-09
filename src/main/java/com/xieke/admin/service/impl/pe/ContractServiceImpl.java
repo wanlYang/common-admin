@@ -123,11 +123,48 @@ public class ContractServiceImpl implements ContractService {
         return new Result(200,"添加成功");
     }
 
+    /**
+     * 根据私教合同编号获取合同信息
+     *
+     * @param contractNumber
+     * @return
+     */
+    @Override
+    public PrivateContract getContractInfo(String contractNumber) {
+
+
+        return contractMapper.findByContractNumber(contractNumber);
+    }
+
     public static Double arrSum(Double[] arr) {
         Double temp = 0.00;
         for (int i = 0; i < arr.length; i++) {
             temp += arr[i];
         }
         return temp;
+    }
+
+    /**
+     * 审核私教合同信息
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Integer examine(String id) {
+
+        UserInfo userInfo = (UserInfo) SecurityUtils.getSubject().getPrincipal();
+
+        return contractMapper.examine(id,new Date(),userInfo);
+    }
+
+    @Override
+    public List<PrivateContract> getContractByCustomerId(String id) {
+        return contractMapper.getContractByCustomerId(id);
+    }
+
+    @Override
+    public PrivateContract findById(String id) {
+        return contractMapper.findById(Integer.valueOf(id));
     }
 }

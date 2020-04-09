@@ -68,20 +68,17 @@ layui.use(['form','layer','laydate','treeSelect'],function(){
         }
     });
 
-    //是否可用
-    form.on('checkbox(status)', function(data){
-        if(data.elem.checked){      //是否被选中，true或者false
-            $(".status").val(1);
-        }else{
-            $(".status").val(0);
-        }
-    });
-
     form.on("submit(addCoach)",function(data){
         var courseArr = [];
         $("input:checkbox[name='course']:checked").each(function(j,item) {
             courseArr.push(item.value);
         });
+
+        //复选框(舞种)必选
+        if (courseArr.length==0) {
+            layer.msg("请选择舞种！");
+            return
+        }
 
         data.field.course = courseArr;
         console.log(data.field);

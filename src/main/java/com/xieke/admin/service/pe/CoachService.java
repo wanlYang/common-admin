@@ -12,5 +12,11 @@ public interface CoachService {
     int delCoach(Coach coach);
 
     Integer insertCoach(Coach coach, Integer[] course);
+    Integer updateCoach(Coach coach, Integer[] course);
 
+    List<Coach> selectAllCoach();
+
+    Integer countCoachAll();
+
+    List<Coach> findByName(String name);
 }

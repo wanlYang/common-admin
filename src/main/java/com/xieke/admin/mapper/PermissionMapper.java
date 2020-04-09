@@ -18,4 +18,5 @@ public interface PermissionMapper extends BaseMapper<Permission> {
 
     List<PermissionInfo> allPermissionInfo();
 
+    Integer updateByCode(Permission permission_);
 }

@@ -244,5 +244,6 @@ public class DateUtils {
 
     public static void main(String[] args) throws Exception {
         System.out.println(getDate(dateParse("2017-01-17", null)));
+        System.out.println(new Date(new Date().getTime()+180000));
     }
 }

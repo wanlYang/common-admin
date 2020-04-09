@@ -54,6 +54,7 @@ layui.use(['form','layer','laydate','treeSelect'],function(){
     //接待人,销售顾问
     $.ajax({
         type: "POST",
+        async:false,
         url: "/user/list/get",
         success: function(result) {
             if(result.status == 200) {

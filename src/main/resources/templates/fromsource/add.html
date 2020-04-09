@@ -22,24 +22,22 @@
 <form class="layui-form linksAdd">
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<div class="layui-inline">
-			<label class="layui-form-label" style="color:red;">姓名</label>
+			<label class="layui-form-label">父级来源</label>
 			<div class="layui-input-inline">
-				<input type="text" class="layui-input name" name="name" lay-verify="required" placeholder="请输入姓名">
+				<select lay-verify="required" id="parentFromId" name="parentId" class="parentFromId" lay-search="">
+					<option value="0">顶级</option>
+				</select>
 			</div>
 		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
 		<div class="layui-inline">
-			<label class="layui-form-label" style="color:red;">电话</label>
+			<label class="layui-form-label">来源名称</label>
 			<div class="layui-input-inline">
-				<input type="text" class="layui-input phone" name="phone" lay-verify="required" placeholder="电话">
+				<input type="text" class="layui-input" name="name" id="fromName" lay-verify="required">
 			</div>
 		</div>
-		<div class="layui-inline">
-			<label class="layui-form-label">邮箱</label>
-			<div class="layui-input-inline">
-				<input type="text" class="layui-input email" name="email" placeholder="邮箱">
-			</div>
-		</div>
-	</div>n
+	</div>
 	<div class="layui-form-item">
 		<button class="layui-btn layui-block" type="button"  lay-filter="addFromsource" lay-submit>保存</button>
 	</div>

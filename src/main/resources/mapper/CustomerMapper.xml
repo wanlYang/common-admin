@@ -16,6 +16,7 @@
         <result column="id_card" property="idCard" />
         <result column="email" property="email" />
         <result column="remark" property="remark" />
+        <result column="password" property="password" />
         <association column="reception_id" javaType="User" select="com.xieke.admin.mapper.UserMapper.getUserById" property="reception" />
         <association column="intro_id" javaType="Customer" select="com.xieke.admin.mapper.CustomerMapper.findById" property="intro" />
         <association column="mt_id" javaType="User" select="com.xieke.admin.mapper.UserMapper.getUserById" property="mt" />
@@ -49,6 +50,9 @@
     </update>
     <update id="updateState">
         UPDATE `jy_customer` SET cus_type = #{state} WHERE id = #{id}
+    </update>
+    <update id="updatePassword" parameterType="Customer">
+        UPDATE `jy_customer` SET password = #{password} WHERE id = #{id}
     </update>
     <delete id="del">
         DELETE FROM `jy_customer` WHERE id = #{id}
@@ -84,6 +88,12 @@
                 AND phone like CONCAT('%','${phone}','%')
             </if>
         </where>
+    </select>
+    <select id="login" resultMap="CustomerResultMap">
+        select * from jy_customer WHERE phone = #{phone} AND password = #{password}
+    </select>
+    <select id="findByPhone" resultMap="CustomerResultMap">
+        select * from jy_customer WHERE phone = #{phone}
     </select>
 
 </mapper>

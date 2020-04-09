@@ -2,23 +2,20 @@ package com.xieke.admin.web.pe;
 
 import com.xieke.admin.entity.Result;
 import com.xieke.admin.entity.pe.Coach;
-import com.xieke.admin.service.CustomerService;
+import com.xieke.admin.entity.pe.CoachCourse;
 import com.xieke.admin.service.pe.CoachCourseService;
 import com.xieke.admin.service.pe.CoachService;
-import com.xieke.admin.service.pe.CourseService;
 import com.xieke.admin.web.BaseController;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.List;
 
 /**
- * 客户信息控制类
+ * 教练信息控制类
  */
 @Controller
 @RequestMapping("/coach")
@@ -39,6 +36,10 @@ public class CoachController extends BaseController{
     public String coachAdd(){
         return "/coach/add";
     }
+    @RequestMapping("/edit")
+    public String edit(){
+        return "/coach/edit";
+    }
 
     @RequestMapping("/select/list")
     public String list(){
@@ -53,6 +54,18 @@ public class CoachController extends BaseController{
         result.setStatus(200);
         result.setMessage("获取成功@!");
         result.setCount(coachService.countCoach(name, phone));
+        result.setData(coaches);
+        return result;
+    }
+
+    @RequestMapping("/select/all")
+    @ResponseBody
+    public Result allCoach(){
+        List<Coach> coaches = coachService.selectAllCoach();
+        Result result = new Result();
+        result.setStatus(200);
+        result.setMessage("获取成功@!");
+        result.setCount(coachService.countCoachAll());
         result.setData(coaches);
         return result;
     }
@@ -92,6 +105,28 @@ public class CoachController extends BaseController{
         result.setMessage("获取成功!");
         result.setCount(count);
         result.setData(coaches);
+        return result;
+    }
+
+    @RequestMapping("/update")
+    @ResponseBody
+    public Result updateCoach(Coach coach,@RequestParam("course[]") Integer[] course){
+        Integer coaches = coachService.updateCoach(coach,course);
+        Result result = new Result();
+        result.setStatus(200);
+        result.setMessage("修改成功@!");
+        result.setData(coaches);
+        return result;
+    }
+
+    @RequestMapping("/get/course")
+    @ResponseBody
+    public Result getCourses(Integer id){
+        List<CoachCourse> coachCourses = coachCourseService.findByCoachId(id);
+        Result result = new Result();
+        result.setStatus(200);
+        result.setMessage("获取成功@!");
+        result.setData(coachCourses);
         return result;
     }
 

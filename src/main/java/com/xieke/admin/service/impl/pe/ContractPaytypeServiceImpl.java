@@ -6,6 +6,8 @@ import com.xieke.admin.service.pe.ContractPaytypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ContractPaytypeServiceImpl implements ContractPaytypeService {
 
@@ -21,5 +23,18 @@ public class ContractPaytypeServiceImpl implements ContractPaytypeService {
 
 
         return contractPaytypeMapper.insert(contractPaytype);
+    }
+
+    /**
+     * 根据合同ID获取合同对应付款方式
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public List<ContractPaytype> findByContractId(Integer id) {
+
+
+        return contractPaytypeMapper.findByContractId(id);
     }
 }

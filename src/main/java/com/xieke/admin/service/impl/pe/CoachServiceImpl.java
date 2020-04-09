@@ -32,6 +32,7 @@ public class CoachServiceImpl implements CoachService {
 
     @Override
     public int delCoach(Coach coach) {
+        coachCourseMapper.delCoachCourseByCoachId(coach.getId());
         return coachMapper.delCoach(coach);
     }
 
@@ -45,5 +46,35 @@ public class CoachServiceImpl implements CoachService {
             coachCourseMapper.insertCoachCourse(coachCourse);
         }
         return row;
+    }
+
+    @Override
+    public Integer updateCoach(Coach coach, Integer[] course) {
+        coachCourseMapper.delCoachCourseByCoachId(coach.getId());
+        int row = coachMapper.updateCoach(coach);
+        for (int i : course ) {
+            CoachCourse coachCourse = new CoachCourse();
+            coachCourse.setCoach(coachMapper.findById(coach.getId()));
+            coachCourse.setCourse(courseMapper.findById(i));
+            coachCourseMapper.insertCoachCourse(coachCourse);
+        }
+        return row;
+    }
+
+    @Override
+    public List<Coach> selectAllCoach() {
+
+
+        return coachMapper.allCoach();
+    }
+
+    @Override
+    public Integer countCoachAll() {
+        return coachMapper.countAll();
+    }
+
+    @Override
+    public List<Coach> findByName(String name) {
+        return coachMapper.findByName(name);
     }
 }

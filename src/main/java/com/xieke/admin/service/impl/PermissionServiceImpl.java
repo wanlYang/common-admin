@@ -6,10 +6,12 @@ import com.xieke.admin.code.ResourceType;
 import com.xieke.admin.dto.MenuInfo;
 import com.xieke.admin.dto.PermissionInfo;
 import com.xieke.admin.entity.Permission;
+import com.xieke.admin.entity.timetable.StoreFront;
 import com.xieke.admin.ex.BusinessException;
 import com.xieke.admin.mapper.PermissionMapper;
 import com.xieke.admin.service.IPermissionService;
 import com.xieke.admin.util.Constant;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,9 @@ import java.util.List;
  */
 @Service
 public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permission> implements IPermissionService {
+
+    @Autowired
+    private PermissionMapper permissionMapper;
 
     @Cacheable("permissionCache")
     @Override
@@ -100,6 +105,7 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
             MenuInfo info = new MenuInfo();
             info.setOnlyId(ps.getId());
             info.setTitle(ps.getPermissionName());
+            info.setCode(ps.getPermissionCode());
             info.setHref(ps.getUrl());
             if (ps.getResourceType().equals(ResourceType.DIRECTORY.getCode())){
                 con = new Permission();
@@ -141,5 +147,131 @@ public class PermissionServiceImpl extends ServiceImpl<PermissionMapper, Permiss
             throw new BusinessException(Constant.YES_ERROR, "有子权限不能删除！");
         }
         return this.deleteById(id);
+    }
+
+    @Override
+    public List<MenuInfo> getButtononPermissions(String code) {
+        List<MenuInfo> menuInfoList = new ArrayList<>();
+        EntityWrapper<Permission> wrapper = new EntityWrapper<>();
+        Permission permission = new Permission();
+        permission.setPermissionCode(code);
+        wrapper.setEntity(permission);
+        permission = this.selectOne(wrapper);
+        Permission con = new Permission();
+        con.setParentIds(permission.getParentIds()+"/"+permission.getId());
+        con.setAvailable(1);
+        wrapper.setEntity(con);
+        String[] resourceTypes = { ResourceType.BUTTON.getCode() };
+        wrapper.in("resource_type", resourceTypes);
+        List<Permission> list = this.selectList(wrapper);
+        for (Permission ps : list) {
+            MenuInfo info = new MenuInfo();
+
+            info.setOnlyId(ps.getId());
+            info.setTitle(ps.getPermissionName());
+            info.setCode(ps.getPermissionCode());
+            info.setHref(ps.getUrl());
+            menuInfoList.add(info);
+        }
+        return menuInfoList;
+    }
+
+    @Override
+    public List<MenuInfo> getStroePermissions(String code) {
+        List<MenuInfo> menuInfoList = new ArrayList<>();
+        EntityWrapper<Permission> wrapper = new EntityWrapper<>();
+        Permission permission = new Permission();
+        permission.setPermissionCode(code);
+        wrapper.setEntity(permission);
+        permission = this.selectOne(wrapper);
+        Permission con = new Permission();
+        con.setParentIds(permission.getParentIds()+"/"+permission.getId());
+        con.setAvailable(1);
+        wrapper.setEntity(con);
+        String[] resourceTypes = { ResourceType.BUTTON.getCode() };
+        wrapper.in("resource_type", resourceTypes);
+        List<Permission> list = this.selectList(wrapper);
+        for (Permission ps : list) {
+            MenuInfo info = new MenuInfo();
+
+            info.setOnlyId(ps.getId());
+            info.setTitle(ps.getPermissionName());
+            info.setCode(ps.getPermissionCode());
+            info.setHref(ps.getUrl());
+            menuInfoList.add(info);
+        }
+        return menuInfoList;
+    }
+
+    @Override
+    public Integer updateByCode(Permission permission_) {
+
+        return permissionMapper.updateByCode(permission_);
+    }
+
+    @Override
+    public List<MenuInfo> getImagesPermissions(String code) {
+        List<MenuInfo> menuInfoList = new ArrayList<>();
+        EntityWrapper<Permission> wrapper = new EntityWrapper<>();
+        Permission permission = new Permission();
+        permission.setPermissionCode(code);
+        wrapper.setEntity(permission);
+        permission = this.selectOne(wrapper);
+        Permission con = new Permission();
+        con.setParentIds(permission.getParentIds()+"/"+permission.getId());
+        con.setAvailable(1);
+        wrapper.setEntity(con);
+        String[] resourceTypes = { ResourceType.BUTTON.getCode() };
+        wrapper.in("resource_type", resourceTypes);
+        List<Permission> list = this.selectList(wrapper);
+        for (Permission ps : list) {
+            MenuInfo info = new MenuInfo();
+
+            info.setOnlyId(ps.getId());
+            info.setTitle(ps.getPermissionName());
+            info.setCode(ps.getPermissionCode());
+            info.setHref(ps.getUrl());
+            menuInfoList.add(info);
+        }
+        return menuInfoList;
+    }
+
+    @Override
+    public Permission getParentPermissionByCode(String pessCode) {
+        EntityWrapper<Permission> wrapper = new EntityWrapper<>();
+        Permission permission = new Permission();
+        permission.setPermissionCode(pessCode);
+        wrapper.setEntity(permission);
+        permission = this.selectOne(wrapper);
+        Permission parentPermission = new Permission();
+        parentPermission.setId(permission.getParentId());
+        wrapper.setEntity(parentPermission);
+        parentPermission = this.selectOne(wrapper);
+        return parentPermission;
+    }
+
+    @Override
+    public Permission getPermissionByCode(String pessCode) {
+        EntityWrapper<Permission> wrapper = new EntityWrapper<>();
+        Permission permission = new Permission();
+        permission.setPermissionCode(pessCode);
+        wrapper.setEntity(permission);
+        permission = this.selectOne(wrapper);
+        return permission;
+    }
+
+    @Override
+    public List<MenuInfo> getPermissionMenuInfoByCode(String pessCode) {
+        EntityWrapper<Permission> wrapper = new EntityWrapper<>();
+        Permission permission = new Permission();
+        permission.setPermissionCode(pessCode);
+        wrapper.setEntity(permission);
+        permission = this.selectOne(wrapper);
+        Permission parentPermission = new Permission();
+        parentPermission.setId(permission.getParentId());
+        wrapper.setEntity(parentPermission);
+        parentPermission = this.selectOne(wrapper);
+        List<MenuInfo> menuPermissions = getMenuPermissions(parentPermission.getPermissionCode());
+        return menuPermissions;
     }
 }

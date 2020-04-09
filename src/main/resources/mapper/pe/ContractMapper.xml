@@ -201,6 +201,9 @@
             #{payfor}
             )
     </insert>
+    <update id="examine">
+         UPDATE pe_contract SET audit_status = 1,check_user = #{user.id},check_time = #{checkTime} WHERE id = #{id};
+    </update>
     <select id="findAllByPageNameAndPhone" resultMap="PrivateContractResultMap">
         SELECT cust.name,cont.* FROM jy_customer cust RIGHT JOIN pe_contract cont on cust.id = cont.cust_id
         <where>
@@ -227,5 +230,12 @@
     <select id="findById" resultMap="PrivateContractResultMap">
         SELECT * FROM pe_contract WHERE id = #{id}
 
+    </select>
+    <select id="findByContractNumber" resultMap="PrivateContractResultMap">
+
+        SELECT * FROM pe_contract WHERE contract_number = #{contractNumber}
+    </select>
+    <select id="getContractByCustomerId" resultMap="PrivateContractResultMap">
+        SELECT * FROM pe_contract WHERE cust_id = #{id}
     </select>
 </mapper>

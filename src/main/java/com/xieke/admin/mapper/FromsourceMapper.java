@@ -13,7 +13,9 @@ public interface FromsourceMapper {
 
     int updateFromsorce(Fromsource fromsource);
 
-    int deleteFromsorce(Fromsource fromsource);
+    int deleteFromsorce(Integer id);
 
     Fromsource findById(Integer id);
+
+    List<Fromsource> findByParentId(Integer id);
 }

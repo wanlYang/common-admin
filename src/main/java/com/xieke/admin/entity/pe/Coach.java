@@ -68,6 +68,18 @@ public class Coach {
      */
     private String remark;
 
+
+    private Integer grade;
+
+    public Integer getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Integer grade) {
+        this.grade = grade;
+    }
+
+
     @Override
     public String toString() {
         return "Coach{" +
@@ -84,6 +96,7 @@ public class Coach {
                 ", status=" + status +
                 ", briefIntroduction='" + briefIntroduction + '\'' +
                 ", remark='" + remark + '\'' +
+                ", grade=" + grade +
                 '}';
     }
 

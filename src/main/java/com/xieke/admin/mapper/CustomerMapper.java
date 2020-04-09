@@ -43,4 +43,10 @@ public interface CustomerMapper {
     Integer del(Integer id);
 
     Integer updateState(@Param("id") int id, @Param("state") int state);
+
+    Customer login(@Param("phone") String phone, @Param("password") String password);
+
+    Customer findByPhone(String phone);
+
+    Integer updatePassword(Customer customer);
 }

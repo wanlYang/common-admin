@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xieke.admin.mapper.pe.OfficetimeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="Officetime">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="starttime" property="starttime" />
+        <result column="endtime" property="endtime" />
+        <result column="showcolour" property="showcolour" />
+        <result column="status" property="status" />
+    </resultMap>
+    <update id="updateOfficetime">
+        update pe_officetime set
+            name=#{name},starttime=#{starttime},endtime=#{endtime},showcolour=#{showcolour},status=#{status}
+        where id=#{id}
+    </update>
+
+    <select id="selectOfficetime" resultMap="BaseResultMap">
+        select * from pe_officetime limit #{start},#{limit}
+    </select>
+    <select id="countOfficetime" resultType="java.lang.Integer">
+        select count(*) from pe_officetime
+    </select>
+    <delete id="delOfficetime">
+        delete from pe_officetime where id=#{id}
+    </delete>
+    <insert id="insertOfficetime" parameterType="Officetime">
+        insert into pe_officetime
+        value (null,#{name},#{starttime},#{endtime},#{showcolour},#{status})
+    </insert>
+    <select id="findById" resultMap="BaseResultMap">
+        select * from pe_officetime where id = #{id}
+    </select>
+    <select id="selectOfficetimeAll" resultMap="BaseResultMap">
+        select * from pe_officetime
+    </select>
+
+</mapper>

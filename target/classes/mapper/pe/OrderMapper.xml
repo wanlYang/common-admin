@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xieke.admin.mapper.pe.OrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="ResultMap" type="Order">
+        <id column="id" property="id" />
+        <result column="starttime" property="starttime" />
+        <result column="endtime" property="endtime" />
+        <result column="thisday" property="thisday" />
+        <association column="coach_id" property="coach" select="com.xieke.admin.mapper.pe.CoachMapper.findById" />
+        <association column="contract_id" property="contract" select="com.xieke.admin.mapper.pe.ContractMapper.findById" />
+        <association column="customer_id" property="customer" select="com.xieke.admin.mapper.CustomerMapper.findById" />
+    </resultMap>
+    <insert id="insertOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into pe_order(id,contract_id,coach_id,customer_id,starttime,endtime,thisday) value(null,#{contract.id},#{coach.id},#{customer.id},#{starttime},#{endtime},#{thisday})
+    </insert>
+    <select id="findByContractId" resultMap="ResultMap">
+         select * from pe_order where contract_id = #{id}
+    </select>
+    <select id="findAllByCustomerId" resultMap="ResultMap">
+        select * from pe_order where customer_id = #{id}
+    </select>
+
+
+</mapper>

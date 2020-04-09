@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xieke.admin.mapper.pe.CoachCourseMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="CoachCourse">
+        <id column="id" property="id" />
+        <association column="dance_id" property="course" select="com.xieke.admin.mapper.pe.CourseMapper.findById"/>
+        <association column="coach_id" property="coach" select="com.xieke.admin.mapper.pe.CoachMapper.findById"/>
+     </resultMap>
+    <select id="findCourseByCoachId" resultMap="BaseResultMap">
+        SELECT * FROM pe_coach_dance WHERE coach_id = #{id}
+    </select>
+    <insert id="insertCoachCourse" parameterType="CoachCourse">
+    insert into pe_coach_dance(dance_id,coach_id) value(#{course.id},#{coach.id})
+    </insert>
+    <delete id="delCoachCourseByCoachId" parameterType="CoachCourse">
+    delete from pe_coach_dance where coach_id=#{id}
+</delete>
+</mapper>

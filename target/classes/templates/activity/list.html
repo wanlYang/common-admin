@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<meta charset="utf-8">
+	<title>用户列表</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="/static/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="/static/css/public.css" media="all" />
+</head>
+<body class="childrenBody">
+<form class="layui-form">
+	<blockquote class="layui-elem-quote quoteBox">
+		<form class="layui-form">
+			<div class="layui-inline">
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input name" placeholder="姓名"/>
+                </div>
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input phone" placeholder="手机号"/>
+				</div>
+                <a class="layui-btn search_btn" data-type="reload">搜索</a>
+				<shiro:hasPermission name="activity:adduser">
+					<div class="layui-inline">
+						<a class="layui-btn layui-btn-sm addUser" lay-event="addUser">录入用户</a>
+					</div>
+				</shiro:hasPermission>
+				<shiro:hasPermission name="activity:examine">
+					<div class="layui-inline">
+						<a class="layui-btn layui-btn-sm examine" lay-event="examine">审核</a>
+					</div>
+				</shiro:hasPermission>
+				<shiro:hasPermission name="reverse:examine">
+					<div class="layui-inline">
+						<a class="layui-btn layui-btn-danger layui-btn-sm reverseAudit" lay-event="reverseAudit">反审核</a>
+					</div>
+				</shiro:hasPermission>
+				<shiro:hasPermission name="winner:set">
+					<div class="layui-inline">
+						<a class="layui-btn layui-btn-danger layui-btn-sm setWinner" lay-event="setWinner">设定</a>
+					</div>
+				</shiro:hasPermission>
+				<shiro:hasPermission name="winner:view">
+					<div class="layui-inline">
+						<a class="layui-btn layui-btn-danger layui-btn-sm winnerView" lay-event="winnerView">查看设定</a>
+					</div>
+				</shiro:hasPermission>
+				<shiro:hasPermission name="winner:del">
+					<div class="layui-inline">
+						<a class="layui-btn layui-btn-danger layui-btn-sm winnerDel" lay-event="winnerDel">删除设定</a>
+					</div>
+				</shiro:hasPermission>
+
+			</div>
+		</form>
+	</blockquote>
+	<table id="userList" lay-filter="userList"></table>
+</form>
+<script type="text/javascript" src="/static/layui/layui.js"></script>
+<script type="text/javascript" src="/static/js/utils.js"></script>
+<script type="text/javascript" src="/static/js/activity/list.js"></script>
+</body>
+</html>

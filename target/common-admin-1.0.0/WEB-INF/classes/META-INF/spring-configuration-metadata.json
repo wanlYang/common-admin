@@ -1,0 +1,42 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.xieke.admin.config.CustomRedisManager",
+      "name": "spring.redis",
+      "type": "com.xieke.admin.config.CustomRedisManager"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.xieke.admin.config.CustomRedisManager",
+      "name": "spring.redis.database",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.xieke.admin.config.CustomRedisManager",
+      "name": "spring.redis.expire",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.xieke.admin.config.CustomRedisManager",
+      "name": "spring.redis.host",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.xieke.admin.config.CustomRedisManager",
+      "name": "spring.redis.password",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.xieke.admin.config.CustomRedisManager",
+      "name": "spring.redis.port",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.xieke.admin.config.CustomRedisManager",
+      "name": "spring.redis.timeout",
+      "type": "java.lang.Integer"
+    }
+  ]
+}

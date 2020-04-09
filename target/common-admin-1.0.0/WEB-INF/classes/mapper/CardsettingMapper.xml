@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xieke.admin.mapper.CardsettingMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="Cardsetting">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="card_type" property="cardType" />
+        <result column="money" property="money" javaType="Double"/>
+        <result column="validity" property="validity" />
+        <result column="days_can" property="daysCan" />
+        <result column="status" property="status" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="remark" property="remark" />
+        <result column="num" property="num" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <select id="selectAllCardsetting" resultMap="BaseResultMap">
+        select * from jy_cardsetting
+    </select>
+    <select id="findById" resultMap="BaseResultMap">
+        select * from jy_cardsetting WHERE id = #{id}
+    </select>
+    <select id="countCardsetting" resultType="java.lang.Integer">
+        select COUNT(*) from jy_cardsetting
+    </select>
+
+    <insert id="insertCardsetting">
+        insert into jy_cardsetting value (null,#{name},#{cardType},#{money},#{validity},#{daysCan},#{status},#{startTime},#{endTime},#{remark},#{createTime},#{num})
+    </insert>
+    
+    <update id="updateCardsetting">
+        update jy_cardsetting set
+            <if test="name != null">`name`=#{name},</if>
+            <if test="cardType != null">`card_type`=#{cardType},</if>
+            <if test="money != null">`money`=#{name},</if>
+            <if test="validity != null">`validity`=#{validity},</if>
+            <if test="daysCan != null">`days_can`=#{daysCan},</if>
+            <if test="status != null">`status`=#{status},</if>
+            <if test="startTime != null">`start_time`=#{startTime},</if>
+            <if test="endTime != null">`end_time`=#{endTime},</if>
+            <if test="remark != null">`remark`=#{remark},</if>
+            <if test="num != null">`num`=#{num},</if>
+            <if test="createTime != null">`create_time`=#{createTime}</if>
+        where id=#{id}
+    </update>
+  
+    <delete id="deleteCardsetting">
+        delete from jy_cardsetting where id=#{id}
+    </delete>
+
+</mapper>

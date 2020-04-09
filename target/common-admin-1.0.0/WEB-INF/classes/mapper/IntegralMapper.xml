@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xieke.admin.mapper.IntegralMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="Integral">
+        <id column="id" property="id" />
+        <result column="insert_time" property="insertTime" />
+        <result column="amount" property="amount" />
+        <result column="clubcard_num" property="clubcardNum"/>
+        <result column="use_amount" property="useAmount" />
+        <result column="use_time" property="useTime" />
+        <association column="cust_id" property="customer" select="com.xieke.admin.mapper.CustomerMapper.findById"/>
+    </resultMap>
+    <select id="selectAllIntegral" resultMap="BaseResultMap">
+        select * from jy_integral
+    </select>
+    <select id="findByClubCardNum" resultMap="BaseResultMap">
+        select * from jy_integral where clubcard_num = #{menmbercardNumber}
+    </select>
+
+    <insert id="insertIntegral" parameterType="Integral">
+        insert into jy_integral value (null,#{insertTime},#{amount},#{customer.id},#{useAmount},#{useTime},#{clubcardNum})
+    </insert>
+
+    <update id="updateIntegral" parameterType="Integral">
+        update jy_integral set
+
+            <if test="insertTime != null">`insert_time`=#{insertTime},</if>
+            <if test="amount != null">amount=#{amount},</if>
+            <if test="customer != null">cust_id=#{customer.id},</if>
+            <if test="useAmount != null">use_amount=#{useAmount},</if>
+            <if test="useTime != null">use_time=#{useTime},</if>
+            <if test="clubcardNum != null">clubcard_num=#{clubcardNum}</if>
+
+        where id=#{id}
+    </update>
+
+    <delete id="deleteIntegral">
+        delete from jy_integral where id=#{id}
+    </delete>
+    <delete id="deleteIntegralByClubCardNum">
+        delete from jy_integral where clubcard_num=#{clubcardNum}
+    </delete>
+
+</mapper>

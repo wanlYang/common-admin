@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>私教合同审核</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="/static/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="/static/css/public.css" media="all" />
+	<style>
+		.layui-treeSelect .ztree li span.button.switch {
+			position: relative !important;
+			top: 2px !important;
+		}
+		.pointer{
+			cursor:pointer;
+		}
+		.default{
+			cursor:default;
+		}
+        .linksAdd .layui-form-label{ width:110px;padding: 8px 15px;}
+
+	</style>
+</head>
+<body class="childrenBody">
+<form class="layui-form layui-form-pane linksAdd">
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<div class="layui-inline">
+			<label class="layui-form-label">客户姓名</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input customer_name pointer default" th:value="${contractInfo.customer.name}" readonly >
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">合同编号</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input contractNumber default" th:value="${contractInfo.contractNumber}" readonly>
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<div class="layui-inline">
+			<label class="layui-form-label">手机号</label>
+			<div class="layui-input-inline" >
+				<input type="text" class="layui-input phone default" th:value="${contractInfo.customer.phone}" readonly>
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">会员卡号</label>
+			<div class="layui-input-inline" >
+				<input type="text" class="layui-input clubNumber default" th:value="${contractInfo.customer.icCardId}" readonly>
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">是否自由课</label>
+			<div class="layui-input-inline" >
+				<input type="checkbox" th:attr="checked=${contractInfo.isFreeClass == 1?'true':'false'}" readonly lay-skin="switch" disabled lay-text="开启|关闭">
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">分店范围</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input store default" th:value="${contractInfo.store}" readonly>
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">合同来源</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input fromsource default" th:value="${contractInfo.fromsource.name}" readonly>
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">私教编号</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input coach_number default" th:value="${contractInfo.coach.coachNumber}" readonly>
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">上课教练</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input coach_name default" readonly th:value="${contractInfo.coach.name}">
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">私教课程</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input course default" readonly th:value="${contractInfo.course.name}">
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">课时</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input classHour default" readonly th:value="${contractInfo.classHour}" >
+			</div>
+			<div class="layui-form-mid layui-word-aux">课时(分钟/节)</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">销售顾问</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input mt default" readonly th:value="${contractInfo.mt.name}" >
+			</div>
+		</div>
+	</div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">课程单价</label>
+            <div class="layui-input-inline">
+                <input type="text" class="layui-input unitPrice default" readonly th:value="${contractInfo.course.unitPrice}">
+            </div>
+			<div class="layui-form-mid layui-word-aux">￥</div>
+        </div>
+    </div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">购买次数</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input purchaseTimes default" th:value="${contractInfo.purchaseTimes}" readonly>
+			</div>
+			<div class="layui-form-mid layui-word-aux">次</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">赠送次数</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input freqPresent default" th:value="${contractInfo.freqPresent}" readonly>
+			</div>
+			<div class="layui-form-mid layui-word-aux">次</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">总次数</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input totalNumber default" th:value="${contractInfo.totalNumber}" readonly>
+			</div>
+			<div class="layui-form-mid layui-word-aux">次</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">购买总金额</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input totalPurchaseAmount default" th:value="${contractInfo.totalPurchaseAmount}" readonly>
+			</div>
+			<div class="layui-form-mid layui-word-aux">￥</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">赠送总金额</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input totalAmountOfGifts default" th:value="${contractInfo.totalAmountOfGifts}" readonly>
+			</div>
+			<div class="layui-form-mid layui-word-aux">￥</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">总金额</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input totalSum default" th:value="${contractInfo.totalSum}" readonly>
+			</div>
+			<div class="layui-form-mid layui-word-aux">￥</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">生效日期</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input effectiveDate default" th:value="${#dates.format(contractInfo.effectiveDate,'yyyy-MM-dd')}" readonly >
+			</div>
+			<div class="layui-form-mid layui-word-aux" style="width: 14px;"> </div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">截止日期</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input closingDate default" th:value="${#dates.format(contractInfo.closingDate,'yyyy-MM-dd')}" readonly>
+			</div>
+			<div class="layui-form-mid layui-word-aux" style="width: 14px;"> </div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">签署日期</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input signingDate default" th:value="${#dates.format(contractInfo.signingDate,'yyyy-MM-dd')}" readonly>
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">备注</label>
+		<div class="layui-input-inline">
+			<textarea class="layui-textarea default" readonly th:text="${contractInfo.remark}"></textarea>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">赠送积分</label>
+		<div class="layui-input-inline">
+			<input type="text" class="layui-input presentationPoints default" readonly th:value="${contractInfo.presentationPoints}">
+		</div>
+	</div>
+
+    <div id="paymentBox" class="paymentBox" >
+		<div class="layui-form-item" th:each="paytypes,state:${contractPayTypeInfo}">
+			<div class="layui-inline">
+				<label class="layui-form-label">付款方式</label>
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input fromsource default" th:value="${paytypes.paytype.name}" readonly>
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label">付款金额</label>
+				<div class="layui-input-inline">
+					<input type="text" class="layui-input money default" th:value="${paytypes.money}" readonly>
+				</div>
+			</div>
+		</div>
+    </div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">付款单据</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input payReceipts default" th:value="${contractInfo.paymentDocu}" readonly>
+			</div>
+		</div>
+	</div>
+</form>
+<script type="text/javascript" src="/static/layui/layui.js"></script>
+<script type="text/javascript" src="/static/js/utils.js"></script>
+<script>
+	layui.use(['form','layer','jquery'],function(){
+		var $ = layui.jquery,
+				layer = layui.layer,
+				form = layui.form;
+		form.render();
+		/*$.ajax({
+			type: "POST",
+			dataType :"jsonp",
+			url: "http://act.tytopshow.com:8007/activity/management/userlist/data/jsonp?limit=50&page=1",
+			success: function(result) {
+				if(result.status == 200) {
+					console.log(result.data)
+				} else {
+					top.layer.close(index);
+					top.layer.msg("获取失败！" + result.message);
+				}
+			}
+		});*/
+	})
+</script>
+</body>
+</html>

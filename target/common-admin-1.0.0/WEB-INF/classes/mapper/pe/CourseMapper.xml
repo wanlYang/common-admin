@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xieke.admin.mapper.pe.CourseMapper">
+    <resultMap id="courseResultMap" type="Course">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="brief_introduction" property="briefIntroduction"/>
+        <result column="store" property="store"/>
+        <result column="unit_price" property="unitPrice"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+    <insert id="create" parameterType="Course">
+        INSERT INTO `pe_dance` ( `name`, brief_introduction, store, unit_price, remark )
+        VALUES
+	    (#{name},#{briefIntroduction},#{store},#{unitPrice},#{remark})
+    </insert>
+    <update id="update" parameterType="Course">
+        update `pe_dance`
+        <set>
+            <if test="name != null">name=#{name},</if>
+            <if test="briefIntroduction != null">brief_introduction=#{briefIntroduction},</if>
+            <if test="store != null">store=#{store},</if>
+            <if test="unitPrice != null">unit_price=#{unitPrice},</if>
+            <if test="remark != null">remark=#{remark}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <delete id="del">
+        DELETE FROM `pe_dance` WHERE id = #{id}
+    </delete>
+    <select id="findAll" resultMap="courseResultMap">
+        SELECT * FROM `pe_dance`
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM `pe_dance`
+    </select>
+    <select id="findById" resultMap="courseResultMap">
+        select * from pe_dance where id = #{id}
+    </select>
+
+</mapper>

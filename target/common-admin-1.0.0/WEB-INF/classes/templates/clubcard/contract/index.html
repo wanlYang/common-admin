@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>会员卡打印预览</title>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <link rel="stylesheet" href="/static/contract/easyui.js">
+  <link rel="stylesheet" href="/static/contract/index.css">
+  <link rel="stylesheet" href="/static/contract/index2.css">
+  <link rel="stylesheet" href="/static/contract/framework-theme.css">
+  <link rel="stylesheet" href="/static/contract/bootstrap.min.css">
+  <script src="/static/contract/vue.min.js"></script>
+  <script src="/static/contract/common.js"></script>
+  <script src='/static/contract/jquery.min.js'></script>
+</head>
+
+<body>
+  <div style="padding:4px 5px 0px 5px; height:100%">
+
+
+    <link href="/static/contract/Print.css" rel="stylesheet" />
+    <div id="indexContent" class="page_wrap">
+      <div class="box_wrap">
+        <div class="content_wrap">
+          <style media="print">
+            body {
+              padding-top: 5mm;
+            }
+
+            .print_wrap {
+              margin: 0 !important;
+              zoom: 100%;
+            }
+          </style>
+          <div class="print_wrap" style="margin-top: 5mm">
+            <div class="clearfix">
+
+              <h1 class="print_title">
+                金彦TOPSHOW服务合同
+              </h1>
+            </div>
+            <ul class="print_list">
+              <li class="c8">
+                <p class="p6">
+                  <label class="pl">公司/会所：</label>
+                  <span class="pt" th:text="${clubCardInfo.storeScope}">金彦舞蹈</span>
+                </p>
+              </li>
+              <li class="c8">
+                <p class="p6">
+                  <label class="pl">合同编号：</label>
+                  <span class="pt" th:text="${clubCardInfo.menmbercardNumber}"></span>
+                </p>
+              </li>
+              <li class="c8">
+                <p class="p6">
+                  <label class="pl">销售人员：</label>
+                  <span class="pt" th:text="${clubCardInfo.mt.name}"></span>
+                </p>
+              </li>
+            </ul>
+
+            <ul class="print_list">
+              <li class="c8">
+                <p class="p6">
+                  <label class="pl">会员姓名：</label>
+                  <span class="pt" th:text="${clubCardInfo.customer.name}"></span>
+                </p>
+              </li>
+              <li class="c8">
+                <p class="p6">
+                  <label class="pl">性别：</label>
+                  <span class="pt" th:text="${clubCardInfo.customer.sex == 1 ? '女':'男'}"></span>
+                </p>
+              </li>
+              <li class="c8">
+                <p class="p6">
+                  <label class="pl">手机：</label>
+                  <span class="pt" th:text="${clubCardInfo.customer.phone}"></span>
+                </p>
+              </li>
+
+            </ul>
+
+            <ul class="print_list">
+              <li class="c8">
+                <p class="p6">
+                  <label class="pl">身份证号：</label>
+                  <span class="pt" th:text="${clubCardInfo.customer.idCard}"></span>
+                </p>
+              </li>
+              <li class="c8">
+                <p class="p6">
+                  <label class="pl">会员卡号：</label>
+                  <span class="pt" th:text="${clubCardInfo.customer.icCardId}"></span>
+                </p>
+              </li>
+              <li class="c8">
+                <p class="p6">
+                  <label class="pl">积分：</label>
+                  <span class="pt" th:text="${clubCardIntegral.amount}"></span>
+                </p>
+              </li>
+            </ul>
+
+            <ul class="print_list">
+              <li class="c24">
+                <p class="p6">
+                  <label class="pl">家庭住址：</label>
+                  <span class="pt" ></span>
+                </p>
+              </li>
+            </ul>
+            <table class="table-1 centered">
+              <thead>
+                <tr>
+                  <th>卡种名称</th>
+                  <th>基础价格</th>
+                  <th>优惠</th>
+                  <th>应收</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="text-align: center">
+                  <td th:text="${clubCardInfo.cardsetting.name}"></td>
+                  <td th:text="${#numbers.formatDecimal(clubCardInfo.cardsetting.money,1,'COMMA',2,'POINT')}"></td>
+                  <td th:text="${#numbers.formatDecimal(clubCardInfo.cardsetting.money - clubCardInfo.payfor,1,'COMMA',2,'POINT')}">0</td>
+                  <td th:text="${#numbers.formatDecimal(clubCardInfo.payfor,1,'COMMA',2,'POINT')}"></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <ul class="print_list">
+              <li class="c24">
+                <p class="p6">
+                  <label class="pl">支持门店：</label>
+                  <span class="pt" th:text="${clubCardInfo.storeScope}"></span>
+                </p>
+              </li>
+            </ul>
+            <ul class="print_list">
+              <li class="c12">
+                <p class="p6">
+                  <label class="pl" style="width:160px">合同有效期(服务有效期)：</label>
+                  <span class="pt" style="padding-left: 76px;">
+                    <span th:text="${#dates.format(clubCardInfo.startTime,'yyyy-MM-dd')}"></span> 至
+                    <span th:text="${#dates.format(clubCardInfo.endTime,'yyyy-MM-dd')}"></span>
+                  </span>
+                </p>
+              </li>
+              <li class="c12">
+                <p class="p6">
+                  <label class="pl" >签约门店：</label>
+                  <span class="pt" th:text="${clubCardInfo.storeScope}"></span>
+                </p>
+              </li>
+            </ul>
+
+            <ul class="print_list">
+              <li class="c12">
+                <p class="p6">
+                  <label class="pl">支付方式：</label>
+                  <span class="pt">
+                    <span th:each="paytypes,state:${clubCardPayTypeInfo}">
+                      <span th:text="${paytypes.paytype.name + '  '}"></span>
+                    </span>
+                  </span>
+                </p>
+              </li>
+            </ul>
+            <ul class="print_list">
+              <li class="c24">
+                <p class="p6">
+                  <label class="pl">备注：</label>
+                  <span class="pt" th:text="${clubCardInfo.remark}"></span>
+                </p>
+              </li>
+            </ul>
+            <ul class="print_list">
+              <li class="c24">
+                <div class="p6" style="padding-left:2.5em">
+
+                  <span class="pt txtheight">
+
+
+                    以下合同内容中【本公司会所名称简称：甲方 会员姓名简称：乙方】<br>
+                    1、甲方对乙方所提供的个人信息有保密的义务。经双方确认已支付的定金在付款后七日内有效，逾期作废，所交款项概不退回。如乙方未付清全部款项，甲方有权拒绝提供服务。<br>
+                    2、甲方应在合同有效期内为乙方提供服务，如超过合同约定的服务有效期，本合同自动终止，甲方将不再提供服务。<br>
+                    3、乙方须于款项结清后三个工作日内领取会员卡，甲方采用电子管理系统或人脸识别系统为乙方服务，会员卡不影响本合同有效期的履行，服务期限仍按本合同约定日期开始及终止。<br>
+                    4、甲方为乙方提供公众责任险保障服务，但乙方应对自行错误锻炼的损伤和后果负责。乙方可根据自身情况进行选择，并对潜在的身体状况进行事先声明，确认身体健康并能够运动的前提下签署本合同。<br>
+                    5、甲方会对乙方的人身和财产安全进行相关提示，乙方对自身的人身和财产安全须有自我防范意识，乙方须自行保管随身携带的物品，因乙方自身原因造成的财产损失，甲方不承担任何责任。<br>
+                    6、甲方为乙方提供付费延期服务，延期服务须在合同有效期内办理，延期服务是本合同有效期外的顺延、保留、更新、待升级服务，合同终止后无法办理延期服务，延期服务费为300元/月；延期服务最长不可超过12个月。<br>
+                    7、甲方如因店面改造等原因需暂停服务的，可为乙方免费办理延期服务，乙方也可选择甲方签约的其他服务店面履行本合同服务内容。<br>
+                    8、甲方为乙方免费提供办理12个月的生育暂停服务，乙方在告知甲方怀孕暂停服务后，凭子女出生证明可免费享受12个月的暂停服务。乙方因疾病原因需要暂停服务的，须持三级甲等以上医院证明，可免费一次性办理3个月内的暂停服务。超出以上免费暂停服务期限的，暂停服务费按300元/月收取，除以上情况甲方不免费提供其他任何理由的暂停服务。
+                    <br>
+                    9、合同有效期内乙方转让本合同服务内容须自行联系受让人，转让时乙方与受让人须同时前往甲方服务地点，转让手续费为300元/笔。乙方因疾病原因需要转让本服务内容的，可凭三级甲等以上医院证明减免转让手续费。<br>
+                    10、甲方除国家法定节假日外会正常开课为乙方提供服务，乙方未按时到达的课时损失应自行承担，课程费用不予退还。在合同有效期内，甲方可为乙方提供补差升级服务和同等价值的调换服务。<br>
+                    11、甲方向乙方提供服务的地点为合同履行地。乙方同意甲方以短信、微信公众号等方式发送相关信息和通知。<br>
+                    12、甲乙双方不接受口头协议和任何此合同之外的承诺或保证。任何的变更须以书面通知为准并由双方签字确认，不得擅自对本合同的任何条款内容做修改或删除，否则将视为无效处理。<br>
+                    13、本合同背面《会员须知》为合同附件内容，本合同未尽事宜，如《会员须知》有约定的，适用《会员须知》约定处理。如发生争议，甲乙双方应协商解决；协商不成的，甲乙双方均有权提交合同履行地人民法院诉讼解决。<br>
+                    14、本合同一式两份，甲乙双方各保留一份。本合同自甲乙双方签字、盖章之日起生效。合同签署前乙方须详细阅读<br>
+                    合同内容和合同背面《会员须知》，确认所有内容后抄写以下文字：<br>
+                    本人已确认并同意合同全部内容 <br>
+                    <br>
+                    ———————————————————————--————————————————————————— <br>
+                    （乙方）会员确认签署： 　　 　　 　　 　　 　　 　 　 　 　 （甲方)公司/会所签章：<br>
+                    <br>
+                    签署日期： 　　　 　　　　　 　　 　　 　 　　 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                    &nbsp;&nbsp; &nbsp;负责人签字：
+                  </span>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // var vm = new Vue({
+      //   el: '#indexContent',
+      //   data: {
+      //     cardInfo: [],
+      //   },
+      //   created: function () {
+      //     this.getCardInfo();
+      //   },
+      //   methods: {
+      //     getCardInfo: function () {
+      //       //获取业态信息
+      //       $.ajax({
+      //         type: 'get',
+      //         url: 'http://aa.jytopshow.com/admin/role/getnum',
+      //         success: function (data) {
+      //           vm.cardInfo = data[0]
+      //           // var cardInfo1 = JSON.parse(data);
+      //           // console.log(vm.cardInfo);
+      //         }
+      //       });
+      //     }
+      //   }
+      // });
+    </script>
+
+
+  </div>
+
+
+</body>
+
+</html>

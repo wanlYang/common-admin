@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xieke.admin.mapper.CouponsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="Coupons">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="url" property="url"/>
+    </resultMap>
+
+    <resultMap id="UserCouBaseResultMap" type="UserCou">
+        <id column="id" property="id" />
+        <result column="state" property="state"/>
+        <association property="acuser" column="user_id" select="com.xieke.admin.mapper.AcuserMapper.findById"/>
+        <association property="coupons" column="cou_id" select="findById"/>
+    </resultMap>
+    <insert id="create" parameterType="UserCou">
+        insert into jy_usercou(user_id,cou_id,state) values (#{acuser.id},#{coupons.id},#{state})
+    </insert>
+    <update id="updateState">
+        update jy_usercou set state = #{state} WHERE id = #{id}
+    </update>
+    <update id="updateStateByUserId">
+        update jy_usercou set state = #{state} WHERE user_id = #{userId}
+    </update>
+
+    <select id="findById" resultMap="BaseResultMap">
+        select * from jy_coupons WHERE id = #{id}
+    </select>
+    <select id="findByUserAndCou" resultMap="UserCouBaseResultMap">
+        select * from jy_usercou WHERE user_id = #{userId} AND cou_id = #{couponId}
+    </select>
+    <select id="selectUserCouByUserId" resultMap="UserCouBaseResultMap">
+        select * from jy_usercou WHERE user_id = #{userId}
+    </select>
+    <select id="findAllCou"  resultMap="BaseResultMap">
+        select * from jy_coupons
+    </select>
+
+</mapper>

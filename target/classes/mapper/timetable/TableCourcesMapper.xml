@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xieke.admin.mapper.timetable.TableCourcesMapper">
+    <resultMap type="Week" id="weekResultMap">
+    	<id column="id" property="id"/>
+    	<result column="describe" property="describe"/>
+    	<result column="english" property="english"/> 
+    	<collection property="tableCources" ofType="TableCources">
+    		<id column="table_coures_id" property="id"/>
+    		<result column="name" property="name"/>
+	    	<result column="star_class" property="star_class"/>
+	    	<result column="type" property="type"/>
+	    	<result column="effect" property="effect"/>
+	    	<result column="start_time" property="start_time"/>
+	    	<result column="end_time" property="end_time"/>
+	    	<association column="week" property="week" select="getWeekById"/>
+	    	<association property="storeFront" column="storefront" select="getStoreFrontById"/>
+    	</collection>
+    </resultMap>
+    <resultMap type="StoreFront" id="storeResultMap">
+    	<id column="id" property="id"/>
+    	<result column="name" property="name"/>
+		<association property="user" column="admin" javaType="User" select="com.xieke.admin.mapper.UserMapper.getUserById"/>
+    </resultMap>
+    <select id="getWeek" resultMap="weekResultMap">
+    	select * from  `co_week` ORDER BY FIELD(`describe`,'星期一','星期二','星期三','星期四','星期五','星期六','星期天') ;
+    </select>
+    <select id="getWeekById" resultMap="weekResultMap">
+    	select * from  `co_week` where id = #{id}
+    </select>
+    <select id="getStoreFrontById" resultMap="storeResultMap">
+    	select * from  `co_storefront` where id = #{id}
+    </select>
+    <insert id="addCources" parameterType="TableCources" useGeneratedKeys="true" keyProperty="id">
+    	insert into co_table_cources(id,name,coach_id,star_class,type,effect,start_time,end_time,week,storefront)
+    	values(#{id},#{name},#{coach.id},#{star_class},#{type},#{effect},#{start_time},#{end_time},#{week.id},#{storeFront.id})
+    </insert>
+    <select id="findAllTableCourcesByStoreId" resultMap="tableCourcesResultMap">
+    	select * from `co_table_cources` WHERE storefront = #{id}
+    </select>
+    <select id="findAllTableCourcesByWeekId" resultMap="tableCourcesResultMap">
+    	select * from `co_table_cources` WHERE week = #{id}
+    </select>
+    <select id="findAllWeekCources" resultMap="weekResultMap">
+    	SELECT *,co_table_cources.id as table_coures_id FROM `week` LEFT JOIN co_table_cources ON `week`.id = co_table_cources.`week` WHERE co_table_cources.storefront = #{id}
+    	 ORDER BY co_table_cources.start_time ASC
+    </select>
+    <select id="findCourcesByFrontIdAndWeekId" resultMap="tableCourcesResultMap">
+    	select * from `co_table_cources` WHERE storefront = #{frontId} AND week = #{weekId} order by start_time is null,start_time asc;
+    </select>
+    <select id="findCourcesById" resultMap="tableCourcesResultMap">
+    	select * from `co_table_cources` WHERE id = #{id}
+    </select>
+    <update parameterType="TableCources" id="update">
+    	update `co_table_cources`
+    	<set>
+    		`name`=#{name},
+    		coach_id = #{coach.id},
+            star_class=#{star_class},
+           	`type`=#{type},
+            effect=#{effect},
+            start_time=#{start_time},
+            end_time=#{end_time}
+    	</set>
+    	where id = #{id}
+    </update>
+	<select id="finAllFrontByAdminId" parameterType="String" resultType="StoreFront">
+		SELECT * FROM `co_storefront` WHERE  `admin` = #{admin_id}
+	</select>
+	<select id="findFrontByAdminId" parameterType="String" resultType="StoreFront">
+		SELECT * FROM `co_storefront` WHERE  `admin` = #{admin_id}
+	</select>
+	<update id="updateStore" parameterType="StoreFront">
+
+		UPDATE `co_storefront`
+		<set>
+			<if test="name != null">`name`=#{name}</if>
+		</set>
+		where id = #{id}
+	</update>
+	<delete id="delete">
+    	DELETE FROM `co_table_cources` where id = #{id}
+    </delete>
+    <select id="finAllFront" resultType="StoreFront">
+    	SELECT * FROM `co_storefront`
+    </select>
+    <insert id="creatStore" parameterType="StoreFront" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO `co_storefront`(id,name) VALUES (#{id},#{name});
+	</insert>
+    <resultMap type="TableCources" id="tableCourcesResultMap">
+		<id property="id" column="id"/>
+    	<result column="name" property="name"/>
+    	<result column="star_class" property="star_class"/>
+    	<result column="type" property="type"/>
+    	<result column="effect" property="effect"/>
+    	<result column="start_time" property="start_time"/>
+    	<result column="end_time" property="end_time"/>
+    	<association column="week" property="week" javaType="week" select="getWeekById"/>
+        <association property="coach" javaType="Coach" select="com.xieke.admin.mapper.pe.CoachMapper.findById" column="coach_id"/>
+    	<association property="storeFront" column="storefront" javaType="storeFront" select="getStoreFrontById"/>
+    </resultMap>
+	<update id="insertStoreForAdmin">
+
+		UPDATE `co_storefront` set `admin` = #{adminId} WHERE id = #{storeId}
+	</update>
+	<update id="updateStoreForAdmin">
+		UPDATE `co_storefront` set `admin` = #{adminId} WHERE id = #{storeId}
+	</update>
+	<!--课程表图片-->
+	<select id="findTableImages" resultMap="tableImagesResultMap">
+		SELECT * FROM  `co_table_images`
+	</select>
+	<resultMap id="tableImagesResultMap" type="TableImages">
+		<id column="id" property="id"/>
+		<result column="src" property="src"/>
+		<association property="storeFront" column="storeid" select="getStoreFrontById"/>
+	</resultMap>
+	<update id="creatCourcesImages" parameterType="TableImages">
+		UPDATE `co_table_images` SET src = #{src} WHERE storeid = #{storeFront.id};
+	</update>
+	<select id="findTableImagesByStoreId" resultMap="tableImagesResultMap">
+		SELECT * FROM `co_table_images` WHERE storeid = #{id}
+	</select>
+	<update id="deleteImages">
+		UPDATE `co_table_images` SET src = null where id = #{id}
+	</update>
+	<insert id="creatCourcesImagesByStore" parameterType="StoreFront">
+		INSERT INTO `co_table_images`(storeid) VALUES (#{id});
+	</insert>
+	<select id="findAllCourcesImg" resultMap="tableImagesResultMap">
+		SELECT * FROM `co_table_images`
+	</select>
+    <select id="findTableImagesByStoreIdOne" resultMap="tableImagesResultMap">
+        SELECT * FROM `co_table_images` WHERE storeid = #{code}
+    </select>
+</mapper>

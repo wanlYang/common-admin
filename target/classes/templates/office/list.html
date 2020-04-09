@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>数据操作 - 数据表格</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="/static/css/public.css" media="all" />
+    <link rel="stylesheet" href="/static/css/office/admin.css" media="all">
+    <style type="text/css">
+        .course{
+            height: 110px;
+            width: 160px;
+            text-align: left;
+            line-height: 18px;
+            display: block;
+        }
+
+        .addcourse{
+            width: 160px;
+            text-align: center;
+            margin: 0 auto;
+            display: block;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+
+                    <div class="layui-col-md6">
+                        西安新晔舞蹈随便哪个店
+                       <span class="layui-badge layui-bg-blue">正常</span>
+<!--                        <span class="layui-badge layui-bg-black">已取消</span>-->
+<!--                        <span class="layui-badge layui-btn-danger">待审核</span>-->
+                    </div>
+                    <div class="layui-col-md6">
+                        <div class="layui-btn-group groupbtn"  style="float: right">
+                            <button type="button" class="layui-btn layui-btn-primary" data-type="shangweek">上一周</button>
+                            <button type="button" class="layui-btn layui-btn-primary" data-type="xiaweek">下一周</button>
+                            <button type="button" class="layui-btn layui-btn-primary" data-type="createCourse">安排排班</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+
+                    <div class="layui-form">
+                        <table class="layui-table">
+                            <colgroup>
+                                <col width="200">
+                                <col width="200">
+                                <col width="200">
+                                <col width="200">
+                                <col width="200">
+                                <col width="200">
+                                <col width="200">
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th style="text-align: center"> 星期一</br><span th:text="${#dates.format(weeks[0],'yyyy-MM-dd')}"></span></th>
+                                <th style="text-align: center"> 星期二</br><span th:text="${#dates.format(weeks[1],'yyyy-MM-dd')}"></span></th>
+                                <th style="text-align: center"> 星期三</br><span th:text="${#dates.format(weeks[2],'yyyy-MM-dd')}"></span></th>
+                                <th style="text-align: center"> 星期四</br><span th:text="${#dates.format(weeks[3],'yyyy-MM-dd')}"></span></th>
+                                <th style="text-align: center"> 星期五</br><span th:text="${#dates.format(weeks[4],'yyyy-MM-dd')}"></span></th>
+                                <th style="text-align: center"> 星期六</br><span th:text="${#dates.format(weeks[5],'yyyy-MM-dd')}"></span></th>
+                                <th style="text-align: center"> 星期日</br><span th:text="${#dates.format(weeks[6],'yyyy-MM-dd')}"></span></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+<!--                            <tr>-->
+<!--                                <td class="course_btn">-->
+<!--                                    <button class="layui-btn layui-btn-normal addcourse"  data-type="add_course" data_time="2020-01-20" data_store="3">添加排班</button>-->
+<!--                                </td>-->
+<!--                                <td class="course_btn">-->
+<!--                                    <button class="layui-btn layui-btn-normal addcourse"  data-type="add_course" data_time="2020-01-21" data_store="3">添加排班</button>-->
+<!--                                </td>-->
+<!--                                <td class="course_btn">-->
+<!--                                    <button class="layui-btn layui-btn-normal addcourse"  data-type="add_course" data_time="2020-01-22" data_store="3">添加排班</button>-->
+<!--                                </td>-->
+<!--                                <td class="course_btn">-->
+<!--                                    <button class="layui-btn layui-btn-normal addcourse"  data-type="add_course" data_time="2020-01-23" data_store="3">添加排班</button>-->
+<!--                                </td>-->
+<!--                                <td class="course_btn">-->
+<!--                                    <button class="layui-btn layui-btn-normal addcourse"  data-type="add_course" data_time="2020-01-24" data_store="3">添加排班</button>-->
+<!--                                </td>-->
+<!--                                <td class="course_btn">-->
+<!--                                    <button class="layui-btn layui-btn-normal addcourse"  data-type="add_course" data_time="2020-01-25" data_store="3">添加排班</button>-->
+<!--                                </td>-->
+<!--                                <td class="course_btn">-->
+<!--                                    <button class="layui-btn layui-btn-normal addcourse"  data-type="add_course" data_time="2020-01-26" data_store="3">添加排班</button>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+                            <tr>
+                                <td class="course_btn" >
+                                    <button
+                                            th:each="office,state:${officesOne}" class="layui-btn layui-btn-normal course" style="margin: 0 auto;margin-top: 15px;padding: 5px;">
+                                        班次：<span th:text="${office.officetime.name}"></span><br>
+                                        教练：<span th:text="${office.coach.name}"></span><br>
+                                        编号：<span th:text="${office.coach.coachNumber}"></span><br>
+                                        上班时间：<span th:text="${#dates.format(office.officetime.starttime,'HH:mm')}"></span><br>
+                                        下班时间：<span th:text="${#dates.format(office.officetime.endtime,'HH:mm')}"></span>
+                                    </button>
+                                </td>
+                                <td class="course_btn">
+                                    <button
+                                            th:each="office,state:${officesTwo}" class="layui-btn layui-btn-normal course" style="margin: 0 auto;margin-top: 15px;padding: 5px;">
+                                        班次：<span th:text="${office.officetime.name}"></span><br>
+                                        教练：<span th:text="${office.coach.name}"></span><br>
+                                        编号：<span th:text="${office.coach.coachNumber}"></span><br>
+                                        上班时间：<span th:text="${#dates.format(office.officetime.starttime,'HH:mm')}"></span><br>
+                                        下班时间：<span th:text="${#dates.format(office.officetime.endtime,'HH:mm')}"></span>
+                                    </button>
+                                </td>
+                                <td class="course_btn">
+                                    <button
+                                            th:each="office,state:${officesThree}" class="layui-btn layui-btn-normal course" style="margin: 0 auto;margin-top: 15px;padding: 5px;">
+                                        班次：<span th:text="${office.officetime.name}"></span><br>
+                                        教练：<span th:text="${office.coach.name}"></span><br>
+                                        编号：<span th:text="${office.coach.coachNumber}"></span><br>
+                                        上班时间：<span th:text="${#dates.format(office.officetime.starttime,'HH:mm')}"></span><br>
+                                        下班时间：<span th:text="${#dates.format(office.officetime.endtime,'HH:mm')}"></span>
+                                    </button>
+                                </td>
+                                <td class="course_btn">
+                                    <button
+                                            th:each="office,state:${officesFour}" class="layui-btn layui-btn-normal course" style="margin: 0 auto;margin-top: 15px;padding: 5px;">
+                                        班次：<span th:text="${office.officetime.name}"></span><br>
+                                        教练：<span th:text="${office.coach.name}"></span><br>
+                                        编号：<span th:text="${office.coach.coachNumber}"></span><br>
+                                        上班时间：<span th:text="${#dates.format(office.officetime.starttime,'HH:mm')}"></span><br>
+                                        下班时间：<span th:text="${#dates.format(office.officetime.endtime,'HH:mm')}"></span>
+                                    </button>
+                                </td>
+                                <td class="course_btn">
+                                    <button
+                                            th:each="office,state:${officesFive}" class="layui-btn layui-btn-normal course" style="margin: 0 auto;margin-top: 15px;padding: 5px;">
+                                        班次：<span th:text="${office.officetime.name}"></span><br>
+                                        教练：<span th:text="${office.coach.name}"></span><br>
+                                        编号：<span th:text="${office.coach.coachNumber}"></span><br>
+                                        上班时间：<span th:text="${#dates.format(office.officetime.starttime,'HH:mm')}"></span><br>
+                                        下班时间：<span th:text="${#dates.format(office.officetime.endtime,'HH:mm')}"></span>
+                                    </button>
+                                </td>
+                                <td class="course_btn">
+                                    <button
+                                            th:each="office,state:${officesSix}" class="layui-btn layui-btn-normal course" style="margin: 0 auto;margin-top: 15px;padding: 5px;">
+                                        班次：<span th:text="${office.officetime.name}"></span><br>
+                                        教练：<span th:text="${office.coach.name}"></span><br>
+                                        编号：<span th:text="${office.coach.coachNumber}"></span><br>
+                                        上班时间：<span th:text="${#dates.format(office.officetime.starttime,'HH:mm')}"></span><br>
+                                        下班时间：<span th:text="${#dates.format(office.officetime.endtime,'HH:mm')}"></span>
+                                    </button>
+                                </td>
+                                <td class="course_btn">
+                                    <button
+                                            th:each="office,state:${officesSevn}" class="layui-btn layui-btn-normal course" style="margin: 0 auto;margin-top: 15px;padding: 5px;">
+                                        班次：<span th:text="${office.officetime.name}"></span><br>
+                                        教练：<span th:text="${office.coach.name}"></span><br>
+                                        编号：<span th:text="${office.coach.coachNumber}"></span><br>
+                                        上班时间：<span th:text="${#dates.format(office.officetime.starttime,'HH:mm')}"></span><br>
+                                        下班时间：<span th:text="${#dates.format(office.officetime.endtime,'HH:mm')}"></span>
+                                    </button>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/static/layui/layui.js"></script>
+<script type="text/javascript" src="/static/js/utils.js"></script>
+
+<script th:inline="javascript">
+    var time_ = [[${end}]]
+    console.log(time_)
+    layui.use(['jquery'], function(){
+        var $ = layui.$, active = {
+            add_course: function(){ //添加课程
+                var CourseType = "0";
+                layer.open({
+                    type: 2,
+                    title: '团课添加',
+                    shadeClose: true,
+                    shade: 0.8,
+                    maxmin: true,
+                    area: ['60%', '90%'],
+                    content: "/admin/course/courseadd.html?CourseType="+CourseType+"&add_time="+$(this).attr('data_time')+'&'+'store_id='+$(this).attr('data_store'),
+                    success: function(layero, index){
+
+                    }
+                });
+            },
+            sel_course:function(){
+
+            },
+            reloadsss:function () {
+
+                var CourseType = "0";
+
+                //eg2
+                layer.open({
+                    type: 2
+                    ,btn: ['确认', '取消']
+                    ,shadeClose: true
+                    ,shade: 1.5
+                    ,maxmin: true
+                    ,area: ['30%', '50%']
+                    ,content: "/admin/course/storepage.html?CourseType="+CourseType
+                    ,yes: function(index, layero){
+                        //按钮【按钮一】的回调
+
+                        //获取子页面得元素
+                        var body = layer.getChildFrame('body', index);
+                        var store_id = body.find("#store_id").val();//获取到子窗口的所有的input标签
+                        console.log(store_id);
+
+                        window.location.href = "CoursePage?CourseType="+CourseType+"&store_id="+store_id;
+
+                    }
+                    ,btn2: function(index, layero){
+                        //按钮【按钮二】的回调
+
+                        // return false; 开启该代码可禁止点击该按钮关闭
+                    }
+                });
+                // layer.open({
+                //     type: 2,
+                //     title: '门店选择',
+                //     shadeClose: true,
+                //     shade: 1.5,
+                //     maxmin: true,
+                //     area: ['30%', '50%'],
+                //     btn: ['确认','取消'],
+                //     content: "/admin/course/storepage.html?CourseType="+CourseType,
+                //     yes: function(index, layero){
+                //         alert(1);
+                //         //获取子页面得元素
+                //         var body = layer.getChildFrame('body', index);
+                //         var store_id = body.find("#store_id").val();//获取到子窗口的所有的input标签
+                //         console.log(store_id);
+                //
+                //         window.location.href = "CoursePage?CourseType="+CourseType+"&store_id="+store_id;
+                //
+                //     },btn2: function(index, layero){
+                //
+                //     }
+                // });
+                //刷新
+                //window.location.search = '';
+            },
+            shangweek:function () {
+
+                var shangTime = parseInt(time_) - parseInt(60*60*24*7*1000);
+                window.location.href = "/office/listweek?timestamp="+shangTime;
+            },
+            xiaweek:function () {
+
+
+
+
+                var xiaTime = parseInt(time_) + parseInt(60*60*24*7*1000);
+
+                window.location.href = "/office/listweek?timestamp="+xiaTime;
+            },editCourse:function () {
+
+
+                // if(audit_status == 1){
+                //     layer.msg('已审核的课程无法编辑');
+                //     return;
+                // }
+
+                if(course_id == false){
+                    layer.msg('请选择课程');
+                    return false;
+                }
+                //编辑计划
+                layer.open({
+                    type: 2,
+                    title: '团课编辑',
+                    shadeClose: true,
+                    shade: 0.8,
+                    maxmin: true,
+                    area: ['60%', '90%'],
+                    content: "/admin/course/courseeditpage.html?id="+course_id,
+                    success: function(layero, index){
+
+                    }
+                });
+                // console.log(course_id);
+            },delCourse:function () {
+                if(course_id == false){
+                    layer.msg('请选择课程');
+                    return false;
+                }
+                layer.confirm('确定删除?', {icon: 3, title:'提示'}, function(index){
+                    $.ajax({
+                        'url':"/admin/course/coursedel.html?id="+course_id,
+                        'type':'post',
+                        success:function (res) {
+                            if(res.code == 200){
+                                $('#'+course_id).remove();
+                            }else{
+                                layer.msg(res.msg);
+                            }
+                        }
+                    });
+                    layer.close(index);
+                });
+
+
+                //安排排班
+                console.log(course_id);
+            },createCourse:function () {
+                var index = layui.layer.open({
+                    title: "新增班次时间",
+                    type: 2,
+                    area : ["550px","550px"],
+                    content: "/office/add",
+                    success: function(layero, index) {
+                        setTimeout(function() {
+                            layui.layer.tips('点击此处返回列表', '.layui-layer-setwin .layui-layer-close', {
+                                tips: 3
+                            });
+                        }, 500)
+                    },
+                    end: function() {
+                        $(window).unbind("resize");
+                    }
+                })
+            },reserve:function () {
+                if(course_id == false){
+                    layer.msg('请选择课程');
+                    return false;
+                }
+
+                layer.open({
+                    type: 2,
+                    title: '代预定',
+                    shadeClose: true,
+                    shade: 0.8,
+                    maxmin: true,
+                    area: ['80%', '90%'],
+                    content: "/admin/course/coursereservepage.html?id="+course_id,
+                    success: function(layero, index){
+
+                    }
+                });
+                //取消计划
+                console.log(course_id);
+            }
+
+
+        };
+        $('#course_btn .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+
+        $('.groupbtn .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    });
+</script>
+</body>
+</html>

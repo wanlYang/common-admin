@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>添加教练</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="/static/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="/static/css/public.css" media="all" />
+	<style>
+		.layui-treeSelect .ztree li span.button.switch {
+			position: relative !important;
+			top: 2px !important;
+		}
+	</style>
+</head>
+<body class="childrenBody">
+<form class="layui-form linksAdd">
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">教练姓名</label>
+			<div class="layui-input-inline">
+				<select lay-verify="required" name="user.id" class="userName" lay-search="">
+					<option value="">请选择员工</option>
+				</select>
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">是否经理</label>
+			<input type="checkbox" lay-filter="isManager" class="isManager" name="isManager" lay-skin="primary" value="0">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label" >教练编号</label>
+		<div class="layui-input-inline">
+			<input type="text" class="layui-input" lay-verify="required" name="coachNumber" placeholder="">
+		</div>
+		<label class="layui-form-label" >教练名称</label>
+		<div class="layui-input-inline">
+			<input type="text" class="layui-input" lay-verify="required" name="name" placeholder="">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">手机号</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" lay-verify="required" name="phone" placeholder="手机号">
+			</div>
+		</div>
+		<div class="layui-inline">
+			<label class="layui-form-label">所属店面</label>
+			<div class="layui-input-inline">
+				<input type="text" class="layui-input" lay-verify="required" readonly name="store" value="金彦舞蹈(经开店)">
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">性别</label>
+		<div class="layui-input-block">
+			<input type="radio" name="sex" value="0" title="女" checked>
+			<input type="radio" name="sex" value="1" title="男">
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">是否自由教练</label>
+		<input type="checkbox" lay-filter="freeCoach" class="freeCoach" name="freeCoach" lay-skin="primary" value="0">
+	</div>
+	<div class="layui-form-item">
+		<div class="layui-inline">
+			<label class="layui-form-label">状态</label>
+			<div class="layui-input-inline">
+				<select name="status" id="status" lay-verify="required" >
+					<option value="0">正常</option>
+					<option value="1">请假</option>
+					<option value="2">离职</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item layui-form-text">
+		<label class="layui-form-label">简介</label>
+		<div class="layui-input-inline">
+			<input type="text" class="layui-input" name="briefIntroduction" placeholder="">
+		</div>
+<!--		<div class="layui-input-block">-->
+<!--			<textarea placeholder="" class="layui-textarea" name="briefIntroduction"></textarea>-->
+<!--		</div>-->
+	</div>
+	<div class="layui-form-item layui-form-text">
+		<label class="layui-form-label">备注</label>
+		<div class="layui-input-inline">
+			<input type="text" class="layui-input" name="remark" placeholder="">
+		</div>
+	</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">私教课程</label>
+			<div class="layui-input-block" id="course">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<button class="layui-btn layui-block" type="button"  lay-filter="addCoach" lay-submit>保存</button>
+		</div>
+</form>
+<script type="text/javascript" src="/static/layui/layui.js"></script>
+<script type="text/javascript" src="/static/js/coach/add.js"></script>
+</body>
+</html>

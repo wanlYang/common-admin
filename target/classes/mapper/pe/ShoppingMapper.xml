@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xieke.admin.mapper.pe.ShoppingMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="ResultMap" type="Shopping">
+        <id column="id" property="id" />
+        <result column="starttime" property="starttime" />
+        <result column="endtime" property="endtime" />
+        <result column="thisday" property="thisday" />
+        <result column="nowtime" property="nowtime" />
+        <result column="valid" property="valid" />
+        <association column="coach_id" property="coach" select="com.xieke.admin.mapper.pe.CoachMapper.findById" />
+        <association column="contract_id" property="contract" select="com.xieke.admin.mapper.pe.ContractMapper.findById" />
+        <association column="customer_id" property="customer" select="com.xieke.admin.mapper.CustomerMapper.findById" />
+    </resultMap>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into pe_shopping(id,contract_id,coach_id,customer_id,starttime,endtime,thisday,nowtime) value(null,#{contract.id},#{coach.id},#{customer.id},#{starttime},#{endtime},#{thisday},#{nowtime})
+    </insert>
+    <delete id="delShoppById">
+        delete from pe_shopping where id = #{id}
+    </delete>
+    <select id="findById" resultMap="ResultMap">
+        select * from pe_shopping where id = #{id}
+    </select>
+    <select id="findByContractId" resultMap="ResultMap">
+        select * from pe_shopping where contract_id = #{id} and valid = 1
+    </select>
+    <select id="findByCustomerId" resultMap="ResultMap">
+        select * from pe_shopping where customer_id = #{id} order by valid desc
+    </select>
+
+</mapper>

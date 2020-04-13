@@ -54,4 +54,10 @@ public interface ContractService {
     List<PrivateContract> getContractByCustomerId(String id);
 
     PrivateContract findById(String id);
+
+    /**
+     * 获取教练的全部私教卡项
+     * @return
+     */
+    List<PrivateContract> findContractByCoachId(Integer id);
 }

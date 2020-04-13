@@ -433,6 +433,37 @@ layui.use(['form','layer','table','laydate','treeSelect'],function(){
         }
     });
 
+    $(".delay_btn").click(function () {
+        var checkStatus = table.checkStatus('clubcardListTable'),
+            data = checkStatus.data;
+        if(data.length > 1){
+            layer.msg("请选择一个需要延期的会员卡");
+        }else if(data.length == 0){
+            layer.msg("请选择需要延期的会员卡");
+        }else{
+            delayClubcard(data[0]);
+        }
+    });
+    function delayClubcard(data){
+        var index = layui.layer.open({
+            title: "会员卡延期",
+            type: 2,
+            area : ["500px","420px"],
+            content: "/clubcard/delay",
+            success: function(layero, index) {
+                var body = layui.layer.getChildFrame('body', index);
+                var iframeWindow = window[layero.find('iframe')[0]['name']];
+                body.find(".id").val(data.id);
+
+            },
+            end: function() {
+                $(window).unbind("resize");
+            }
+        })
+
+
+    }
+
     $(".delAll_btn").click(function() {
         var checkStatus = table.checkStatus('clubcardListTable'),
             data = checkStatus.data;

@@ -39,4 +39,12 @@ public interface ClubCardMapper {
      * @return
      */
     Integer update(Clubcard clubcard);
+
+    /**
+     * 会员卡延期
+     * @param id
+     * @param endTime
+     * @return
+     */
+    Integer delay(@Param("id") String id, @Param("endTime") Date endTime);
 }

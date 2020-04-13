@@ -25,4 +25,8 @@ public interface CoachMapper {
     Integer countAll();
 
     List<Coach> findByName(String name);
+
+    Coach login(@Param("phone") String phone, @Param("password") String password);
+
+    Coach findByPhone(@Param("phone") String phone);
 }

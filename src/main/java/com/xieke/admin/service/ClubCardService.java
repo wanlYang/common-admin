@@ -3,6 +3,7 @@ package com.xieke.admin.service;
 import com.xieke.admin.entity.Clubcard;
 import com.xieke.admin.entity.Result;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -62,4 +63,12 @@ public interface ClubCardService {
      * @return
      */
     Result updateClubCard(Clubcard clubcard);
+
+    /**
+     * 会员卡延期
+     * @param id
+     * @param endTime
+     * @return
+     */
+    Integer delay(String id, Date endTime);
 }

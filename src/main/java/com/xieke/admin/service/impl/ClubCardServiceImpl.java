@@ -173,4 +173,18 @@ public class ClubCardServiceImpl implements ClubCardService {
         clubCardMapper.update(clubcard);
         return new Result(200,"修改成功!");
     }
+
+    /**
+     * 会员卡延期
+     *
+     * @param id
+     * @param endTime
+     * @return
+     */
+    @Override
+    public Integer delay(String id, Date endTime) {
+
+
+        return clubCardMapper.delay(id,endTime);
+    }
 }

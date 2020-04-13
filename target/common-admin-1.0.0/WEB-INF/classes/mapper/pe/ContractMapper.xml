@@ -238,4 +238,7 @@
     <select id="getContractByCustomerId" resultMap="PrivateContractResultMap">
         SELECT * FROM pe_contract WHERE cust_id = #{id}
     </select>
+    <select id="findContractByCoachId" resultMap="PrivateContractResultMap">
+        SELECT * FROM pe_contract WHERE coach_in_class = #{id}
+    </select>
 </mapper>

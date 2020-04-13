@@ -77,4 +77,18 @@ public class CoachServiceImpl implements CoachService {
     public List<Coach> findByName(String name) {
         return coachMapper.findByName(name);
     }
+
+    @Override
+    public Coach login(String phone, String password) {
+
+
+        return coachMapper.login(phone,password);
+    }
+
+    @Override
+    public Coach findCoachByPhone(String phone) {
+
+
+        return coachMapper.findByPhone(phone);
+    }
 }

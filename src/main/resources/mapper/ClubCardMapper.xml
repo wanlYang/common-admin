@@ -35,6 +35,9 @@
     <delete id="deleteById">
         delete from `jy_clubcard` WHERE id = #{id}
     </delete>
+    <update id="delay">
+        update `jy_clubcard` set end_time = #{endTime} WHERE id = #{id}
+    </update>
     <!-- <insert id="insert" parameterType="Customer">
          INSERT INTO `jy_customer`
          (name,cus_type,sour_id,ic_card_in,ic_card_num,store,birthday,sex,phone,id_card,reception_id,mt_id,email,intro_id,remark)

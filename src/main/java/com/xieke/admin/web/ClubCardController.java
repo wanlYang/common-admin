@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -167,6 +168,32 @@ public class ClubCardController extends BaseController{
         Result result = new Result();
         result.setStatus(200);
         result.setMessage("审核成功@!");
+        result.setCount(row);
+        result.setData(row);
+        return result;
+    }
+
+    /**
+     * 延期
+     * @param id
+     * @return
+     */
+    @SysLog("延期")
+    @RequestMapping("/delay/submit")
+    public @ResponseBody
+    Result delay(String id, Date endTime) {
+        Integer row = clubCardService.delay(id,endTime);
+        if (row > 0){
+            Result result = new Result();
+            result.setStatus(200);
+            result.setMessage("延期成功@!");
+            result.setCount(row);
+            result.setData(row);
+            return result;
+        }
+        Result result = new Result();
+        result.setStatus(-1);
+        result.setMessage("延期失败@!");
         result.setCount(row);
         result.setData(row);
         return result;

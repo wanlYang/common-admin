@@ -61,4 +61,11 @@ public interface ContractMapper {
     Integer examine(@Param("id") String id, @Param("checkTime") Date checkDate, @Param("user") UserInfo user);
 
     List<PrivateContract> getContractByCustomerId(String id);
+
+    /**
+     * 获取教练的所有私教卡项
+     * @param id
+     * @return
+     */
+    List<PrivateContract> findContractByCoachId(Integer id);
 }

@@ -19,4 +19,8 @@ public interface CoachService {
     Integer countCoachAll();
 
     List<Coach> findByName(String name);
+
+    Coach login(String phone, String password);
+
+    Coach findCoachByPhone(String phone);
 }

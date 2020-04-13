@@ -102,6 +102,7 @@ public class ContractServiceImpl implements ContractService {
         Integer IntRow = integralService.insertIntegral(integral_);
         customerService.updateState(privateContract.getCustomer().getId(),1);
         for (int i = 0; i < paytypeIds.length; i++) {
+
             if (paytypeIds[i] == 11){
                 ContractPaytype contractPaytype = new ContractPaytype();
                 contractPaytype.setPrivateContract(privateContract);
@@ -166,5 +167,17 @@ public class ContractServiceImpl implements ContractService {
     @Override
     public PrivateContract findById(String id) {
         return contractMapper.findById(Integer.valueOf(id));
+    }
+
+    /**
+     * 获取教练的全部私教卡项
+     *
+     * @return
+     */
+    @Override
+    public List<PrivateContract> findContractByCoachId(Integer id) {
+
+
+        return contractMapper.findContractByCoachId(id);
     }
 }

@@ -44,6 +44,11 @@
 						<a class="layui-btn layui-btn-danger layui-btn-sm examine" lay-event="examine">审核</a>
 					</div>
 				</shiro:hasPermission>
+				<shiro:hasPermission name="clubcard:delay">
+					<div class="layui-inline">
+						<a class="layui-btn layui-btn-sm layui-btn-warm delay_btn" lay-event="delay_btn">延期</a>
+					</div>
+				</shiro:hasPermission>
 				<shiro:hasPermission name="clubcard:printview">
 					<div class="layui-inline">
 						<a class="layui-btn layui-btn-danger layui-btn-sm printview" lay-event="printview">打印预览</a>

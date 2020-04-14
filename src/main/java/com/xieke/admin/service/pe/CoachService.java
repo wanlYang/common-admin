@@ -23,4 +23,6 @@ public interface CoachService {
     Coach login(String phone, String password);
 
     Coach findCoachByPhone(String phone);
+
+    Integer updatePassword(String phone, String newPassword);
 }

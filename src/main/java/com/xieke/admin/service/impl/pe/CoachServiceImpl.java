@@ -91,4 +91,11 @@ public class CoachServiceImpl implements CoachService {
 
         return coachMapper.findByPhone(phone);
     }
+
+    @Override
+    public Integer updatePassword(String phone, String newPassword) {
+
+
+        return coachMapper.updatePassword(phone,newPassword);
+    }
 }

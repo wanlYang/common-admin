@@ -29,4 +29,6 @@ public interface CoachMapper {
     Coach login(@Param("phone") String phone, @Param("password") String password);
 
     Coach findByPhone(@Param("phone") String phone);
+
+    Integer updatePassword(@Param("phone") String phone, @Param("newPassword") String newPassword);
 }

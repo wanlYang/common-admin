@@ -17,6 +17,7 @@
         <result column="brief_introduction" property="briefIntroduction" />
         <result column="remark" property="remark" />
         <result column="grade" property="grade" />
+        <result column="password" property="password"></result>
         <association column="staff_id" property="user" select="com.xieke.admin.mapper.UserMapper.getUserById"/>
      </resultMap>
     <select id="selectAllCoach" resultMap="BaseResultMap">
@@ -46,8 +47,8 @@
         delete from pe_coach where id=#{id}
     </delete>
     <insert id="insertCoach" parameterType="Coach" useGeneratedKeys="true" keyProperty="id">
-        insert into pe_coach(id,name,phone,sex,store,fromsource,isManager,coach_number,free_coach,status,brief_introduction,remark,staff_id)
-        value (null,#{name},#{phone},#{sex},#{store},#{fromsource},#{isManager},#{coachNumber},#{freeCoach},#{status},#{briefIntroduction},#{remark},#{user.id})
+        insert into pe_coach(id,name,phone,sex,store,fromsource,isManager,coach_number,free_coach,status,brief_introduction,remark,staff_id,password)
+        value (null,#{name},#{phone},#{sex},#{store},#{fromsource},#{isManager},#{coachNumber},#{freeCoach},#{status},#{briefIntroduction},#{remark},#{user.id},#{password})
     </insert>
     <select id="findById" resultMap="BaseResultMap">
     select * from pe_coach where id = #{id}
@@ -77,4 +78,7 @@
         isManager=#{isManager},name=#{name},sex=#{sex},free_coach=#{freeCoach},status=#{status},
         brief_introduction=#{briefIntroduction},remark=#{remark} where id=#{id}
 </update>
+    <update id="updatePassword">
+        update pe_coach set password = #{newPassword} where phone=#{phone}
+    </update>
 </mapper>

@@ -15,8 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +29,8 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/coach/public")
-public class CoachPublicController {
+@RestController
+public class CoachPublicController implements Serializable {
 
     @Autowired
     private CoachService coachService;
@@ -60,7 +63,6 @@ public class CoachPublicController {
         result.setMessage("登陆成功!");
         result.setData(coach);
         session.setAttribute("coach",coach);
-
         return callback(callback,result);
     }
     /**
@@ -161,6 +163,7 @@ public class CoachPublicController {
         result.setStatus(200);
         result.setData(customer);
         return callback(callback,result);
+
     }
 
     /**
@@ -191,6 +194,7 @@ public class CoachPublicController {
         result.setCount(contracts.size());
         return callback(callback,result);
     }
+
 
     public String callback(String callback, Result result) {
         if (StringUtils.isNotBlank(callback)) {

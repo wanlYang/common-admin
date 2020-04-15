@@ -3,8 +3,10 @@ package com.xieke.admin.entity.pe;
 import com.xieke.admin.entity.User;
 import org.apache.ibatis.type.Alias;
 
+import java.io.Serializable;
+
 @Alias("Coach")
-public class Coach {
+public class Coach implements Serializable {
     /**
      * ID
      */

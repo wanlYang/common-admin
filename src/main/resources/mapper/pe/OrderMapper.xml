@@ -8,6 +8,7 @@
         <result column="starttime" property="starttime" />
         <result column="endtime" property="endtime" />
         <result column="thisday" property="thisday" />
+        <result column="status" property="status"/>
         <association column="coach_id" property="coach" select="com.xieke.admin.mapper.pe.CoachMapper.findById" />
         <association column="contract_id" property="contract" select="com.xieke.admin.mapper.pe.ContractMapper.findById" />
         <association column="customer_id" property="customer" select="com.xieke.admin.mapper.CustomerMapper.findById" />
@@ -20,6 +21,9 @@
     </select>
     <select id="findAllByCustomerId" resultMap="ResultMap">
         select * from pe_order where customer_id = #{id}
+    </select>
+    <select id="findByCoachId" resultMap="ResultMap">
+        select * from pe_order where coach_id = #{id}
     </select>
 
 

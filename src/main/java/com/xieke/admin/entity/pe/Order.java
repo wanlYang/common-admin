@@ -15,6 +15,15 @@ public class Order {
     private String starttime;
     private String endtime;
     private Date thisday;
+    private Integer status;
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public int getId() {
         return id;

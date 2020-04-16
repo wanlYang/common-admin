@@ -12,4 +12,6 @@ public interface OrderMapper {
     Order findByContractId(String id);
 
     List<Order> findAllByCustomerId(String id);
+
+    List<Order> findByCoachId(int id);
 }

@@ -28,4 +28,9 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> findAllByCustomerId(String id) {
         return orderMapper.findAllByCustomerId(id);
     }
+
+    @Override
+    public List<Order> findByCoachId(int id) {
+        return orderMapper.findByCoachId(id);
+    }
 }

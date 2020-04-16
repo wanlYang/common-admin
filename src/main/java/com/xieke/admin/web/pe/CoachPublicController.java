@@ -5,10 +5,12 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.xieke.admin.entity.Customer;
 import com.xieke.admin.entity.Result;
 import com.xieke.admin.entity.pe.Coach;
+import com.xieke.admin.entity.pe.Order;
 import com.xieke.admin.entity.pe.PrivateContract;
 import com.xieke.admin.service.CustomerService;
 import com.xieke.admin.service.pe.CoachService;
 import com.xieke.admin.service.pe.ContractService;
+import com.xieke.admin.service.pe.OrderService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,10 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 教练端控制器
@@ -37,6 +36,9 @@ public class CoachPublicController implements Serializable {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private OrderService orderService;
 
     @Autowired
     private ContractService contractService;
@@ -101,8 +103,25 @@ public class CoachPublicController implements Serializable {
     @RequestMapping(value = "/appointment/info", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public String appointment(String phone, Date startTime, Date endTime, @RequestParam(value = "callback", required = false) final String callback){
         Result result = new Result();
+        Coach coachByPhone = coachService.findCoachByPhone(phone);
+        if (coachByPhone == null){
+            result.setStatus(-1);
+            result.setMessage("获取失败!");
+            return callback(callback,result);
+        }
+        List<Order> orders = orderService.findByCoachId(coachByPhone.getId());
+        List<Order> orders1 = new ArrayList<>();
+        for (Order order:orders) {
+            boolean b = OfficeController.belongCalendar(order.getThisday(), startTime, endTime);
+            if (b){
+                orders1.add(order);
+            }
+        }
 
-
+        result.setStatus(200);
+        result.setMessage("获取成功!");
+        result.setData(orders1);
+        result.setCount(orders1.size());
         return callback(callback,result);
     }
 

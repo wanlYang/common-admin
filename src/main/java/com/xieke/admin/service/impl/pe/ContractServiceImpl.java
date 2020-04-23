@@ -180,4 +180,16 @@ public class ContractServiceImpl implements ContractService {
 
         return contractMapper.findContractByCoachId(id);
     }
+
+    @Override
+    public List<PrivateContract> findContractByCoachIdAndPhoneSearch(int id, String string) {
+
+        return contractMapper.findContractByCoachIdAndPhoneSearch(id,string);
+    }
+
+    @Override
+    public List<PrivateContract> findContractByCoachIdAndNameSearch(int id, String string) {
+
+        return contractMapper.findContractByCoachIdAndNameSearch(id,string);
+    }
 }

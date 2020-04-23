@@ -20,10 +20,16 @@
          select * from pe_order where contract_id = #{id}
     </select>
     <select id="findAllByCustomerId" resultMap="ResultMap">
-        select * from pe_order where customer_id = #{id}
+        select * from pe_order where customer_id = #{id} AND status = 0
     </select>
     <select id="findByCoachId" resultMap="ResultMap">
-        select * from pe_order where coach_id = #{id}
+        select * from pe_order where coach_id = #{id} AND thisday = #{thisTime} AND status = 0
+    </select>
+    <select id="findCompletedByCoachId" resultMap="ResultMap">
+        select * from pe_order where coach_id = #{id} and status = 1
+    </select>
+    <select id="findReservedByCoachId" resultMap="ResultMap">
+        select * from pe_order where coach_id = #{id} and status = 0
     </select>
 
 

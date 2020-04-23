@@ -25,7 +25,7 @@ public class ShoppingServiceImpl implements ShoppingService {
     }
 
     @Override
-    public Shopping findByContractId(String id) {
+    public List<Shopping> findByContractId(String id) {
         return shoppingMapper.findByContractId(id);
     }
 

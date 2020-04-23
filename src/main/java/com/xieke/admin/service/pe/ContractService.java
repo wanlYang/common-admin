@@ -60,4 +60,8 @@ public interface ContractService {
      * @return
      */
     List<PrivateContract> findContractByCoachId(Integer id);
+
+    List<PrivateContract> findContractByCoachIdAndPhoneSearch(int id, String string);
+
+    List<PrivateContract> findContractByCoachIdAndNameSearch(int id, String string);
 }

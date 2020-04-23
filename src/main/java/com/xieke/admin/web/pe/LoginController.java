@@ -154,6 +154,32 @@ public class LoginController {
         return callback(callback, result);
     }
 
+    /**
+     * 给时间加上几个小时
+     * @param time 当前时间 格式：yyyy-MM-dd HH:mm:ss
+     * @param X 需要加的时间
+     * @return
+     */
+    public static String addDateMinut(String time, int X){
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+        Date date = null;
+        try {
+            date = format.parse(time);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        if (date == null)
+            return "";
+        System.out.println("front:" + format.format(date)); //显示输入的日期
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.MINUTE, X);// 24小时制
+        date = cal.getTime();
+        System.out.println("after:" + format.format(date));  //显示更新后的日期
+        cal = null;
+        return format.format(date);
+
+    }
     //查找当前时间(thisTime)有空闲的教练
     @ResponseBody
     @RequestMapping(value = "/time", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
@@ -169,12 +195,24 @@ public class LoginController {
         }
         List<Alltimes> alltimesList = new ArrayList<>();
         List<String> allTimes = new ArrayList<>();
-        List<Office> thisTimeList = new ArrayList<>();
+        List<String> allOrdersTime = new ArrayList<>();
         SimpleDateFormat ist_ = new SimpleDateFormat("yyyy/MM/dd");
         SimpleDateFormat ist = new SimpleDateFormat("HH:mm:ss");
         PrivateContract privateContract = contractService.findById(id);
-        Shopping shopping = shoppingService.findByContractId(id);
-        Order orders = orderService.findByContractId(id);
+        List<Shopping> shopping = shoppingService.findByContractId(id);
+        if (shopping != null && shopping.size() > 0){
+            result.setData(null);
+            result.setStatus(-1);
+            result.setMessage("您的购物车已经有预约课程！");
+            return callback(callback, result);
+        }
+        List<Order> orders = orderService.findByCoachId(privateContract.getCoach().getId(),thisTime);
+        for (Order o:orders) {
+            allOrdersTime.add(o.getStarttime());
+            allOrdersTime.add(addDateMinut(o.getStarttime(),30));//如果课时是60分钟则需要加上本段代码,若为30分钟则可去掉
+            allOrdersTime.add(o.getEndtime());
+        }
+
         if (privateContract == null) {
             result.setData(null);
             result.setStatus(-1);
@@ -192,25 +230,10 @@ public class LoginController {
             }
             x = belongCalendar(thisTime, office.getStarttime(), office.getEndtime());
             if (x) {
-                thisTimeList.add(office);
                 //当前教练上班时间按每半小时拆分
                 List<String> qwe = getIntervalTimeList(ist.format(office.getOfficetime().getStarttime()), ist.format(office.getOfficetime().getEndtime()), 30);
                 for (String i : qwe) {
                     allTimes.add(i);
-                }
-            }
-        } else {
-            List<Office> offices = officeService.selectOffice(); //查找所有教练的所有信息
-            //判断当前时间正常上班的教练
-            for (Office oftime : offices) {
-                x = belongCalendar(thisTime, oftime.getStarttime(), oftime.getEndtime());
-                if (x) {
-                    thisTimeList.add(oftime);
-                    //当前教练上班时间按每半小时拆分
-                    List<String> qwe = getIntervalTimeList(ist.format(oftime.getOfficetime().getStarttime()), ist.format(oftime.getOfficetime().getEndtime()), 30);
-                    for (String i : qwe) {
-                        allTimes.add(i);
-                    }
                 }
             }
         }
@@ -221,43 +244,22 @@ public class LoginController {
             }
             map.put(str, i);
         }
-
         for (String s : map.keySet()) {    //遍历Key值
-            boolean a, b;
-            boolean sameDay;
-            boolean sameDayOrder;
-            if (shopping == null) {
-                a = false;
-                sameDay = false;
-
-            } else {
-                a = belongCalendar(ist.parse(s), ist.parse(shopping.getStarttime()), ist.parse(shopping.getEndtime()));
-                sameDay = DateUtils.isSameDay(thisTime, shopping.getThisday());
-            }
-            if (orders == null) {
-                b = false;
-                sameDayOrder = false;
-            } else {
-                b = belongCalendar(ist.parse(s), ist.parse(orders.getStarttime()), ist.parse(orders.getEndtime()));
-                sameDayOrder = DateUtils.isSameDay(thisTime, orders.getThisday());
-            }
-
-
-            if (map.get(s) > 0 && !a && !b && !sameDay && !sameDayOrder) {
-                String st = ist_.format(thisTime);
-                Alltimes alltimes = new Alltimes();
-                alltimes.setChoiceDate(st);
-                alltimes.setCount(map.get(s));
-                alltimes.setTimes(s);
-                alltimes.setCssClass("cando");
-                alltimesList.add(alltimes);
-            } else {
+            if (allOrdersTime.contains(s)){
                 String st = ist_.format(thisTime);
                 Alltimes alltimes = new Alltimes();
                 alltimes.setChoiceDate(st);
                 alltimes.setCount(map.get(s));
                 alltimes.setTimes(s);
                 alltimes.setCssClass("notdo");
+                alltimesList.add(alltimes);
+            }else{
+                String st = ist_.format(thisTime);
+                Alltimes alltimes = new Alltimes();
+                alltimes.setChoiceDate(st);
+                alltimes.setCount(map.get(s));
+                alltimes.setTimes(s);
+                alltimes.setCssClass("cando");
                 alltimesList.add(alltimes);
             }
         }
@@ -268,12 +270,36 @@ public class LoginController {
         return callback(callback, result);
 
     }
+    public static String dateToStrLong(Date dateDate) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateString = formatter.format(dateDate);
+        return dateString;
+    }
+
+    public static String getTimeShort() {
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        Date currentTime = new Date();
+        String dateString = formatter.format(currentTime);
+        return dateString;
+    }
 
     //添加购物车
     @ResponseBody
     @RequestMapping(value = "/shopping", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public String addShopp(String id, Date thisday, String starttime, String endtime, @RequestParam(value = "callback", required = false) final String callback) {
         Result result = new Result();
+        String now = dateToStrLong(new Date());
+        String thisday_ = dateToStrLong(thisday);
+        if(thisday_.compareTo(now) == 0){
+            if (starttime.compareTo(getTimeShort()) < 0){
+                result.setStatus(-1);
+                result.setMessage("请重新选择时间！");
+                result.setData(null);
+                result.setCount(0);
+                return callback(callback, result);
+            }
+        }
+
         PrivateContract contracts = contractService.findById(id);
         Customer customer = customerService.getCustomerByPhone(contracts.getCustomer().getPhone());
         List<Shopping> shoppings = shoppingService.findByCustomerId(String.valueOf(customer.getId()));
@@ -318,19 +344,18 @@ public class LoginController {
     //最终确认订单
     @ResponseBody
     @RequestMapping(value = "/shopp/submit", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
-    public String addOrder(String id, String shoppingId,String starttime, String endtime, @RequestParam(value = "callback", required = false) final String callback) {
+    public String addOrder(String id, String shoppingId, @RequestParam(value = "callback", required = false) final String callback) {
         Result result = new Result();
-        if (!StringUtils.isNotBlank(id)&&!StringUtils.isNotBlank(shoppingId)){
+        if (!StringUtils.isNotBlank(id)||!StringUtils.isNotBlank(shoppingId)){
             result.setStatus(-1);
-            result.setMessage("课" +
-                    "程已失效，请重新选择！");
+            result.setMessage("ID参数为空!");
             return callback(callback, result);
         }
         PrivateContract contracts = contractService.findById(id);
         Shopping shopping = shoppingService.findById(shoppingId);
         if (contracts == null || shopping == null){
             result.setStatus(-1);
-            result.setMessage("参数异常!");
+            result.setMessage("参数异常!或者购物车课程已经失效!");
             return callback(callback, result);
         }
         if (!shopping.isValid()) {
@@ -338,7 +363,6 @@ public class LoginController {
             result.setMessage("课程已失效，请重新选择！");
             return callback(callback, result);
         }
-
         Order order = new Order();
         order.setCoach(contracts.getCoach());
         order.setCustomer(contracts.getCustomer());
@@ -346,6 +370,12 @@ public class LoginController {
         order.setEndtime(shopping.getEndtime());
         order.setContract(contracts);
         order.setThisday(shopping.getThisday());
+        List<Order> allByCustomerId = orderService.findAllByCustomerId(String.valueOf(contracts.getCustomer().getId()));
+        if (allByCustomerId.size() >= 2){
+            result.setStatus(-1);
+            result.setMessage("最多可以约两节课！");
+            return callback(callback, result);
+        }
         int row = orderService.insertOrder(order);
         shoppingService.delShoppById(shoppingId);
         result.setStatus(200);
@@ -412,6 +442,8 @@ public class LoginController {
         result.setStatus(200);
         return callback(callback, result);
     }
+
+
 
 
 }

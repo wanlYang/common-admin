@@ -241,4 +241,26 @@
     <select id="findContractByCoachId" resultMap="PrivateContractResultMap">
         SELECT * FROM pe_contract WHERE coach_in_class = #{id}
     </select>
+    <select id="findContractByCoachIdAndPhoneSearch" resultMap="PrivateContractResultMap">
+        SELECT cont.* FROM jy_customer cust RIGHT JOIN pe_contract cont on cust.id = cont.cust_id
+        <where>
+            <if test="id != null">
+                AND cont.coach_in_class = #{id}
+            </if>
+            <if test="string != null">
+                AND cust.phone like CONCAT('%','${string}','%')
+            </if>
+        </where>
+    </select>
+    <select id="findContractByCoachIdAndNameSearch" resultMap="PrivateContractResultMap">
+        SELECT cont.* FROM jy_customer cust RIGHT JOIN pe_contract cont on cust.id = cont.cust_id
+        <where>
+            <if test="id != null">
+                AND cont.coach_in_class = #{id}
+            </if>
+            <if test="string != null">
+                AND cust.name like CONCAT('%','${string}','%')
+            </if>
+        </where>
+    </select>
 </mapper>

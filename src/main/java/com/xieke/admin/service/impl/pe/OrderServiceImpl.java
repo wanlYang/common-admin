@@ -6,6 +6,7 @@ import com.xieke.admin.service.pe.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -20,7 +21,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order findByContractId(String id) {
+    public List<Order> findByContractId(String id) {
         return orderMapper.findByContractId(id);
     }
 
@@ -30,7 +31,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findByCoachId(int id) {
-        return orderMapper.findByCoachId(id);
+    public List<Order> findByCoachId(int id, Date thisTime) {
+        return orderMapper.findByCoachId(id,thisTime);
+    }
+
+    @Override
+    public List<Order> findCompletedByCoachId(int id) {
+
+
+        return orderMapper.findCompletedByCoachId(id);
+    }
+
+    @Override
+    public List<Order> findReservedByCoachId(int id) {
+
+
+        return orderMapper.findReservedByCoachId(id);
     }
 }

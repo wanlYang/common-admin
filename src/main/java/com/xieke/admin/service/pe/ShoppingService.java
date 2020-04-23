@@ -9,7 +9,7 @@ public interface ShoppingService {
 
     Shopping findById(String id);
 
-    Shopping findByContractId(String id);
+    List<Shopping> findByContractId(String id);
 
     List<Shopping> findByCustomerId(String id);
 

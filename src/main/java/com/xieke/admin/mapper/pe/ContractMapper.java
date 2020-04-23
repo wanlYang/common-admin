@@ -68,4 +68,7 @@ public interface ContractMapper {
      * @return
      */
     List<PrivateContract> findContractByCoachId(Integer id);
+
+    List<PrivateContract> findContractByCoachIdAndPhoneSearch(@Param("id") int id, @Param("string") String string);
+    List<PrivateContract> findContractByCoachIdAndNameSearch(@Param("id") int id, @Param("string") String string);
 }

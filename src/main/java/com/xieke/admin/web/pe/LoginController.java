@@ -290,6 +290,13 @@ public class LoginController {
         Result result = new Result();
         String now = dateToStrLong(new Date());
         String thisday_ = dateToStrLong(thisday);
+        if(thisday_.compareTo(now) < 0){
+            result.setStatus(-1);
+            result.setMessage("请重新选择时间！");
+            result.setData(null);
+            result.setCount(0);
+            return callback(callback, result);
+        }
         if(thisday_.compareTo(now) == 0){
             if (starttime.compareTo(getTimeShort()) < 0){
                 result.setStatus(-1);

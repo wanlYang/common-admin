@@ -28,4 +28,6 @@ public interface OrderMapper {
     Order findById(String id);
 
     Integer cancel(String id);
+
+    Integer memberManual(String id);
 }

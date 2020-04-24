@@ -409,16 +409,12 @@ public class LoginController {
         }
         int row = orderService.insertOrder(order);
         shoppingService.delShoppById(shoppingId);
-        // 假设 redis key 设置过期时间：30s
-
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         SimpleDateFormat ds = new SimpleDateFormat("yyyy/MM/dd ");
         Date startTime = df.parse(ds.format(order.getThisday()) +order.getStarttime());
         int timeDelta = getTimeDelta(startTime, new Date());
         redisTemplate.opsForValue().set(String.format("order-%s", orderNo),
                 orderNo, timeDelta, TimeUnit.SECONDS);
-
-
         result.setStatus(200);
         result.setMessage("预约成功！");
         result.setData(order);

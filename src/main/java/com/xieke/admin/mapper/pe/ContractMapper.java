@@ -71,4 +71,6 @@ public interface ContractMapper {
 
     List<PrivateContract> findContractByCoachIdAndPhoneSearch(@Param("id") int id, @Param("string") String string);
     List<PrivateContract> findContractByCoachIdAndNameSearch(@Param("id") int id, @Param("string") String string);
+
+    Integer deductionTimes(@Param("id") Integer id, @Param("deductionTimes") Integer deductionTimes);
 }

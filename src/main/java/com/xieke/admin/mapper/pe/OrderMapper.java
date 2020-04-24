@@ -20,4 +20,12 @@ public interface OrderMapper {
     List<Order> findCompletedByCoachId(int id);
 
     List<Order> findReservedByCoachId(int id);
+
+    Order findByOrderKey(String key);
+
+    Integer updateOrderStatus(@Param("key") String key, @Param("i") int i);
+
+    Order findById(String id);
+
+    Integer cancel(String id);
 }

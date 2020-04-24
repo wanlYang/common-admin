@@ -48,4 +48,31 @@ public class OrderServiceImpl implements OrderService {
 
         return orderMapper.findReservedByCoachId(id);
     }
+
+    @Override
+    public Order findByOrderKey(String key) {
+
+
+        return orderMapper.findByOrderKey(key);
+    }
+
+    @Override
+    public Integer updateOrderStatus(String key, int i) {
+
+        return orderMapper.updateOrderStatus(key,i);
+    }
+
+    @Override
+    public Order findById(String id) {
+
+
+        return orderMapper.findById(id);
+    }
+
+    @Override
+    public Integer cancel(String id) {
+
+
+        return orderMapper.cancel(id);
+    }
 }

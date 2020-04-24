@@ -16,6 +16,7 @@ import com.xieke.admin.util.SortListUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static com.xieke.admin.util.TimeSplit.getIntervalTimeList;
 import static com.xieke.admin.web.pe.OfficeController.belongCalendar;
@@ -47,6 +49,9 @@ public class LoginController {
     private ShoppingService shoppingService;
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     //登录
     @ResponseBody
@@ -196,21 +201,31 @@ public class LoginController {
         List<Alltimes> alltimesList = new ArrayList<>();
         List<String> allTimes = new ArrayList<>();
         List<String> allOrdersTime = new ArrayList<>();
+        List<String> allShoppingTime = new ArrayList<>();
         SimpleDateFormat ist_ = new SimpleDateFormat("yyyy/MM/dd");
         SimpleDateFormat ist = new SimpleDateFormat("HH:mm:ss");
         PrivateContract privateContract = contractService.findById(id);
         List<Shopping> shopping = shoppingService.findByContractId(id);
-        if (shopping != null && shopping.size() > 0){
-            result.setData(null);
-            result.setStatus(-1);
-            result.setMessage("您的购物车已经有预约课程！");
-            return callback(callback, result);
+        for (Shopping shopping_ : shopping) {
+            if (shopping_.isValid()) {
+                result.setStatus(-1);
+                result.setMessage("购物车有未完成的订单！");
+                result.setData(null);
+                result.setCount(0);
+                return callback(callback, result);
+            }
         }
+        List<Shopping> shoppings = shoppingService.findByCoachId(privateContract.getCoach().getId(),thisTime);
+        for (Shopping s: shoppings) {
+            allShoppingTime.add(s.getStarttime());
+            allShoppingTime.add(addDateMinut(s.getStarttime(),30));
+        }
+
         List<Order> orders = orderService.findByCoachId(privateContract.getCoach().getId(),thisTime);
         for (Order o:orders) {
             allOrdersTime.add(o.getStarttime());
             allOrdersTime.add(addDateMinut(o.getStarttime(),30));//如果课时是60分钟则需要加上本段代码,若为30分钟则可去掉
-            allOrdersTime.add(o.getEndtime());
+            //allOrdersTime.add(o.getEndtime());
         }
 
         if (privateContract == null) {
@@ -245,7 +260,7 @@ public class LoginController {
             map.put(str, i);
         }
         for (String s : map.keySet()) {    //遍历Key值
-            if (allOrdersTime.contains(s)){
+            if (allOrdersTime.contains(s) || allShoppingTime.contains(s)){
                 String st = ist_.format(thisTime);
                 Alltimes alltimes = new Alltimes();
                 alltimes.setChoiceDate(st);
@@ -348,10 +363,15 @@ public class LoginController {
 
     }
 
+    public static int getTimeDelta(Date date1,Date date2){
+        long timeDelta=(date1.getTime()-date2.getTime())/1000;//单位是秒
+        int secondsDelta=timeDelta>0?(int)timeDelta:(int)Math.abs(timeDelta);
+        return secondsDelta;
+    }
     //最终确认订单
     @ResponseBody
     @RequestMapping(value = "/shopp/submit", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
-    public String addOrder(String id, String shoppingId, @RequestParam(value = "callback", required = false) final String callback) {
+    public String addOrder(String id, String shoppingId, @RequestParam(value = "callback", required = false) final String callback) throws ParseException {
         Result result = new Result();
         if (!StringUtils.isNotBlank(id)||!StringUtils.isNotBlank(shoppingId)){
             result.setStatus(-1);
@@ -376,7 +396,11 @@ public class LoginController {
         order.setStarttime(shopping.getStarttime());
         order.setEndtime(shopping.getEndtime());
         order.setContract(contracts);
+        order.setStatus(0);
         order.setThisday(shopping.getThisday());
+        // 订单号
+        String orderNo = UUID.randomUUID().toString().replaceAll("-", "");
+        order.setOrderKey(String.format("order-%s", orderNo));
         List<Order> allByCustomerId = orderService.findAllByCustomerId(String.valueOf(contracts.getCustomer().getId()));
         if (allByCustomerId.size() >= 2){
             result.setStatus(-1);
@@ -385,6 +409,16 @@ public class LoginController {
         }
         int row = orderService.insertOrder(order);
         shoppingService.delShoppById(shoppingId);
+        // 假设 redis key 设置过期时间：30s
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat ds = new SimpleDateFormat("yyyy/MM/dd ");
+        Date startTime = df.parse(ds.format(order.getThisday()) +order.getStarttime());
+        int timeDelta = getTimeDelta(startTime, new Date());
+        redisTemplate.opsForValue().set(String.format("order-%s", orderNo),
+                orderNo, timeDelta, TimeUnit.SECONDS);
+
+
         result.setStatus(200);
         result.setMessage("预约成功！");
         result.setData(order);
@@ -392,7 +426,37 @@ public class LoginController {
         return callback(callback, result);
 
     }
+    //取消订单
+    @ResponseBody
+    @RequestMapping(value = "/order/cancel", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public String cancel(String id, @RequestParam(value = "callback", required = false) final String callback) throws ParseException {
+        Result result = new Result();
+        Order order = orderService.findById(id);
+        if (order == null){
+            result.setStatus(-1);
+            result.setMessage("参数异常！");
+            result.setCount(0);
+            return callback(callback, result);
+        }
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat ds = new SimpleDateFormat("yyyy/MM/dd ");
+        Date startTime = df.parse(ds.format(order.getThisday()) +order.getStarttime());
+        int timeDelta = getTimeDelta(startTime, new Date());
+        int hour = timeDelta/3600;
+        if (hour>6){
+            Integer row = orderService.cancel(id);
+            result.setStatus(200);
+            result.setMessage("取消成功！");
+            result.setCount(row);
+            return callback(callback, result);
+        }
+        String totalTimeStr = timeDelta/3600 + "时" + (timeDelta%3600)/60 + "分" + (timeDelta%3600)%60 + "秒";
+        result.setStatus(-1);
+        result.setMessage("取消失败！距离开课时间还有:" + totalTimeStr +",提前6小时之前可以取消课程!");
+        result.setCount(0);
+        return callback(callback, result);
 
+    }
     //获取当前购物车信息
     @ResponseBody
     @RequestMapping(value = "/shopp/get", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})

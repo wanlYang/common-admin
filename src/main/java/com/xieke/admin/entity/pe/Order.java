@@ -16,6 +16,15 @@ public class Order {
     private String endtime;
     private Date thisday;
     private Integer status;
+    private String orderKey;
+
+    public String getOrderKey() {
+        return orderKey;
+    }
+
+    public void setOrderKey(String orderKey) {
+        this.orderKey = orderKey;
+    }
 
     public Integer getStatus() {
         return status;

@@ -17,4 +17,12 @@ public interface OrderService {
     List<Order> findCompletedByCoachId(int id);
 
     List<Order> findReservedByCoachId(int id);
+
+    Order findByOrderKey(String key);
+
+    Integer updateOrderStatus(String key, int i);
+
+    Order findById(String id);
+
+    Integer cancel(String id);
 }

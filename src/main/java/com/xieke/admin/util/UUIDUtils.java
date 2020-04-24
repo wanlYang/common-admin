@@ -85,7 +85,7 @@ public class UUIDUtils {
         }
         if (type.equals("COACH")) {
             String wanl = "SJ";
-            return wanl = wanl +date+ no +"";
+            return wanl = wanl +date +"";
         }
         if (type.equals("FIRSTMONEY")) {
             String wanl = "FM";

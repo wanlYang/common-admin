@@ -192,4 +192,10 @@ public class ContractServiceImpl implements ContractService {
 
         return contractMapper.findContractByCoachIdAndNameSearch(id,string);
     }
+
+    @Override
+    public Integer deductionTimes(Integer id, Integer deductionTimes) {
+
+        return contractMapper.deductionTimes(id,deductionTimes);
+    }
 }

@@ -6,6 +6,7 @@ import com.xieke.admin.service.pe.ShoppingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -37,5 +38,12 @@ public class ShoppingServiceImpl implements ShoppingService {
     @Override
     public int delShoppById(String id) {
         return shoppingMapper.delShoppById(id);
+    }
+
+    @Override
+    public List<Shopping> findByCoachId(int id, Date thisTime) {
+
+
+        return shoppingMapper.findByCoachId(id,thisTime);
     }
 }

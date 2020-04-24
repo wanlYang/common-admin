@@ -29,5 +29,8 @@
     <select id="findByCustomerId" resultMap="ResultMap">
         select * from pe_shopping where customer_id = #{id} order by valid desc
     </select>
+    <select id="findByCoachId" resultMap="ResultMap">
+        select * from pe_shopping where coach_id = #{id} and thisday = #{thisTime} and valid = 1
+    </select>
 
 </mapper>

@@ -64,4 +64,6 @@ public interface ContractService {
     List<PrivateContract> findContractByCoachIdAndPhoneSearch(int id, String string);
 
     List<PrivateContract> findContractByCoachIdAndNameSearch(int id, String string);
+
+    Integer deductionTimes(Integer id, Integer deductionTimes);
 }

@@ -75,11 +75,4 @@ public class OrderServiceImpl implements OrderService {
 
         return orderMapper.cancel(id);
     }
-
-    @Override
-    public Integer memberManual(String id) {
-
-
-        return orderMapper.memberManual(id);
-    }
 }

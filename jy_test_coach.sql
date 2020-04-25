@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 24/04/2020 19:29:57
+ Date: 25/04/2020 16:11:36
 */
 
 SET NAMES utf8mb4;
@@ -769,7 +769,7 @@ CREATE TABLE `pe_coach`  (
   `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '备注',
   `sex` tinyint(1) DEFAULT NULL COMMENT '0女 1男',
   `grade` int(10) DEFAULT NULL COMMENT '教练星级',
-  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '教练端登录密码',
+  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '111' COMMENT '教练端登录密码',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -903,7 +903,7 @@ CREATE TABLE `pe_office`  (
   INDEX `officetime_id`(`officetime_id`) USING BTREE,
   CONSTRAINT `coach_id` FOREIGN KEY (`coach_id`) REFERENCES `pe_coach` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `officetime_id` FOREIGN KEY (`officetime_id`) REFERENCES `pe_officetime` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of pe_office
@@ -945,10 +945,10 @@ CREATE TABLE `pe_order`  (
   `starttime` time(0) DEFAULT NULL COMMENT '预约课程的开始时间',
   `endtime` time(0) DEFAULT NULL COMMENT '预约课程的结束时间',
   `thisday` date DEFAULT NULL COMMENT '当天时间',
-  `status` int(11) DEFAULT 0 COMMENT '预约状态0 未完成  1已完成 2系统上课中  3缺席 5取消  6教练点击上课中',
+  `status` int(11) DEFAULT 0 COMMENT '预约状态0 未完成  1已完成 2教练登记  3缺席 5取消  6会员点击下课 7会员点击上课中',
   `order_key` varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'redis计算时间的ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 50 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '购物车临时表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 68 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '购物车临时表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for pe_shopping
@@ -965,7 +965,7 @@ CREATE TABLE `pe_shopping`  (
   `valid` tinyint(1) DEFAULT 1 COMMENT '订单是否有效（三分钟）1有效  0无效',
   `nowtime` timestamp(0) DEFAULT NULL COMMENT '数据写入时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 118 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '购物车临时表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 160 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '购物车临时表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for sys_log

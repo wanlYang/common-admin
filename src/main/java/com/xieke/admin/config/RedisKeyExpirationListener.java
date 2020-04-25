@@ -59,6 +59,7 @@ public class RedisKeyExpirationListener extends KeyExpirationEventMessageListene
                 if (order.getStatus() == 0){
                     //设置状态为上课中 预约状态0 未完成  1已完成 2教练登记  3缺席 5取消  6会员点击下课 7教练登记上课中 8课程结束下课中
                     orderService.updateOrderStatus(key,3);
+                    contractService.deductionTimes(order.getContract().getId(),deductionTimes);
                 }
                 if (order.getStatus() == 2){
                     orderService.updateOrderStatus(key,7);
@@ -77,6 +78,7 @@ public class RedisKeyExpirationListener extends KeyExpirationEventMessageListene
                 }
                 if (order.getStatus() == 8){
                     orderService.updateOrderStatus(key,3);
+                    contractService.deductionTimes(order.getContract().getId(),deductionTimes);
 //                    redisTemplate.opsForValue().set(key,
 //                            key, 900, TimeUnit.SECONDS);
                 }

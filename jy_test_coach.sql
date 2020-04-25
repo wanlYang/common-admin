@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 25/04/2020 20:45:34
+ Date: 25/04/2020 21:06:26
 */
 
 SET NAMES utf8mb4;
@@ -932,6 +932,7 @@ CREATE TABLE `pe_officetime`  (
 -- ----------------------------
 INSERT INTO `pe_officetime` VALUES (1, '早班', '09:30:00', '17:30:00', '#3b88c2', 1);
 INSERT INTO `pe_officetime` VALUES (4, '晚班', '13:30:00', '21:30:00', '#a541c4', 1);
+INSERT INTO `pe_officetime` VALUES (5, '早晚班', '09:00:00', '21:30:00', '#bc4917', 1);
 
 -- ----------------------------
 -- Table structure for pe_order

@@ -220,7 +220,7 @@ public class LoginController {
             allShoppingTime.add(addDateMinut(s.getStarttime(),30));
         }
 
-        List<Order> orders = orderService.findByCoachId(privateContract.getCoach().getId(),thisTime);
+        List<Order> orders = orderService.findByCoachIdForTime(privateContract.getCoach().getId(),thisTime);
         for (Order o:orders) {
             allOrdersTime.add(o.getStarttime());
             allOrdersTime.add(addDateMinut(o.getStarttime(),30));//如果课时是60分钟则需要加上本段代码,若为30分钟则可去掉
@@ -407,7 +407,7 @@ public class LoginController {
         // 订单号
         String orderNo = UUID.randomUUID().toString().replaceAll("-", "");
         order.setOrderKey(String.format("order-%s", orderNo));
-        List<Order> allByCustomerId = orderService.findAllByCustomerId(String.valueOf(contracts.getCustomer().getId()));
+        List<Order> allByCustomerId = orderService.findAllByCustomerIdForAddOrder(String.valueOf(contracts.getCustomer().getId()));
         if (allByCustomerId.size() >= 2){
             result.setStatus(-1);
             result.setMessage("最多可以约两节课！");

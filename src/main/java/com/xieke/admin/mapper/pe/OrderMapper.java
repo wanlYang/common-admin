@@ -32,4 +32,12 @@ public interface OrderMapper {
     Integer memberManual(String id);
 
     Integer coachRegister(String id);
+
+    List<Order> findAll(@Param("start") int start, @Param("limit") Integer limit, @Param("name") String name, @Param("phone") String phone);
+
+    int count(@Param("name") String name, @Param("phone") String phone);
+
+    List<Order> findAllByCustomerIdForAddOrder(String id);
+
+    List<Order> findByCoachIdForTime(@Param("id") int id, @Param("thisTime") Date thisTime);
 }

@@ -29,4 +29,12 @@ public interface OrderService {
     Integer memberManual(String id);
 
     Integer coachRegister(String id);
+
+    List<Order> findAll(Integer page, Integer limit, String name, String phone);
+
+    int count(String name, String phone);
+
+    List<Order> findAllByCustomerIdForAddOrder(String id);
+
+    List<Order> findByCoachIdForTime(int id, Date thisTime);
 }

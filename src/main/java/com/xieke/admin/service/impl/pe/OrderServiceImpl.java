@@ -87,4 +87,33 @@ public class OrderServiceImpl implements OrderService {
     public Integer coachRegister(String id) {
         return orderMapper.coachRegister(id);
     }
+
+    @Override
+    public List<Order> findAll(Integer page, Integer limit, String name, String phone) {
+
+
+        return orderMapper.findAll((page - 1) * limit, limit,name,phone);
+    }
+
+    @Override
+    public int count(String name, String phone) {
+
+
+        return orderMapper.count(name,phone);
+    }
+
+    @Override
+    public List<Order> findAllByCustomerIdForAddOrder(String id) {
+
+
+        return orderMapper.findAllByCustomerIdForAddOrder(id);
+    }
+
+
+    @Override
+    public List<Order> findByCoachIdForTime(int id, Date thisTime) {
+
+
+        return orderMapper.findByCoachIdForTime(id,thisTime);
+    }
 }

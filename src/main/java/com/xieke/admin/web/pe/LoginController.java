@@ -447,6 +447,12 @@ public class LoginController {
             result.setCount(0);
             return callback(callback, result);
         }
+        if (order.getStatus() == 6){
+            result.setStatus(-1);
+            result.setMessage("已经发送下课请求！");
+            result.setCount(0);
+            return callback(callback, result);
+        }
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         SimpleDateFormat ds = new SimpleDateFormat("yyyy/MM/dd ");
@@ -469,7 +475,7 @@ public class LoginController {
             }
         }else if(minute<=-15){
             result.setStatus(-1);
-            result.setMessage("下课失败!下课时间已经结束!");
+            result.setMessage("下课失败!下课时间已经结束!请下课后15分钟内点击下课签课!");
             result.setCount(0);
             return callback(callback, result);
         }else{

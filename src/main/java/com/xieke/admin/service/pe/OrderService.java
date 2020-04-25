@@ -37,4 +37,6 @@ public interface OrderService {
     List<Order> findAllByCustomerIdForAddOrder(String id);
 
     List<Order> findByCoachIdForTime(int id, Date thisTime);
+
+    Integer signing(String id);
 }

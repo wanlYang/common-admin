@@ -67,6 +67,12 @@ public class CoachPublicController implements Serializable {
             result.setCount(0);
             return callback(callback, result);
         }
+        if (order.getStatus() == 2){
+            result.setStatus(-1);
+            result.setMessage("已发送登记请求！");
+            result.setCount(0);
+            return callback(callback, result);
+        }
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         SimpleDateFormat ds = new SimpleDateFormat("yyyy/MM/dd ");
         Date startTime = df.parse(ds.format(order.getThisday()) +order.getStarttime());

@@ -20,7 +20,13 @@
 		</form>
 	</blockquote>
 	<table id="orderList" lay-filter="orderList"></table>
-
+	<script type="text/html" id="barDemo">
+		{{# if(d.status != 1){ }}
+			<a class="layui-btn layui-btn-info layui-btn-xs" lay-event="sing">签课</a>
+		{{# }else{ }}
+			<a class="layui-btn layui-btn-info layui-btn-xs">已完成</a>
+		{{# } }}
+	</script>
 </form>
 <script type="text/javascript" src="/static/layui/layui.js"></script>
 <script type="text/javascript" src="/static/js/utils.js"></script>

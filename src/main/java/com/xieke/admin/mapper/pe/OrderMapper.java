@@ -40,4 +40,6 @@ public interface OrderMapper {
     List<Order> findAllByCustomerIdForAddOrder(String id);
 
     List<Order> findByCoachIdForTime(@Param("id") int id, @Param("thisTime") Date thisTime);
+
+    Integer signing(String id);
 }

@@ -116,4 +116,11 @@ public class OrderServiceImpl implements OrderService {
 
         return orderMapper.findByCoachIdForTime(id,thisTime);
     }
+
+    @Override
+    public Integer signing(String id) {
+
+
+        return orderMapper.signing(id);
+    }
 }

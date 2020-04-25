@@ -107,7 +107,7 @@ layui.use(['form','layer','table','laydate'],function(){
                     }
                 }
             },
-            {field: 'sing', title: '签课', minWidth:100, align:'center'},
+            ,{title:'操作',fixed: 'right', align:'center', minWidth:100, toolbar: '#barDemo'}
         ]],
         text: {
             none: '暂无相关数据' // 默认：无数据。注：该属性为 layui 2.2.5 开始新增
@@ -137,5 +137,37 @@ layui.use(['form','layer','table','laydate'],function(){
         obj.tr.addClass("layui-table-click").siblings().removeClass("layui-table-click");
         obj.tr.find("div.layui-unselect.layui-form-radio")[1].click();
     })
+    table.on('tool(orderList)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+        var data = obj.data; //获得当前行数据
+        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+        var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+
+        if(layEvent === 'sing'){ //查看
+            layer.confirm('确定签课吗？', {icon: 3, title: '提示信息'}, function (index) {
+                $.ajax({
+                    url: "/order/booking/signing",
+                    type: "post",
+                    data: {id : data.id},
+                    success: function(res){
+                        layer.close(index);
+                        if (res.status == 200){
+                            layer.msg(res.message);
+                            setTimeout(function(){
+                                location.reload();//刷新页面
+                            },1500);
+                        } else {
+                            layer.msg(res.message);
+                        }
+                    },
+                    error: function (xmlHttpRequest) {
+                        layer.close(index);
+                        common.outErrorMsg(xmlHttpRequest);
+                    }
+                });
+
+            });
+        }
+    });
+
 
 })

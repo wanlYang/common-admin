@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 25/04/2020 16:11:36
+ Date: 25/04/2020 20:45:34
 */
 
 SET NAMES utf8mb4;
@@ -390,7 +390,7 @@ CREATE TABLE `co_table_images`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `storeid`(`storeid`) USING BTREE,
   CONSTRAINT `co_table_images_ibfk_1` FOREIGN KEY (`storeid`) REFERENCES `co_storefront` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of co_table_images
@@ -433,7 +433,7 @@ CREATE TABLE `jy_acuser`  (
   `phone` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '手机号',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `phone`(`phone`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 534 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 535 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of jy_acuser
@@ -495,7 +495,7 @@ CREATE TABLE `jy_cardsetting`  (
   `create_time` datetime(0) DEFAULT NULL COMMENT '操作时间',
   `num` int(11) DEFAULT NULL COMMENT '次卡次数',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of jy_cardsetting
@@ -532,12 +532,12 @@ CREATE TABLE `jy_clubcard`  (
   `payfor` decimal(20, 2) DEFAULT NULL COMMENT '实际收款金额',
   `examine` int(11) DEFAULT 0 COMMENT '审核状态 0 未审核  1 已审核',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of jy_clubcard
 -- ----------------------------
-INSERT INTO `jy_clubcard` VALUES (1, 13, 'JY20204131084153692', 0, 1, 6, 18, '金彦舞蹈（经开店）', '', '10', '45454', 1, '2020-04-13 16:06:54', NULL, NULL, NULL, NULL, '2020-04-13 00:00:00', '2020-04-30 00:00:00', 2000.00, 0);
+INSERT INTO `jy_clubcard` VALUES (1, 13, 'JY20204131084153692', 0, 1, 6, 18, '金彦舞蹈（经开店）', '', '10', '45454', 1, '2020-04-13 16:06:54', NULL, NULL, 1, '2020-04-25 17:14:18', '2020-04-13 00:00:00', '2020-04-30 00:00:00', 2000.00, 1);
 
 -- ----------------------------
 -- Table structure for jy_clubcard_paytype
@@ -549,7 +549,7 @@ CREATE TABLE `jy_clubcard_paytype`  (
   `clubcard_id` int(11) DEFAULT NULL COMMENT '会员卡ID',
   `paytype_id` int(11) DEFAULT NULL COMMENT '付款方式ID',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '客户会员卡付款方式表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '客户会员卡付款方式表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of jy_clubcard_paytype
@@ -567,7 +567,7 @@ CREATE TABLE `jy_coupons`  (
   `end_time` datetime(0) NOT NULL COMMENT '结束时间',
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '图片',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '优惠券\r\n' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '优惠券\r\n' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of jy_coupons
@@ -625,7 +625,7 @@ CREATE TABLE `jy_firstmoney`  (
   `store` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '店面名称',
   `cust_id` int(11) NOT NULL COMMENT '所属客户',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for jy_fromsource
@@ -659,7 +659,7 @@ CREATE TABLE `jy_gift`  (
   `acuser_id` int(11) NOT NULL COMMENT '中奖者ID',
   `gift_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '礼品名称',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for jy_integral
@@ -676,7 +676,7 @@ CREATE TABLE `jy_integral`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `cust_id`(`cust_id`) USING BTREE,
   CONSTRAINT `jy_integral_ibfk_1` FOREIGN KEY (`cust_id`) REFERENCES `jy_customer` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 23 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of jy_integral
@@ -718,7 +718,7 @@ CREATE TABLE `jy_setwinner`  (
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '名称',
   `phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '手机号',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '本表是设定中奖人表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '本表是设定中奖人表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for jy_usercou
@@ -730,7 +730,7 @@ CREATE TABLE `jy_usercou`  (
   `state` tinyint(1) NOT NULL DEFAULT 0 COMMENT '状态   1通过审核     0未审核',
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 71 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '优惠券' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 72 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '优惠券' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of jy_usercou
@@ -981,7 +981,7 @@ CREATE TABLE `sys_log`  (
   `update_time` datetime(0) DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
   `create_time` datetime(0) DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 846 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 852 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_log
@@ -1788,6 +1788,13 @@ INSERT INTO `sys_log` VALUES (842, 1, 'admin', 'com.xieke.admin.web.ClubCardCont
 INSERT INTO `sys_log` VALUES (843, 1, 'admin', 'com.xieke.admin.web.ClubCardController.printview', '{\"empty\":true,\"model\":{},\"modelMap\":{\"$ref\":\"$.model\"},\"reference\":false}', '打印会员卡信息', '2020-04-13 16:53:53', '2020-04-13 16:53:53');
 INSERT INTO `sys_log` VALUES (844, 1, 'admin', 'com.xieke.admin.web.pe.ContractController.add', '{\"auditStatus\":0,\"classHour\":\"60\",\"closingDate\":1618934400000,\"coach\":{\"coachNumber\":\"cs004\",\"freeCoach\":0,\"id\":9,\"isManager\":0,\"name\":\"小张\",\"sex\":0,\"status\":0},\"contractNumber\":\"\",\"course\":{\"id\":6},\"customer\":{\"cusType\":0,\"id\":12,\"name\":\"张昊\",\"sex\":0},\"effectiveDate\":1587398400000,\"freqPresent\":10,\"fromsource\":{\"id\":1},\"isFreeClass\":0,\"mt\":{\"id\":17},\"paymentDocu\":\"danjv123\",\"postponement\":0,\"presentationPoints\":10,\"purchaseTimes\":10,\"remark\":\"\",\"residualTimes\":0,\"signingDate\":1587398400000,\"status\":0,\"store\":\"金彦舞蹈(经开店)\",\"totalAmountOfGifts\":\"1200\",\"totalNumber\":20,\"totalPurchaseAmount\":\"1200\",\"totalSum\":\"2400\",\"unitPrice\":\"120\"}', '添加私教合同信息', '2020-04-21 21:01:16', '2020-04-21 21:01:16');
 INSERT INTO `sys_log` VALUES (845, 1, 'admin', 'com.xieke.admin.web.pe.ContractController.examine', '\"10\"', '审核私教合同', '2020-04-21 21:01:28', '2020-04-21 21:01:28');
+INSERT INTO `sys_log` VALUES (846, 1, 'admin', 'com.xieke.admin.web.pe.ContractController.printview', '{\"empty\":true,\"model\":{},\"modelMap\":{\"$ref\":\"$.model\"},\"reference\":false}', '打印私教合同信息', '2020-04-25 17:01:49', '2020-04-25 17:01:49');
+INSERT INTO `sys_log` VALUES (847, 1, 'admin', 'com.xieke.admin.web.ClubCardController.examinePage', '{\"empty\":true,\"model\":{},\"modelMap\":{\"$ref\":\"$.model\"},\"reference\":false}', '会员卡审核', '2020-04-25 17:14:17', '2020-04-25 17:14:17');
+INSERT INTO `sys_log` VALUES (848, 1, 'admin', 'com.xieke.admin.web.ClubCardController.examine', '\"1\"', '审核', '2020-04-25 17:14:18', '2020-04-25 17:14:18');
+INSERT INTO `sys_log` VALUES (849, 1, 'admin', 'com.xieke.admin.web.PermissionController.save', '{\"available\":1,\"parentId\":4,\"permissionCode\":\"order:management\",\"permissionName\":\"订单管理\",\"resourceType\":\"directory\",\"url\":\"\"}', '保存权限操作', '2020-04-25 18:13:04', '2020-04-25 18:13:04');
+INSERT INTO `sys_log` VALUES (850, 1, 'admin', 'com.xieke.admin.web.PermissionController.save', '{\"available\":1,\"parentId\":790,\"permissionCode\":\"booking:order\",\"permissionName\":\"预约订单\",\"resourceType\":\"menu\",\"url\":\"/order/booking\"}', '保存权限操作', '2020-04-25 18:14:50', '2020-04-25 18:14:50');
+INSERT INTO `sys_log` VALUES (851, 1, 'admin', 'com.xieke.admin.web.RoleController.save', '{\"available\":1,\"id\":6,\"permissionIds\":\",7,733,734,735,736,737,738,739,740,71,710,711,712,72,720,721,722,73,730,731,732,74,75,76,4,777,778,779,780,781,782,783,784,741,743,744,785,745,746,752,753,748,749,750,751,790,791,1,11,12,120,121,122,13,130,131,132,14,140,3,31,310,311,312,32,320,321,322,323,324,789,33,786,787,788,756,757,758,759,760,761,762,775,763,764,765,766,767,768,776,769,770,771,772,773,774,2,5,6,\",\"roleCode\":\"1\",\"roleName\":\"超级管理员\"}', '保存角色操作', '2020-04-25 18:15:04', '2020-04-25 18:15:04');
+INSERT INTO `sys_log` VALUES (852, 1, 'admin', 'com.xieke.admin.web.PermissionController.save', '{\"available\":1,\"id\":791,\"parentId\":790,\"permissionCode\":\"booking:order\",\"permissionName\":\"预约订单\",\"resourceType\":\"menu\",\"url\":\"/order/booking/list\"}', '保存权限操作', '2020-04-25 19:39:00', '2020-04-25 19:39:00');
 
 -- ----------------------------
 -- Table structure for sys_login_log
@@ -1802,7 +1809,7 @@ CREATE TABLE `sys_login_log`  (
   `update_time` datetime(0) DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
   `create_time` datetime(0) DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 448 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '登录日志' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 452 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '登录日志' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_login_log
@@ -2184,6 +2191,13 @@ INSERT INTO `sys_login_log` VALUES (444, 1, 'admin', '0:0:0:0:0:0:0:1', NULL, '2
 INSERT INTO `sys_login_log` VALUES (445, 1, 'admin', '0:0:0:0:0:0:0:1', NULL, '2020-04-23 18:20:14', '2020-04-23 18:20:14');
 INSERT INTO `sys_login_log` VALUES (446, 1, 'admin', '0:0:0:0:0:0:0:1', NULL, '2020-04-23 19:16:13', '2020-04-23 19:16:13');
 INSERT INTO `sys_login_log` VALUES (447, 1, 'admin', '0:0:0:0:0:0:0:1', NULL, '2020-04-23 21:00:43', '2020-04-23 21:00:43');
+INSERT INTO `sys_login_log` VALUES (448, 1, 'admin', '0:0:0:0:0:0:0:1', NULL, '2020-04-25 16:18:54', '2020-04-25 16:18:54');
+INSERT INTO `sys_login_log` VALUES (449, 1, 'admin', '0:0:0:0:0:0:0:1', NULL, '2020-04-25 17:01:44', '2020-04-25 17:01:44');
+INSERT INTO `sys_login_log` VALUES (450, 1, 'admin', '0:0:0:0:0:0:0:1', NULL, '2020-04-25 18:08:36', '2020-04-25 18:08:36');
+INSERT INTO `sys_login_log` VALUES (451, 1, 'admin', '0:0:0:0:0:0:0:1', NULL, '2020-04-25 18:15:09', '2020-04-25 18:15:09');
+INSERT INTO `sys_login_log` VALUES (452, 1, 'admin', '0:0:0:0:0:0:0:1', NULL, '2020-04-25 19:37:55', '2020-04-25 19:37:55');
+INSERT INTO `sys_login_log` VALUES (453, 1, 'admin', '0:0:0:0:0:0:0:1', NULL, '2020-04-25 19:39:05', '2020-04-25 19:39:05');
+INSERT INTO `sys_login_log` VALUES (454, 1, 'admin', '0:0:0:0:0:0:0:1', NULL, '2020-04-25 20:38:38', '2020-04-25 20:38:38');
 
 -- ----------------------------
 -- Table structure for sys_permission
@@ -2201,7 +2215,7 @@ CREATE TABLE `sys_permission`  (
   `update_time` datetime(0) DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
   `create_time` datetime(0) DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 790 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统权限' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 791 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '系统权限' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_permission
@@ -2303,6 +2317,8 @@ INSERT INTO `sys_permission` VALUES (786, 1, '添加', 33, '0/3/33', 'fromsource
 INSERT INTO `sys_permission` VALUES (787, 1, '编辑', 33, '0/3/33', 'fromsource:edit', 'button', NULL, '2020-04-07 15:53:55', '2020-04-07 15:53:31');
 INSERT INTO `sys_permission` VALUES (788, 1, '删除', 33, '0/3/33', 'fromsource:del', 'button', NULL, '2020-04-07 15:53:44', '2020-04-07 15:53:44');
 INSERT INTO `sys_permission` VALUES (789, 1, '延期', 32, '0/3/32', 'clubcard:delay', 'button', NULL, '2020-04-13 16:09:04', '2020-04-13 16:09:04');
+INSERT INTO `sys_permission` VALUES (790, 1, '订单管理', 4, '0/4', 'order:management', 'directory', NULL, '2020-04-25 18:13:04', '2020-04-25 18:13:04');
+INSERT INTO `sys_permission` VALUES (791, 1, '预约订单', 790, '0/4/790', 'booking:order', 'menu', '/order/booking/list', '2020-04-25 19:39:00', '2020-04-25 18:14:50');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -2322,7 +2338,7 @@ CREATE TABLE `sys_role`  (
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES (6, ',7,733,734,735,736,737,738,739,740,71,710,711,712,72,720,721,722,73,730,731,732,74,75,76,4,777,778,779,780,781,782,783,784,741,743,744,785,745,746,752,753,748,749,750,751,1,11,12,120,121,122,13,130,131,132,14,140,3,31,310,311,312,32,320,321,322,323,324,789,33,786,787,788,756,757,758,759,760,761,762,775,763,764,765,766,767,768,776,769,770,771,772,773,774,2,5,6,', 1, '超级管理员', '1', '2020-04-13 16:09:18', '2019-12-23 14:58:32');
+INSERT INTO `sys_role` VALUES (6, ',7,733,734,735,736,737,738,739,740,71,710,711,712,72,720,721,722,73,730,731,732,74,75,76,4,777,778,779,780,781,782,783,784,741,743,744,785,745,746,752,753,748,749,750,751,790,791,1,11,12,120,121,122,13,130,131,132,14,140,3,31,310,311,312,32,320,321,322,323,324,789,33,786,787,788,756,757,758,759,760,761,762,775,763,764,765,766,767,768,776,769,770,771,772,773,774,2,5,6,', 1, '超级管理员', '1', '2020-04-25 18:15:04', '2019-12-23 14:58:32');
 INSERT INTO `sys_role` VALUES (7, ',1,11,12,120,121,122,756,757,758,759,760,761,762,763,764,765,766,767,768,769,770,771,772,773,774,', 1, 'test', '2', '2020-01-11 20:58:44', '2019-12-23 15:00:14');
 
 -- ----------------------------

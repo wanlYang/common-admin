@@ -29,6 +29,9 @@
     <update id="coachRegister">
          update pe_order set status = 2 where id = #{id}
     </update>
+    <update id="signing">
+        update pe_order set status = 1 where id = #{id}
+    </update>
     <select id="findByContractId" resultMap="ResultMap">
          select * from pe_order where contract_id = #{id}
     </select>

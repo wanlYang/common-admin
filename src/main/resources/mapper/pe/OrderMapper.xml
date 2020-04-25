@@ -23,6 +23,12 @@
     <update id="cancel">
         update pe_order set status = 5 where id = #{id}
     </update>
+    <update id="memberManual">
+        update pe_order set status = 6 where id = #{id}
+    </update>
+    <update id="coachRegister">
+         update pe_order set status = 2 where id = #{id}
+    </update>
     <select id="findByContractId" resultMap="ResultMap">
          select * from pe_order where contract_id = #{id}
     </select>

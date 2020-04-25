@@ -25,4 +25,8 @@ public interface OrderService {
     Order findById(String id);
 
     Integer cancel(String id);
+
+    Integer memberManual(String id);
+
+    Integer coachRegister(String id);
 }

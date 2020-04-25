@@ -75,4 +75,16 @@ public class OrderServiceImpl implements OrderService {
 
         return orderMapper.cancel(id);
     }
+
+    @Override
+    public Integer memberManual(String id) {
+
+
+        return orderMapper.memberManual(id);
+    }
+
+    @Override
+    public Integer coachRegister(String id) {
+        return orderMapper.coachRegister(id);
+    }
 }

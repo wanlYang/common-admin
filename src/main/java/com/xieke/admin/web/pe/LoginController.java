@@ -14,7 +14,6 @@ import com.xieke.admin.service.pe.ShoppingService;
 import com.xieke.admin.util.MessageUtil;
 import com.xieke.admin.util.SortListUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -368,6 +367,11 @@ public class LoginController {
         int secondsDelta=timeDelta>0?(int)timeDelta:(int)Math.abs(timeDelta);
         return secondsDelta;
     }
+
+    public static int getTimeDeltaNegative(Date date1,Date date2){
+        long timeDelta=(date1.getTime()-date2.getTime())/1000;//单位是秒
+        return (int)timeDelta;
+    }
     //最终确认订单
     @ResponseBody
     @RequestMapping(value = "/shopp/submit", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
@@ -421,6 +425,57 @@ public class LoginController {
         result.setCount(row);
         return callback(callback, result);
 
+    }
+
+    /**
+     * 会员手动点击下课!
+     * @param id
+     * @param callback
+     * @return
+     * @throws ParseException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/order/classover", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public String attendClass(String id, @RequestParam(value = "callback", required = false) final String callback) throws ParseException {
+        Result result = new Result();
+        Order order = orderService.findById(id);
+        if (order == null){
+            result.setStatus(-1);
+            result.setMessage("参数异常！");
+            result.setCount(0);
+            return callback(callback, result);
+        }
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat ds = new SimpleDateFormat("yyyy/MM/dd ");
+        Date startTime = df.parse(ds.format(order.getThisday()) +order.getEndtime());
+        int timeDelta = getTimeDeltaNegative(startTime, new Date());
+        int minute = (timeDelta%3600)/60;
+        //下课后15分钟内可以点击下课!
+        if (0>=minute&&minute>=-15){
+            if (order.getStatus() == 8){
+                Integer row = orderService.memberManual(id);
+                result.setStatus(200);
+                result.setMessage("下课成功！");
+                result.setCount(row);
+                return callback(callback, result);
+            }else{
+                result.setStatus(-1);
+                result.setMessage("下课失败！教练可能为登记入场信息!");
+                result.setCount(0);
+                return callback(callback, result);
+            }
+        }else if(minute<=-15){
+            result.setStatus(-1);
+            result.setMessage("下课失败!下课时间已经结束!");
+            result.setCount(0);
+            return callback(callback, result);
+        }else{
+            result.setStatus(-1);
+            result.setMessage("下课失败!");
+            result.setCount(0);
+            return callback(callback, result);
+        }
     }
     //取消订单
     @ResponseBody

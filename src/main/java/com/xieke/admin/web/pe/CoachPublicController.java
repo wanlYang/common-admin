@@ -9,21 +9,19 @@ import com.xieke.admin.entity.pe.*;
 import com.xieke.admin.service.CustomerService;
 import com.xieke.admin.service.pe.*;
 import com.xieke.admin.util.MessageUtil;
-import com.xieke.admin.util.SortListUtil;
+
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import static com.xieke.admin.util.TimeSplit.getIntervalTimeList;
-import static com.xieke.admin.web.pe.OfficeController.belongCalendar;
 
 /**
  * 教练端控制器
@@ -50,6 +48,55 @@ public class CoachPublicController implements Serializable {
     private OfficeService officeService;
     @Autowired
     private ShoppingService shoppingService;
+
+    /**
+     * 教练手动登记来场会员信息!
+     * @param id
+     * @param callback
+     * @return
+     * @throws ParseException
+     */
+    @ResponseBody
+    @RequestMapping(value = "/order/register", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public String attendClass(String id, @RequestParam(value = "callback", required = false) final String callback) throws ParseException {
+        Result result = new Result();
+        Order order = orderService.findById(id);
+        if (order == null){
+            result.setStatus(-1);
+            result.setMessage("参数异常！");
+            result.setCount(0);
+            return callback(callback, result);
+        }
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat ds = new SimpleDateFormat("yyyy/MM/dd ");
+        Date startTime = df.parse(ds.format(order.getThisday()) +order.getStarttime());
+        int timeDelta = LoginController.getTimeDeltaNegative(startTime, new Date());
+        int minute = (timeDelta%3600)/60;
+        //还有15分钟上课时可以点击登记!
+        if (15>=minute&& minute >= 0){
+            Integer row = orderService.coachRegister(id);
+            result.setStatus(200);
+            result.setMessage("登记成功！");
+            result.setCount(row);
+            return callback(callback, result);
+        }else if(minute >= 15){
+            String totalTimeStr = timeDelta/(3600*24) + "天" + timeDelta/3600 + "时" + (timeDelta%3600)/60 + "分" + (timeDelta%3600)%60 + "秒";
+            result.setStatus(-1);
+            result.setMessage("登记失败！距离开课时间还有:" + totalTimeStr +",请提前15分钟入场登记,并提醒会员上课!");
+            result.setCount(0);
+            return callback(callback, result);
+        }else if (minute <= 0){
+            result.setStatus(-1);
+            result.setMessage("登记失败！课程已经开始!");
+            result.setCount(0);
+            return callback(callback, result);
+        }else{
+            result.setStatus(-1);
+            result.setMessage("数据异常!");
+            result.setCount(0);
+            return callback(callback, result);
+        }
+    }
 
 
     /**
@@ -289,205 +336,7 @@ public class CoachPublicController implements Serializable {
         return callback(callback,result);
     }
 
-    /**
-     * 查找当前时间(thisTime)有空闲的教练
-     * @param thisTime
-     * @param id
-     * @param callback
-     * @return
-     * @throws ParseException
-     */
-    @ResponseBody
-    @RequestMapping(value = "/time", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
-    public String dateTime(Date thisTime, String id, @RequestParam(value = "callback", required = false) final String callback) throws ParseException {
-        boolean x;
-        Map<String, Integer> map = new HashMap<>();
-        Result result = new Result();
-        if (!StringUtils.isNotBlank(id)) {
-            result.setData(null);
-            result.setStatus(-1);
-            result.setMessage("参数异常！");
-            return callback(callback, result);
-        }
-        List<Alltimes> alltimesList = new ArrayList<>();
-        List<String> allTimes = new ArrayList<>();
-        List<Office> thisTimeList = new ArrayList<>();
-        SimpleDateFormat ist_ = new SimpleDateFormat("yyyy/MM/dd");
-        SimpleDateFormat ist = new SimpleDateFormat("HH:mm:ss");
-        PrivateContract privateContract = contractService.findById(id);
-        List<Shopping> shopping = shoppingService.findByContractId(id);
-        List<Order> orders = orderService.findByContractId(id);
-        if (privateContract == null) {
-            result.setData(null);
-            result.setStatus(-1);
-            result.setMessage("参数异常！");
-            return callback(callback, result);
-        }
-        if (privateContract.getIsFreeClass() == 0) {
-            Office office = officeService.getOfficeByCoachId(privateContract.getCoach().getId());
-            //教练未排班表导致排班 office 为空 报错
-            if (office == null){
-                result.setData(null);
-                result.setStatus(-1);
-                result.setMessage("出现异常!教练可能未排班!");
-                return callback(callback, result);
-            }
-            x = belongCalendar(thisTime, office.getStarttime(), office.getEndtime());
-            if (x) {
-                thisTimeList.add(office);
-                //当前教练上班时间按每半小时拆分
-                List<String> qwe = getIntervalTimeList(ist.format(office.getOfficetime().getStarttime()), ist.format(office.getOfficetime().getEndtime()), 30);
-                for (String i : qwe) {
-                    allTimes.add(i);
-                }
-            }
-        } else {
-            List<Office> offices = officeService.selectOffice(); //查找所有教练的所有信息
-            //判断当前时间正常上班的教练
-            for (Office oftime : offices) {
-                x = belongCalendar(thisTime, oftime.getStarttime(), oftime.getEndtime());
-                if (x) {
-                    thisTimeList.add(oftime);
-                    //当前教练上班时间按每半小时拆分
-                    List<String> qwe = getIntervalTimeList(ist.format(oftime.getOfficetime().getStarttime()), ist.format(oftime.getOfficetime().getEndtime()), 30);
-                    for (String i : qwe) {
-                        allTimes.add(i);
-                    }
-                }
-            }
-        }
-        for (String str : allTimes) {
-            int i = 1;
-            if (map.get(str) != null) {
-                i = map.get(str) + 1;
-            }
-            map.put(str, i);
-        }
 
-        for (String s : map.keySet()) {    //遍历Key值
-            boolean a, b;
-            boolean sameDay;
-            boolean sameDayOrder;
-            if (shopping == null || shopping.size() == 0) {
-                a = false;
-                sameDay = false;
-
-            } else {
-                a = belongCalendar(ist.parse(s), ist.parse(shopping.get(0).getStarttime()), ist.parse(shopping.get(0).getEndtime()));
-                sameDay = DateUtils.isSameDay(thisTime, shopping.get(0).getThisday());
-            }
-            if (orders == null || orders.size() == 0) {
-                b = false;
-                sameDayOrder = false;
-            } else {
-                b = belongCalendar(ist.parse(s), ist.parse(orders.get(0).getStarttime()), ist.parse(orders.get(0).getEndtime()));
-                sameDayOrder = DateUtils.isSameDay(thisTime, orders.get(0).getThisday());
-            }
-
-
-            if (map.get(s) > 0 && !a && !b && !sameDay && !sameDayOrder) {
-                String st = ist_.format(thisTime);
-                Alltimes alltimes = new Alltimes();
-                alltimes.setChoiceDate(st);
-                alltimes.setCount(map.get(s));
-                alltimes.setTimes(s);
-                alltimes.setCssClass("cando");
-                alltimesList.add(alltimes);
-            } else {
-                String st = ist_.format(thisTime);
-                Alltimes alltimes = new Alltimes();
-                alltimes.setChoiceDate(st);
-                alltimes.setCount(map.get(s));
-                alltimes.setTimes(s);
-                alltimes.setCssClass("notdo");
-                alltimesList.add(alltimes);
-            }
-        }
-        SortListUtil.sort(alltimesList, "times", SortListUtil.ASC); //通过times字段，将alltimesList进行排序
-        result.setData(alltimesList);
-        result.setStatus(200);
-        result.setMessage("获取成功！");
-        return callback(callback, result);
-
-    }
-    /**
-     * 教练端时间安排,根据具体时间安排信息
-     * @param phone
-     * @param callback
-     * @return
-     */
-    @RequestMapping(value = "/time/arrange", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
-    public String time(String phone,Date time, @RequestParam(value = "callback", required = false) final String callback){
-        Result result = new Result();
-        boolean x;
-        Map<String, Integer> map = new HashMap<>();
-        if (!StringUtils.isNotBlank(phone)) {
-            result.setData(null);
-            result.setStatus(-1);
-            result.setMessage("参数异常！");
-            return callback(callback, result);
-        }
-        List<Alltimes> alltimesList = new ArrayList<>();
-        List<String> allTimes = new ArrayList<>();
-        List<Office> thisTimeList = new ArrayList<>();
-        SimpleDateFormat ist_ = new SimpleDateFormat("yyyy/MM/dd");
-        SimpleDateFormat ist = new SimpleDateFormat("HH:mm:ss");
-        Coach coach = coachService.findCoachByPhone(phone);
-        if (coach == null) {
-            result.setData(null);
-            result.setStatus(-1);
-            result.setMessage("参数异常！");
-            return callback(callback, result);
-        }
-        Office office = officeService.getOfficeByCoachId(coach.getId());
-        //教练未排班表导致排班 office 为空 报错
-        if (office == null){
-            result.setData(null);
-            result.setStatus(-1);
-            result.setMessage("出现异常!教练可能未排班!");
-            return callback(callback, result);
-        }
-        x = belongCalendar(time, office.getStarttime(), office.getEndtime());
-        if (x) {
-            thisTimeList.add(office);
-            //当前教练上班时间按每半小时拆分
-            List<String> qwe = getIntervalTimeList(ist.format(office.getOfficetime().getStarttime()), ist.format(office.getOfficetime().getEndtime()), 30);
-            for (String i : qwe) {
-                allTimes.add(i);
-            }
-        }
-        for (String str : allTimes) {
-            int i = 1;
-            if (map.get(str) != null) {
-                i = map.get(str) + 1;
-            }
-            map.put(str, i);
-        }
-        for (String s : map.keySet()) {    //遍历Key值
-            if (map.get(s) > 0) {
-                String st = ist_.format(time);
-                Alltimes alltimes = new Alltimes();
-                alltimes.setChoiceDate(st);
-                alltimes.setCount(map.get(s));
-                alltimes.setTimes(s);
-                alltimes.setCssClass("cando");
-                alltimesList.add(alltimes);
-            } else {
-                String st = ist_.format(time);
-                Alltimes alltimes = new Alltimes();
-                alltimes.setChoiceDate(st);
-                alltimes.setCount(map.get(s));
-                alltimes.setTimes(s);
-                alltimes.setCssClass("notdo");
-                alltimesList.add(alltimes);
-            }
-        }
-        SortListUtil.sort(alltimesList, "times", SortListUtil.ASC); //通过times字段，将alltimesList进行排序
-        result.setData(alltimesList);
-        result.setMessage("获取成功!");
-        result.setStatus(200);
-        return callback(callback,result);
-    }
 
     @ResponseBody
     @RequestMapping(value = "/forget", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})

@@ -95,5 +95,14 @@
     <select id="findByPhone" resultMap="CustomerResultMap">
         select * from jy_customer WHERE phone = #{phone}
     </select>
+    <!--简单的映射-->
+    <resultMap id="orderSimpleCustomerResultMap" type="Customer">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+    </resultMap>
+    <select id="findOrderSimpleById" resultMap="orderSimpleCustomerResultMap">
+        SELECT * FROM `jy_customer` WHERE id = #{id}
+    </select>
 
 </mapper>

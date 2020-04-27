@@ -205,7 +205,7 @@
          UPDATE pe_contract SET audit_status = 1,check_user = #{user.id},check_time = #{checkTime} WHERE id = #{id};
     </update>
     <update id="deductionTimes">
-        UPDATE pe_contract SET total_number = total_number - #{ deductionTimes} WHERE id = #{id}
+        UPDATE pe_contract SET residual_times = residual_times - #{deductionTimes} WHERE id = #{id}
     </update>
     <select id="findAllByPageNameAndPhone" resultMap="PrivateContractResultMap">
         SELECT cust.name,cont.* FROM jy_customer cust RIGHT JOIN pe_contract cont on cust.id = cont.cust_id
@@ -265,5 +265,15 @@
                 AND cust.name like CONCAT('%','${string}','%')
             </if>
         </where>
+    </select>
+    <!--简单映射-->
+    <resultMap id="orderSimplePrivateContractResultMap" type="PrivateContract">
+        <id column="id" property="id" />
+        <result column="store" property="store" />
+        <association column="pe_course" select="com.xieke.admin.mapper.pe.CourseMapper.findById" javaType="Course" property="course"/>
+
+    </resultMap>
+    <select id="findOrderSimpleById" resultMap="orderSimplePrivateContractResultMap">
+        SELECT * FROM pe_contract WHERE id = #{id}
     </select>
 </mapper>

@@ -122,7 +122,7 @@ layui.use(['form','layer','table','laydate'],function(){
                     }
                 }
             },
-            ,{title:'操作',fixed: 'right', align:'center', minWidth:80, toolbar: '#barDemo'}
+            ,{title:'签课',fixed: 'right', align:'center', minWidth:80, toolbar: '#barDemo'}
         ]],
         text: {
             none: '暂无相关数据' // 默认：无数据。注：该属性为 layui 2.2.5 开始新增
@@ -136,7 +136,7 @@ layui.use(['form','layer','table','laydate'],function(){
         },
         toolbar: true
     });
-
+    table.reload("orderListTable")
     //搜索
     $(".search_btn").on("click",function(){
         table.reload("orderListTable",{

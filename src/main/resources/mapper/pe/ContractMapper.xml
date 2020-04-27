@@ -266,4 +266,14 @@
             </if>
         </where>
     </select>
+    <!--简单映射-->
+    <resultMap id="orderSimplePrivateContractResultMap" type="PrivateContract">
+        <id column="id" property="id" />
+        <result column="store" property="store" />
+        <association column="pe_course" select="com.xieke.admin.mapper.pe.CourseMapper.findById" javaType="Course" property="course"/>
+
+    </resultMap>
+    <select id="findOrderSimpleById" resultMap="orderSimplePrivateContractResultMap">
+        SELECT * FROM pe_contract WHERE id = #{id}
+    </select>
 </mapper>

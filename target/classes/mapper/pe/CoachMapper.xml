@@ -73,6 +73,15 @@
     <select id="findByPhone" resultMap="BaseResultMap">
         select * from pe_coach where phone = #{phone}
     </select>
+    <!--简单的映射-->
+    <resultMap id="simpleBaseResultMap" type="Coach">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+    </resultMap>
+    <select id="findOrderSimpleById" resultMap="simpleBaseResultMap">
+        select * from pe_coach where id = #{id}
+    </select>
     <update id="updateCoach" parameterType="Coach">
     update pe_coach set
         isManager=#{isManager},name=#{name},sex=#{sex},free_coach=#{freeCoach},status=#{status},

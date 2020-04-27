@@ -56,7 +56,7 @@ public class LoginController {
     @ResponseBody
     @RequestMapping(value = "/login/submit", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public String login(String phone, String password, @RequestParam(value = "callback", required = false) final String callback) {
-        if (phone == null || phone == "" || password == null || password == "") {
+        if (phone == null || phone.equals("") || password == null || password.equals("")) {
             Result result = new Result();
             result.setMessage("参数异常！");
             result.setStatus(-1);
@@ -115,13 +115,12 @@ public class LoginController {
             result.setStatus(200);
             result.setMessage("获取成功！");
             result.setData(customer);
-            return callback(callback, result);
         } else {
             result.setStatus(-1);
             result.setMessage("获取失败！");
-            result.setData(customer);
-            return callback(callback, result);
+            result.setData(null);
         }
+        return callback(callback, result);
     }
 
     //通过用户id查询所拥有的卡
@@ -129,7 +128,7 @@ public class LoginController {
     @RequestMapping(value = "/contract/info", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public String getCustomerContract(String id, @RequestParam(value = "callback", required = false) final String callback) {
         Result result = new Result();
-        if (id == null || id == "") {
+        if (id == null || id.equals("")) {
             result.setStatus(-1);
             result.setMessage("参数异常！");
             return callback(callback, result);
@@ -146,7 +145,7 @@ public class LoginController {
     @RequestMapping(value = "/contract/info/one", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
     public String getContract(String id, @RequestParam(value = "callback", required = false) final String callback) {
         Result result = new Result();
-        if (id == null || id == "") {
+        if (id == null || id.equals("")) {
             result.setStatus(-1);
             result.setMessage("参数异常！");
             return callback(callback, result);
@@ -497,6 +496,12 @@ public class LoginController {
             result.setCount(0);
             return callback(callback, result);
         }
+        if (order.getStatus() == 5){
+            result.setStatus(-1);
+            result.setMessage("已取消！");
+            result.setCount(0);
+            return callback(callback, result);
+        }
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         SimpleDateFormat ds = new SimpleDateFormat("yyyy/MM/dd ");
         Date startTime = df.parse(ds.format(order.getThisday()) +order.getStarttime());
@@ -504,6 +509,7 @@ public class LoginController {
         int hour = timeDelta/3600;
         if (hour>6){
             Integer row = orderService.cancel(id);
+            redisTemplate.delete(order.getOrderKey());
             result.setStatus(200);
             result.setMessage("取消成功！");
             result.setCount(row);

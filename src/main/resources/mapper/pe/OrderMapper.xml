@@ -14,6 +14,17 @@
         <association column="contract_id" property="contract" select="com.xieke.admin.mapper.pe.ContractMapper.findById" />
         <association column="customer_id" property="customer" select="com.xieke.admin.mapper.CustomerMapper.findById" />
     </resultMap>
+    <resultMap id="simpleResultMap" type="Order">
+        <id column="id" property="id" />
+        <result column="starttime" property="starttime" />
+        <result column="endtime" property="endtime" />
+        <result column="thisday" property="thisday" />
+        <result column="status" property="status"/>
+        <result column="order_key" property="orderKey"/>
+        <association column="coach_id" property="coach" select="com.xieke.admin.mapper.pe.CoachMapper.findOrderSimpleById" />
+        <association column="contract_id" property="contract" select="com.xieke.admin.mapper.pe.ContractMapper.findOrderSimpleById" />
+        <association column="customer_id" property="customer" select="com.xieke.admin.mapper.CustomerMapper.findOrderSimpleById" />
+    </resultMap>
     <insert id="insertOrder" useGeneratedKeys="true" keyProperty="id">
         insert into pe_order(id,contract_id,coach_id,customer_id,starttime,endtime,thisday,status,order_key) value(null,#{contract.id},#{coach.id},#{customer.id},#{starttime},#{endtime},#{thisday},#{status},#{orderKey})
     </insert>
@@ -54,7 +65,7 @@
     <select id="findById" resultMap="ResultMap">
         select * from pe_order where id = #{id}
     </select>
-    <select id="findAll" resultMap="ResultMap">
+    <select id="findAll" resultMap="simpleResultMap">
         SELECT cust.name,o.* FROM jy_customer cust RIGHT JOIN `pe_order` o on cust.id = o.customer_id
         <where>
             <if test="name != null">

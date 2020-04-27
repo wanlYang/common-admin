@@ -497,6 +497,12 @@ public class LoginController {
             result.setCount(0);
             return callback(callback, result);
         }
+        if (order.getStatus() == 5){
+            result.setStatus(-1);
+            result.setMessage("已取消！");
+            result.setCount(0);
+            return callback(callback, result);
+        }
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         SimpleDateFormat ds = new SimpleDateFormat("yyyy/MM/dd ");
         Date startTime = df.parse(ds.format(order.getThisday()) +order.getStarttime());
@@ -504,6 +510,7 @@ public class LoginController {
         int hour = timeDelta/3600;
         if (hour>6){
             Integer row = orderService.cancel(id);
+            redisTemplate.delete(order.getOrderKey());
             result.setStatus(200);
             result.setMessage("取消成功！");
             result.setCount(row);

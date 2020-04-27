@@ -31,4 +31,6 @@ public interface CoachMapper {
     Coach findByPhone(@Param("phone") String phone);
 
     Integer updatePassword(@Param("phone") String phone, @Param("newPassword") String newPassword);
+
+    Coach findOrderSimpleById(String id);
 }

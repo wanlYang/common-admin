@@ -49,4 +49,6 @@ public interface CustomerMapper {
     Customer findByPhone(String phone);
 
     Integer updatePassword(Customer customer);
+
+    Customer findOrderSimpleById(String id);
 }

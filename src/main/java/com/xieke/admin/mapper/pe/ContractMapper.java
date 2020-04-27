@@ -73,4 +73,6 @@ public interface ContractMapper {
     List<PrivateContract> findContractByCoachIdAndNameSearch(@Param("id") int id, @Param("string") String string);
 
     Integer deductionTimes(@Param("id") Integer id, @Param("deductionTimes") Integer deductionTimes);
+
+    PrivateContract findOrderSimpleById(String id);
 }

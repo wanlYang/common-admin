@@ -16,15 +16,27 @@
 <form class="layui-form">
 	<blockquote class="layui-elem-quote quoteBox">
 		<form class="layui-form">
-
+			预订信息状态提示:
+			<div class="layui-btn layui-btn-xs">0 待上课</div>
+			<div class="layui-btn layui-btn-xs layui-bg-blue">1 已完成</div>
+			<div class="layui-btn layui-btn-xs">2 教练已登记</div>
+			<div class="layui-btn layui-btn-xs layui-bg-black">3 缺席</div>
+			<div class="layui-btn layui-btn-xs layui-bg-orange">5 取消</div>
+			<div class="layui-btn layui-btn-xs">7 上课中</div>
+			<div class="layui-btn layui-btn-xs">8 课程结束待下课</div>
+			<div class="layui-btn layui-btn-xs layui-bg-blue">6 课程结束已下课</div>
 		</form>
 	</blockquote>
 	<table id="orderList" lay-filter="orderList"></table>
 	<script type="text/html" id="barDemo">
-		{{# if(d.status != 1){ }}
+		{{# if(d.status == 3){ }}
 			<a class="layui-btn layui-btn-info layui-btn-xs" lay-event="sing">签课</a>
-		{{# }else{ }}
+		{{# }else if(d.status == 5){ }}
+			<div class="layui-btn layui-btn-xs layui-bg-orange">取消</div>
+		{{# }else if(d.status == 1){ }}
 			<a class="layui-btn layui-btn-info layui-btn-xs">已完成</a>
+		{{# }else{ }}
+			<a class="layui-btn layui-btn-info layui-btn-xs">待处理</a>
 		{{# } }}
 	</script>
 </form>

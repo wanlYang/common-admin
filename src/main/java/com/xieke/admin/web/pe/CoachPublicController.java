@@ -73,13 +73,25 @@ public class CoachPublicController implements Serializable {
             result.setCount(0);
             return callback(callback, result);
         }
+        if (order.getStatus() == 7){
+            result.setStatus(-1);
+            result.setMessage("已登记,当前正在上课中！");
+            result.setCount(0);
+            return callback(callback, result);
+        }
+        if (order.getStatus() == 8){
+            result.setStatus(-1);
+            result.setMessage("已登记,待下课中！");
+            result.setCount(0);
+            return callback(callback, result);
+        }
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         SimpleDateFormat ds = new SimpleDateFormat("yyyy/MM/dd ");
         Date startTime = df.parse(ds.format(order.getThisday()) +order.getStarttime());
         int timeDelta = LoginController.getTimeDeltaNegative(startTime, new Date());
         int minute = (timeDelta%3600)/60;
         //还有15分钟上课时可以点击登记!
-        if (15>=minute&& minute >= 0){
+        if (minute >= 0&&minute<=15){
             Integer row = orderService.coachRegister(id);
             result.setStatus(200);
             result.setMessage("登记成功！");

@@ -480,7 +480,7 @@ public class LoginController {
             return callback(callback, result);
         }else{
             result.setStatus(-1);
-            result.setMessage("下课失败!");
+            result.setMessage("下课失败!请下课后点击此按钮登记!");
             result.setCount(0);
             return callback(callback, result);
         }

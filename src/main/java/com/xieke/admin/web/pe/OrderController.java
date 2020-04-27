@@ -60,11 +60,21 @@ public class OrderController {
             result.setMessage("参数异常!");
             return result;
         }
+        if (order.getStatus() == 5) {
+            result.setStatus(-1);
+            result.setMessage("订单取消!无法签课!");
+            return result;
+        }
+        if (order.getStatus() == 1) {
+            result.setStatus(-1);
+            result.setMessage("已完成!");
+            return result;
+        }
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         SimpleDateFormat ds = new SimpleDateFormat("yyyy/MM/dd ");
         Date startTime = df.parse(ds.format(order.getThisday()) + order.getEndtime());
         int timeDelta = LoginController.getTimeDeltaNegative(startTime, new Date());
-        int minute = (timeDelta % 3600) / 60;
+        int minute = (timeDelta % 3600) / 60 + 15;
         //下课后可以点击签课!
         if (0 >= minute) {
             Integer row = orderService.signing(id);
@@ -75,7 +85,7 @@ public class OrderController {
         } else {
             String totalTimeStr = timeDelta/(3600*24) + "天" + timeDelta/3600 + "时" + (timeDelta%3600)/60 + "分" + (timeDelta%3600)%60 + "秒";
             result.setStatus(-1);
-            result.setMessage("签课失败!距离下课还有"+totalTimeStr);
+            result.setMessage("签课失败!请下课15分钟后签课!距离下课还有"+totalTimeStr);
             result.setCount(0);
             return result;
         }

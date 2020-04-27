@@ -10,10 +10,13 @@ layui.use(['form','layer','table','laydate'],function(){
         url : '/order/booking/list/data',
         cellMinWidth : 95,
         height : "full-125",
+        page:true,
+        limit:10,
+        limits:[10,20,30,40],
         id : "orderListTable",
         cols : [[
             {type:'radio',fixed:'left'},
-            {field: 'courseName', title: '课程名称', minWidth:100, align:"center",
+            {field: 'courseName', title: '课程名称', minWidth:80, align:"center",
                 templet:function (d) {
                     if(d.contract.course.name != null && d.contract.course.name != ''){
                         return d.contract.course.name
@@ -21,7 +24,7 @@ layui.use(['form','layer','table','laydate'],function(){
                     return "空"
                 }
             },
-            {field: 'store', title: '所属分店', minWidth:100, align:'center',
+            {field: 'store', title: '所属分店', minWidth:80, align:'center',
                 templet:function (d) {
                     if(d.contract.store != null && d.contract.store != ''){
                         return d.contract.store
@@ -29,7 +32,7 @@ layui.use(['form','layer','table','laydate'],function(){
                     return "空"
                 },
             },
-            {field: 'customName', title: '用户姓名', minWidth:100, align:'center',
+            {field: 'customName', title: '用户姓名', minWidth:80, align:'center',
                 templet:function (d) {
                     if(d.customer.name != null && d.customer.name != ''){
                         return d.customer.name
@@ -37,7 +40,7 @@ layui.use(['form','layer','table','laydate'],function(){
                     return "空"
                 }
             },
-            {field: 'customPhone', title: '用户电话', minWidth:100, align:'center',
+            {field: 'customPhone', title: '用户电话', minWidth:80, align:'center',
                 templet:function (d) {
                     if(d.customer.phone != null && d.customer.phone != ''){
                         return d.customer.phone
@@ -45,7 +48,7 @@ layui.use(['form','layer','table','laydate'],function(){
                     return "空"
                 }
             },
-            {field: 'coachName', title: '教练姓名', minWidth:100, align:'center',
+            {field: 'coachName', title: '教练姓名', minWidth:80, align:'center',
                 templet:function (d) {
                     if(d.coach.name != null && d.coach.name != ''){
                         return d.coach.name
@@ -53,7 +56,7 @@ layui.use(['form','layer','table','laydate'],function(){
                     return "空"
                 }
             },
-            {field: 'coachPhone', title: '教练电话', minWidth:100, align:'center',
+            {field: 'coachPhone', title: '教练电话', minWidth:80, align:'center',
                 templet:function (d) {
                     if(d.coach.phone != null && d.coach.phone != ''){
                         return d.coach.phone
@@ -61,7 +64,8 @@ layui.use(['form','layer','table','laydate'],function(){
                     return "空"
                 }
             },
-            {field: 'status', title: '预定状态', minWidth:100, align:'center',
+
+            {field: 'status', title: '预定状态', minWidth:80, align:'center',
                 templet:function (d) {
                     if (d.status == 0) {
                         return '<div class="layui-btn layui-btn-xs">待上课</div>'
@@ -89,8 +93,11 @@ layui.use(['form','layer','table','laydate'],function(){
                     }
                 }
             },
-            {field: 'signing', title: '签课信息', minWidth:100, align:'center',
+            {field: 'signing', title: '签课信息', minWidth:80, align:'center',
                 templet:function (d) {
+                    if (d.status == 5) {
+                        return '<div class="layui-btn layui-btn-xs layui-bg-orange">取消</div>'
+                    }
                     if (d.status == 1) {
                         return '<div class="layui-btn layui-btn-xs layui-bg-blue">已完成签课</div>'
                     }else if(d.status == 6){
@@ -100,14 +107,22 @@ layui.use(['form','layer','table','laydate'],function(){
                     }
                 }
             },
-            {field: 'starttime', title: '课程开始时间', minWidth:100, align:'center',
+            {field: 'starttimedate', title: '日期', minWidth:80, align:'center',
                 templet:function (d) {
                     if (d.starttime != null) {
-                        return Format(d.thisday, "yyyy/MM/dd") + "  " +d.starttime;
+                        return Format(d.thisday, "yyyy/MM/dd");
+                    }
+                    return "空"
+                }
+            },
+            {field: 'starttime', title: '课程开始时间', minWidth:80, align:'center',
+                templet:function (d) {
+                    if (d.starttime != null) {
+                        return d.starttime;
                     }
                 }
             },
-            ,{title:'操作',fixed: 'right', align:'center', minWidth:100, toolbar: '#barDemo'}
+            ,{title:'操作',fixed: 'right', align:'center', minWidth:80, toolbar: '#barDemo'}
         ]],
         text: {
             none: '暂无相关数据' // 默认：无数据。注：该属性为 layui 2.2.5 开始新增
@@ -133,7 +148,7 @@ layui.use(['form','layer','table','laydate'],function(){
             }
         })
     });
-    table.on('row(courseList)',function(obj){
+    table.on('row(orderList)',function(obj){
         obj.tr.addClass("layui-table-click").siblings().removeClass("layui-table-click");
         obj.tr.find("div.layui-unselect.layui-form-radio")[1].click();
     })

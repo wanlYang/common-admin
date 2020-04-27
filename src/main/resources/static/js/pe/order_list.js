@@ -136,9 +136,10 @@ layui.use(['form','layer','table','laydate'],function(){
         },
         toolbar: true
     });
+
     //搜索
     $(".search_btn").on("click",function(){
-        table.reload("customerListTable",{
+        table.reload("orderListTable",{
             page: {
                 curr: 1 //重新从第 1 页开始
             },

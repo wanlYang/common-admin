@@ -105,6 +105,8 @@ public class LoginController {
         return callback(callback, result);
     }
 
+
+
     //获取用户信息
     @ResponseBody
     @RequestMapping(value = "/customer/info", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
@@ -457,7 +459,7 @@ public class LoginController {
         SimpleDateFormat ds = new SimpleDateFormat("yyyy/MM/dd ");
         Date startTime = df.parse(ds.format(order.getThisday()) +order.getEndtime());
         int timeDelta = getTimeDeltaNegative(startTime, new Date());
-        int minute = (timeDelta%3600)/60;
+        int minute = timeDelta/60;
         //下课后15分钟内可以点击下课!
         if (0>=minute&&minute>=-15){
             if (order.getStatus() == 8){
@@ -465,13 +467,12 @@ public class LoginController {
                 result.setStatus(200);
                 result.setMessage("下课成功！");
                 result.setCount(row);
-                return callback(callback, result);
             }else{
                 result.setStatus(-1);
                 result.setMessage("下课失败！教练可能为登记入场信息!");
                 result.setCount(0);
-                return callback(callback, result);
             }
+            return callback(callback, result);
         }else if(minute<=-15){
             result.setStatus(-1);
             result.setMessage("下课失败!下课时间已经结束!请下课后15分钟内点击下课签课!");

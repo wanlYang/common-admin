@@ -89,7 +89,7 @@ public class CoachPublicController implements Serializable {
         SimpleDateFormat ds = new SimpleDateFormat("yyyy/MM/dd ");
         Date startTime = df.parse(ds.format(order.getThisday()) +order.getStarttime());
         int timeDelta = LoginController.getTimeDeltaNegative(startTime, new Date());
-        int minute = (timeDelta%3600)/60;
+        int minute = timeDelta/60;
         //还有15分钟上课时可以点击登记!
         if (minute >= 0&&minute<=15){
             Integer row = orderService.coachRegister(id);
@@ -103,14 +103,9 @@ public class CoachPublicController implements Serializable {
             result.setMessage("登记失败！距离开课时间还有:" + totalTimeStr +",请提前15分钟入场登记,并提醒会员上课!");
             result.setCount(0);
             return callback(callback, result);
-        }else if (minute <= 0){
+        }else {
             result.setStatus(-1);
             result.setMessage("登记失败！课程已经开始!");
-            result.setCount(0);
-            return callback(callback, result);
-        }else{
-            result.setStatus(-1);
-            result.setMessage("数据异常!");
             result.setCount(0);
             return callback(callback, result);
         }
@@ -190,7 +185,7 @@ public class CoachPublicController implements Serializable {
             result.setMessage("教练信息异常!请重新登录");
             return callback(callback,result);
         }
-        List<PrivateContract> privateContracts = null;
+        List<PrivateContract> privateContracts;
         if (com.xieke.admin.util.StringUtils.isNumLegal(string)){
             privateContracts = contractService.findContractByCoachIdAndPhoneSearch(coach.getId(),string);
         }else{
@@ -289,12 +284,11 @@ public class CoachPublicController implements Serializable {
         if (row > 0){
             result.setStatus(200);
             result.setMessage("修改成功!");
-            return callback(callback,result);
         }else{
             result.setStatus(-1);
             result.setMessage("修改失败!");
-            return callback(callback,result);
         }
+        return callback(callback,result);
     }
     /**
      * 教练端获取客户详情信息
@@ -421,7 +415,10 @@ public class CoachPublicController implements Serializable {
 
     public static void main(String[] args) {
 
-
+        /**
+         *
+         *
+         */
 
 
 

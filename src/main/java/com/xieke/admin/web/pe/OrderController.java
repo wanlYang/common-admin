@@ -74,21 +74,20 @@ public class OrderController {
         SimpleDateFormat ds = new SimpleDateFormat("yyyy/MM/dd ");
         Date startTime = df.parse(ds.format(order.getThisday()) + order.getEndtime());
         int timeDelta = LoginController.getTimeDeltaNegative(startTime, new Date());
-        int minute = (timeDelta % 3600) / 60 + 15;
+        int minute = timeDelta/60 + 15;
         //下课后可以点击签课!
         if (0 >= minute) {
             Integer row = orderService.signing(id);
             result.setStatus(200);
             result.setMessage("签课成功！");
             result.setCount(row);
-            return result;
         } else {
             String totalTimeStr = timeDelta/(3600*24) + "天" + timeDelta/3600 + "时" + (timeDelta%3600)/60 + "分" + (timeDelta%3600)%60 + "秒";
             result.setStatus(-1);
             result.setMessage("签课失败!请下课15分钟后签课!距离下课还有"+totalTimeStr);
             result.setCount(0);
-            return result;
         }
+        return result;
     }
 
 }

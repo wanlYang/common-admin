@@ -20,8 +20,8 @@ public class MessageUtil {
 
     // TODO 此处需要替换成开发者自己的AK(在阿里云访问控制台寻找)
     //LTAIoGvBcuxgSSdr           wwwZ7PHDtvTWR0GDniS2uBirOMYj2e
-    static final String accessKeyId = "LTAIoGvBuxgSS";  // TODO 修改成自己的
-    static final String accessKeySecret = "wwwZ7WR0GDniS2uBirOMYj2e";   // TODO 修改成自己的
+    static final String accessKeyId = "";  // TODO 修改成自己的
+    static final String accessKeySecret = "";   // TODO 修改成自己的
     static final String href = "http://act.tytopshow.com:8007/activity/management/login";   // TODO 修改成自己的
 
     public static SendSmsResponse sendSms(String phone, int code) throws ClientException {

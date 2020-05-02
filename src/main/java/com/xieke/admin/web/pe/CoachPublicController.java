@@ -129,6 +129,7 @@ public class CoachPublicController implements Serializable {
             result.setMessage("账号或密码错误!");
             return callback(callback,result);
         }
+
         result.setStatus(200);
         result.setMessage("登陆成功!");
         result.setData(coach);

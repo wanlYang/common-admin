@@ -85,7 +85,7 @@ public class LoginController {
             result.setStatus(-1);
             result.setMessage("验证码异常!");
             return callback(callback, result);
-        } else if (code == null || code == "") {
+        } else if (code == null || code.equals("")) {
             result.setStatus(-2);
             result.setMessage("验证码异常!");
             return callback(callback, result);
@@ -289,15 +289,13 @@ public class LoginController {
     }
     public static String dateToStrLong(Date dateDate) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String dateString = formatter.format(dateDate);
-        return dateString;
+        return formatter.format(dateDate);
     }
 
     public static String getTimeShort() {
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         Date currentTime = new Date();
-        String dateString = formatter.format(currentTime);
-        return dateString;
+        return formatter.format(currentTime);
     }
 
     //添加购物车
@@ -367,8 +365,7 @@ public class LoginController {
 
     public static int getTimeDelta(Date date1,Date date2){
         long timeDelta=(date1.getTime()-date2.getTime())/1000;//单位是秒
-        int secondsDelta=timeDelta>0?(int)timeDelta:(int)Math.abs(timeDelta);
-        return secondsDelta;
+        return timeDelta>0?(int)timeDelta:(int)Math.abs(timeDelta);
     }
 
     public static int getTimeDeltaNegative(Date date1,Date date2){

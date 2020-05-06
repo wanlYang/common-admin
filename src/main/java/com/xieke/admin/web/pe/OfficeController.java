@@ -45,74 +45,32 @@ public class OfficeController {
         //查找所有教练信息，包括班次安排
         //周一
         List<Office> officesOne = officeService.getAllOffice();
-        Iterator<Office> iterator = officesOne.iterator();
-        while (iterator.hasNext()){
-            Office next = iterator.next();
-            if (!belongCalendar(days.get(0),next.getStarttime(),next.getEndtime())){
-                iterator.remove();
-            }
-        }
+        officesOne.removeIf(next -> !belongCalendar(days.get(0), next.getStarttime(), next.getEndtime()));
         modelAndView.addObject("officesOne",officesOne);
         //周二
         List<Office> officesTwo = officeService.getAllOffice();
-        Iterator<Office> iteratorTwo = officesTwo.iterator();
-        while (iteratorTwo.hasNext()){
-            Office next = iteratorTwo.next();
-            if (!belongCalendar(days.get(1),next.getStarttime(),next.getEndtime())){
-                iteratorTwo.remove();
-            }
-        }
+        officesTwo.removeIf(next -> !belongCalendar(days.get(1), next.getStarttime(), next.getEndtime()));
         modelAndView.addObject("officesTwo",officesTwo);
         //周三
         List<Office> officesThree = officeService.getAllOffice();
-        Iterator<Office> iteratorThree = officesThree.iterator();
-        while (iteratorThree.hasNext()){
-            Office next = iteratorThree.next();
-            if (!belongCalendar(days.get(2),next.getStarttime(),next.getEndtime())){
-                iteratorThree.remove();
-            }
-        }
+        officesThree.removeIf(next -> !belongCalendar(days.get(2), next.getStarttime(), next.getEndtime()));
         modelAndView.addObject("officesThree",officesThree);
         //周四
         List<Office> officesFour = officeService.getAllOffice();
-        Iterator<Office> iteratorFour = officesFour.iterator();
-        while (iteratorFour.hasNext()){
-            Office next = iteratorFour.next();
-            if (!belongCalendar(days.get(3),next.getStarttime(),next.getEndtime())){
-                iteratorFour.remove();
-            }
-        }
+        officesFour.removeIf(next -> !belongCalendar(days.get(3), next.getStarttime(), next.getEndtime()));
         modelAndView.addObject("officesFour",officesFour);
 
         //周五
         List<Office> officesFive = officeService.getAllOffice();
-        Iterator<Office> iteratorFive = officesFive.iterator();
-        while (iteratorFive.hasNext()){
-            Office next = iteratorFive.next();
-            if (!belongCalendar(days.get(4),next.getStarttime(),next.getEndtime())){
-                iteratorFive.remove();
-            }
-        }
+        officesFive.removeIf(next -> !belongCalendar(days.get(4), next.getStarttime(), next.getEndtime()));
         modelAndView.addObject("officesFive",officesFive);
         //周六
         List<Office> officesSix = officeService.getAllOffice();
-        Iterator<Office> iteratorSix = officesSix.iterator();
-        while (iteratorSix.hasNext()){
-            Office next = iteratorSix.next();
-            if (!belongCalendar(days.get(5),next.getStarttime(),next.getEndtime())){
-                iteratorSix.remove();
-            }
-        }
+        officesSix.removeIf(next -> !belongCalendar(days.get(5), next.getStarttime(), next.getEndtime()));
         modelAndView.addObject("officesSix",officesSix);
         //周天
         List<Office> officesSevn = officeService.getAllOffice();
-        Iterator<Office> iteratorSevn = officesSevn.iterator();
-        while (iteratorSevn.hasNext()){
-            Office next = iteratorSevn.next();
-            if (!belongCalendar(days.get(6),next.getStarttime(),next.getEndtime())){
-                iteratorSevn.remove();
-            }
-        }
+        officesSevn.removeIf(next -> !belongCalendar(days.get(6), next.getStarttime(), next.getEndtime()));
         modelAndView.addObject("officesSevn",officesSevn);
 
         modelAndView.setViewName("/office/list");
@@ -138,74 +96,32 @@ public class OfficeController {
         //查找所有教练信息，包括班次安排
         //周一
         List<Office> officesOne = officeService.getAllOffice();
-        Iterator<Office> iterator = officesOne.iterator();
-        while (iterator.hasNext()){
-            Office next = iterator.next();
-            if (!belongCalendar(days.get(0),next.getStarttime(),next.getEndtime())){
-                iterator.remove();
-            }
-        }
+        officesOne.removeIf(next -> !belongCalendar(days.get(0), next.getStarttime(), next.getEndtime()));
         modelAndView.addObject("officesOne",officesOne);
         //周二
         List<Office> officesTwo = officeService.getAllOffice();
-        Iterator<Office> iteratorTwo = officesTwo.iterator();
-        while (iteratorTwo.hasNext()){
-            Office next = iteratorTwo.next();
-            if (!belongCalendar(days.get(1),next.getStarttime(),next.getEndtime())){
-                iteratorTwo.remove();
-            }
-        }
+        officesTwo.removeIf(next -> !belongCalendar(days.get(1), next.getStarttime(), next.getEndtime()));
         modelAndView.addObject("officesTwo",officesTwo);
         //周三
         List<Office> officesThree = officeService.getAllOffice();
-        Iterator<Office> iteratorThree = officesThree.iterator();
-        while (iteratorThree.hasNext()){
-            Office next = iteratorThree.next();
-            if (!belongCalendar(days.get(2),next.getStarttime(),next.getEndtime())){
-                iteratorThree.remove();
-            }
-        }
+        officesThree.removeIf(next -> !belongCalendar(days.get(2), next.getStarttime(), next.getEndtime()));
         modelAndView.addObject("officesThree",officesThree);
         //周四
         List<Office> officesFour = officeService.getAllOffice();
-        Iterator<Office> iteratorFour = officesFour.iterator();
-        while (iteratorFour.hasNext()){
-            Office next = iteratorFour.next();
-            if (!belongCalendar(days.get(3),next.getStarttime(),next.getEndtime())){
-                iteratorFour.remove();
-            }
-        }
+        officesFour.removeIf(next -> !belongCalendar(days.get(3), next.getStarttime(), next.getEndtime()));
         modelAndView.addObject("officesFour",officesFour);
 
         //周五
         List<Office> officesFive = officeService.getAllOffice();
-        Iterator<Office> iteratorFive = officesFive.iterator();
-        while (iteratorFive.hasNext()){
-            Office next = iteratorFive.next();
-            if (!belongCalendar(days.get(4),next.getStarttime(),next.getEndtime())){
-                iteratorFive.remove();
-            }
-        }
+        officesFive.removeIf(next -> !belongCalendar(days.get(4), next.getStarttime(), next.getEndtime()));
         modelAndView.addObject("officesFive",officesFive);
         //周六
         List<Office> officesSix = officeService.getAllOffice();
-        Iterator<Office> iteratorSix = officesSix.iterator();
-        while (iteratorSix.hasNext()){
-            Office next = iteratorSix.next();
-            if (!belongCalendar(days.get(5),next.getStarttime(),next.getEndtime())){
-                iteratorSix.remove();
-            }
-        }
+        officesSix.removeIf(next -> !belongCalendar(days.get(5), next.getStarttime(), next.getEndtime()));
         modelAndView.addObject("officesSix",officesSix);
         //周天
         List<Office> officesSevn = officeService.getAllOffice();
-        Iterator<Office> iteratorSevn = officesSevn.iterator();
-        while (iteratorSevn.hasNext()){
-            Office next = iteratorSevn.next();
-            if (!belongCalendar(days.get(6),next.getStarttime(),next.getEndtime())){
-                iteratorSevn.remove();
-            }
-        }
+        officesSevn.removeIf(next -> !belongCalendar(days.get(6), next.getStarttime(), next.getEndtime()));
         modelAndView.addObject("officesSevn",officesSevn);
         modelAndView.addObject("weeks",days);
         modelAndView.addObject("end",timestamp);

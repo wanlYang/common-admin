@@ -40,6 +40,7 @@ public class LoginController {
 
     @Autowired
     private CustomerService customerService;
+
     @Autowired
     private ContractService contractService;
     @Autowired
@@ -104,7 +105,6 @@ public class LoginController {
         }
         return callback(callback, result);
     }
-
 
 
     //获取用户信息
@@ -228,12 +228,6 @@ public class LoginController {
             //allOrdersTime.add(o.getEndtime());
         }
 
-        if (privateContract == null) {
-            result.setData(null);
-            result.setStatus(-1);
-            result.setMessage("参数异常！");
-            return callback(callback, result);
-        }
         if (privateContract.getIsFreeClass() == 0) {
             Office office = officeService.getOfficeByCoachId(privateContract.getCoach().getId());
             //教练未排班表导致排班 office 为空 报错
@@ -247,12 +241,9 @@ public class LoginController {
             if (x) {
                 //当前教练上班时间按每半小时拆分
                 List<String> qwe = getIntervalTimeList(ist.format(office.getOfficetime().getStarttime()), ist.format(office.getOfficetime().getEndtime()), 30);
-                for (String i : qwe) {
-                    allTimes.add(i);
-                }
+                allTimes.addAll(qwe);
             }
         }
-
 
         for (String str : allTimes) {
             int i = 1;

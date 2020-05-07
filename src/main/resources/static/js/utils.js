@@ -170,6 +170,14 @@ function DateToTime(unixTime,type="Y-M-D H:i:s"){
     };
     return datetime;
 }
+//将时间戳转换成正常时间格式
+function timestampToTime(timestamp) {
+    var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    var Y = date.getFullYear() + '-';
+    var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+    var D = date.getDate()<10? '0'+ date.getDate() :date.getDate() ;
+    return Y+M+D;
+}
 function Format(datetime, fmt) {
     if (parseInt(datetime) == datetime) {
         if (datetime.length == 10) {

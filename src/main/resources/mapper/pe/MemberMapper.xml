@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xieke.admin.mapper.pe.MemberMapper">
+    <resultMap id="memberResultMap" type="Member">
+
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="phone" column="phone"/>
+        <result property="sex" column="sex"/>
+        <result property="userHeaderImg" column="user_header_img"/>
+        <result property="addTime" column="add_time"/>
+        <result property="videoStatus" column="video_status"/>
+        <result property="videoTime" column="video_time"/>
+        <result property="vipTime" column="vip_time"/>
+        <result property="vipStatus" column="vip_status"/>
+    </resultMap>
+
+    <select id="list" resultMap="memberResultMap">
+        select * from `dc_member`
+        <where>
+            <if test="status != null and status == 1">
+                AND  video_status = 1
+            </if>
+            <if test="status != null and status == 2">
+                AND  vip_status = 1
+            </if>
+            <if test="status != null and status == 3">
+                AND  video_status = 1  AND  vip_status = 1
+            </if>
+            <if test="startTime != null and startTime != '' and status == 1">
+                AND video_time <![CDATA[>=]]> #{startTime}
+            </if>
+            <if test="endTime != null and endTime != '' and status == 1">
+                AND video_time <![CDATA[<=]]> #{endTime}
+            </if>
+            <if test="startTime != null and startTime != '' and status == 2">
+                AND vip_time <![CDATA[>=]]> #{startTime}
+            </if>
+            <if test="endTime != null and endTime != '' and status == 2">
+                AND vip_time <![CDATA[<=]]> #{endTime}
+            </if>
+            <if test="startTime != null and startTime != '' and status == 3">
+                AND vip_time <![CDATA[>=]]> #{startTime} AND video_time <![CDATA[>=]]> #{startTime}
+            </if>
+            <if test="endTime != null and endTime != '' and status == 3">
+                AND vip_time <![CDATA[<=]]> #{endTime} AND video_time <![CDATA[<=]]> #{endTime}
+            </if>
+        </where>
+        LIMIT #{start},#{limit}
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select COUNT(*) from `dc_member`
+        <where>
+            <if test="status != null and status == 1">
+                AND  video_status = 1
+            </if>
+            <if test="status != null and status == 2">
+                AND  vip_status = 1
+            </if>
+            <if test="status != null and status == 3">
+                AND  video_status = 1  AND  vip_status = 1
+            </if>
+            <if test="startTime != null and startTime != '' and status == 1">
+                AND video_time <![CDATA[>=]]> #{startTime}
+            </if>
+            <if test="endTime != null and endTime != '' and status == 1">
+                AND video_time <![CDATA[<=]]> #{endTime}
+            </if>
+            <if test="startTime != null and startTime != '' and status == 2">
+                AND vip_time <![CDATA[>=]]> #{startTime}
+            </if>
+            <if test="endTime != null and endTime != '' and status == 2">
+                AND vip_time <![CDATA[<=]]> #{endTime}
+            </if>
+            <if test="startTime != null and startTime != '' and status == 3">
+                AND vip_time <![CDATA[>=]]> #{startTime} AND video_time <![CDATA[>=]]> #{startTime}
+            </if>
+            <if test="endTime != null and endTime != '' and status == 3">
+                AND vip_time <![CDATA[<=]]> #{endTime} AND video_time <![CDATA[<=]]> #{endTime}
+            </if>
+        </where>
+
+    </select>
+</mapper>

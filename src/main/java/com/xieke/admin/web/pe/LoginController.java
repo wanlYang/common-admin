@@ -1,6 +1,7 @@
 package com.xieke.admin.web.pe;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.aliyuncs.exceptions.ClientException;
 import com.xieke.admin.entity.Customer;
@@ -11,6 +12,7 @@ import com.xieke.admin.service.pe.ContractService;
 import com.xieke.admin.service.pe.OfficeService;
 import com.xieke.admin.service.pe.OrderService;
 import com.xieke.admin.service.pe.ShoppingService;
+import com.xieke.admin.util.HttpUtil;
 import com.xieke.admin.util.MessageUtil;
 import com.xieke.admin.util.SortListUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -52,6 +56,190 @@ public class LoginController {
 
     @Autowired
     private StringRedisTemplate redisTemplate;
+
+    //登录get
+    @ResponseBody
+    @RequestMapping(value = "/jssdk", method = RequestMethod.GET, produces = {"application/json;charset=UTF-8"})
+    public String get(String url_,@RequestParam(value = "callback", required = false) final String callback) {
+
+        Result result = new Result();
+
+        String access_token = redisTemplate.opsForValue().get("access_token");
+
+        String jsapi_ticket = redisTemplate.opsForValue().get("ticket");
+        if (access_token == null || "".equals(access_token)){
+            String url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + "wx316b85a873e9e9d3" + "&secret=" +"7ce13309ef9afbdeafbf3cf22d2a0722";
+            String results_assess = HttpUtil.sendGet(url);
+            JSONObject object_assess=JSON.parseObject(results_assess);
+            access_token = object_assess.getString("access_token");//这就是access_token
+            redisTemplate.opsForValue().set("access_token",
+                    access_token, 7200, TimeUnit.SECONDS);
+        }
+
+        if (jsapi_ticket == null || "".equals(jsapi_ticket)) {
+            String get_jsapi_ticket = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=" + access_token + "&type=jsapi&offset_type=1";
+            String results_ticket = HttpUtil.sendGet(get_jsapi_ticket);
+            JSONObject object_ticket = JSON.parseObject(results_ticket);
+            jsapi_ticket = object_ticket.getString("ticket");//这就是ticket
+            redisTemplate.opsForValue().set("ticket",
+                    jsapi_ticket, 7200, TimeUnit.SECONDS);
+        }
+        //获取signature
+        String noncestr = UUID.randomUUID().toString();
+        String timestamp = Long.toString(System.currentTimeMillis() / 1000);
+        //String url_two="http://mp.weixin.qq.com";
+        String str = "jsapi_ticket=" + jsapi_ticket +
+                "&noncestr=" + noncestr +
+                "&timestamp=" + timestamp +
+                "&url=" + decodeURIComponent(url_);
+        //sha1加密
+
+        String signature = SHA1(str);
+        System.out.println("noncestr=" + noncestr);
+        System.out.println("timestamp=" + timestamp);
+        System.out.println("signature=" + signature);
+
+        Map<String,String> list = new HashMap<>();
+        list.put("noncestr",noncestr);
+        list.put("timestamp",timestamp);
+        list.put("signature",signature);
+        result.setData(list);
+        result.setMessage("获取成功!");
+        result.setStatus(200);
+        return callback(callback, result);
+    }
+    public static String decodeURIComponent(String encodedURI) {
+
+        char actualChar;
+
+
+
+        StringBuffer buffer = new StringBuffer();
+
+
+
+        int bytePattern, sumb = 0;
+
+
+
+        for (int i = 0, more = -1; i < encodedURI.length(); i++) {
+
+            actualChar = encodedURI.charAt(i);
+
+
+
+            switch (actualChar) {
+
+                case '%': {
+
+                    actualChar = encodedURI.charAt(++i);
+
+                    int hb = (Character.isDigit(actualChar) ? actualChar - '0'
+
+                            : 10 + Character.toLowerCase(actualChar) - 'a') & 0xF;
+
+                    actualChar = encodedURI.charAt(++i);
+
+                    int lb = (Character.isDigit(actualChar) ? actualChar - '0'
+
+                            : 10 + Character.toLowerCase(actualChar) - 'a') & 0xF;
+
+                    bytePattern = (hb << 4) | lb;
+
+                    break;
+
+                }
+
+                case '+': {
+
+                    bytePattern = ' ';
+
+                    break;
+
+                }
+
+                default: {
+
+                    bytePattern = actualChar;
+
+                }
+
+            }
+
+
+
+            if ((bytePattern & 0xc0) == 0x80) { // 10xxxxxx
+
+                sumb = (sumb << 6) | (bytePattern & 0x3f);
+
+                if (--more == 0)
+
+                    buffer.append((char) sumb);
+
+            } else if ((bytePattern & 0x80) == 0x00) { // 0xxxxxxx
+
+                buffer.append((char) bytePattern);
+
+            } else if ((bytePattern & 0xe0) == 0xc0) { // 110xxxxx
+
+                sumb = bytePattern & 0x1f;
+
+                more = 1;
+
+            } else if ((bytePattern & 0xf0) == 0xe0) { // 1110xxxx
+
+                sumb = bytePattern & 0x0f;
+
+                more = 2;
+
+            } else if ((bytePattern & 0xf8) == 0xf0) { // 11110xxx
+
+                sumb = bytePattern & 0x07;
+
+                more = 3;
+
+            } else if ((bytePattern & 0xfc) == 0xf8) { // 111110xx
+
+                sumb = bytePattern & 0x03;
+
+                more = 4;
+
+            } else { // 1111110x
+
+                sumb = bytePattern & 0x01;
+
+                more = 5;
+
+            }
+
+        }
+
+        return buffer.toString();
+
+    }
+    public static String SHA1(String str) {
+        try {
+            MessageDigest digest = java.security.MessageDigest
+                    .getInstance("SHA-1"); //如果是SHA加密只需要将"SHA-1"改成"SHA"即可
+            digest.update(str.getBytes());
+            byte messageDigest[] = digest.digest();
+            // Create Hex String
+            StringBuffer hexStr = new StringBuffer();
+            // 字节数组转换为 十六进制 数
+            for (int i = 0; i < messageDigest.length; i++) {
+                String shaHex = Integer.toHexString(messageDigest[i] & 0xFF);
+                if (shaHex.length() < 2) {
+                    hexStr.append(0);
+                }
+                hexStr.append(shaHex);
+            }
+            return hexStr.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     //登录
     @ResponseBody
